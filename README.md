@@ -44,20 +44,22 @@ A binary matrix that summarizes the presence and absence of MGEs in each of the 
 
 #### 2. mge_length.csv
 A table that summarizes the total length of each type of MGEs.
-```
-sample	prophage	insertion	ice	integron	total
-SRR5336039	73804	18227	0	0	92031
-SRR5852955	73804	14101	0	0	87905
-SRR5932646	67484	11988	0	0	79472
-```
+
+| Sample | prophage | insertion | ice | integron | total |
+| :----- | :----- | :----- | :----- | :----- | :----- |
+| SRR5336039 | 73804 | 18227 | 0 | 0 | 92031 |
+| SRR5852955 | 73804 | 14101 | 0 | 0 | 87905 |
+| SRR5932646 | 67484 | 11988 | 0 | 0 | 79472 |
+
 #### 3. mge_dist_matrix.csv
 A matrix that summarizes the number different MGEs in each pair of tested genomes.
-```
-	SRR5336039	SRR5852955	SRR5932646
-SRR5336039	0	1	2
-SRR5852955	1	0	1
-SRR5932646	2	1	0
-```
+
+| 	 | SRR5336039 | SRR5852955 | SRR5932646 |
+| :----- | :----- | :----- | :----- |
+| SRR5336039 | 0 | 1 | 2 |
+| SRR5852955 | 1 | 0 | 1 |
+| SRR5932646 | 2 | 1 | 0 |
+
 #### 4. MGE_gff and MGE_sequences fasta files
 Each gff file will list all the detected MGE sequences in each genome according the gff format. The MGE_sequence fasta file put all the detected sequences of each type of MGE together.
 ```
