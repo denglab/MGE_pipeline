@@ -34,7 +34,7 @@ optional arguments:
 ```
 # Output files
 #### 1. mge_matrix.csv
-A binary matrix that summarizes the presence and absence of MGEs in each of the detected genomes.
+A binary matrix that summarizes the presence/absence of MGEs in each of the detected genomes.
 
 | Sample | prophage_1 | prophage_2 | insertion_1 | insertion_2 |
 | :----- | :----- | :----- | :----- | :----- |
