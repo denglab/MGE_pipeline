@@ -34,17 +34,13 @@ optional arguments:
 ```
 # Output files
 #### 1. mge_matrix.csv
-| First Header  | Second Header |
-| ------------- | ------------- |
-| Content Cell  | Content Cell  |
-| Content Cell  | Content Cell  |
 A binary matrix that summarizes the presence and absence of MGEs in each of the detected genomes.
-```
-Sample	prophage_1	prophage_2	prophage_3	insertion_1	insertion_2	insertion_3
-SRR5336039	1	1	1	1	1	1
-SRR5852955	1	1	1	0	1	1
-SRR5932646	1	1	1	0	1	1
-```
+| Sample | prophage_1 | prophage_2 | insertion_1 | insertion_2 |
+|:-----|:-----|:-----|:-----|:-----|
+|SRR5336039 | 1 | 1 | 1	| 1 |
+|SRR5852955 | 1 | 1 | 0	| 1 |
+|SRR5932646 | 1 | 1 | 0	| 1 |
+
 #### 2. mge_length.csv
 A table that summarizes the total length of each type of MGEs.
 ```
