@@ -3,7 +3,7 @@ This is a pipeline for the detection of mobile genetic elements (MGEs) from comp
 
 # Dependencies
 1. Python 2.7 and Python 3.4
-2. Python modules: biopython, pandas, numpy
+2. Python modules: biopython, pandas and numpy
 3. NCBI BLAST v2.7.1+
 4. Prokka v1.12
 5. ISEScan v1.6
@@ -13,6 +13,7 @@ This is a pipeline for the detection of mobile genetic elements (MGEs) from comp
 9. Vsearch v2.8.1
 
 # Instructions:
+The Executable scritps of NCBI BLAST, macsyfinder and Integron Finder are included in this repository, but the following programs and their required dependencies should be installed prior to the execution of the MGE pipeline.
 1. Make sure python2.7, python3.4 and the required modules are installed.
 2. Install Prokka. 
 3. Install ISEScan.
