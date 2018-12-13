@@ -1,5 +1,5 @@
 # Introduction
-This is a pipeline for the detection of mobile genetic elements (MGEs) from complete genomes or genome assemblies. The types of detected MGEs include prophage, insertion sequence (IS), integron and integrative and conjugative elements (ICEs). This pipeline integrates four tools for the detection of each MGE type into a single workflow. Prophages are detected using PHASTER's URLAPI, insertion sequences are detected using ISEScan, integrons are detected using Integron Finder and ICEs are detected using conjscan.
+This is a pipeline for the detection of mobile genetic elements (MGEs) from complete genomes or genome assemblies. The types of detected MGEs include prophage, insertion sequence (IS), integron and integrative and conjugative elements (ICEs). This pipeline integrates four tools for the detection of each MGE type into a single workflow. Prophages are detected using PHASTER's URLAPI, insertion sequences are detected using ISEScan, integrons are detected using Integron Finder and ICEs are detected using CONJScan.
 
 # Dependencies
 1. Python 2.7 and Python 3.4
@@ -7,7 +7,7 @@ This is a pipeline for the detection of mobile genetic elements (MGEs) from comp
 3. NCBI BLAST v2.7.1+
 4. [Prokka](https://github.com/tseemann/prokka) v1.12 
 5. [ISEScan](https://github.com/xiezhq/ISEScan) v1.6
-6. [macsyfinder](https://github.com/gem-pasteur/macsyfinder) v1.0.4 and [conjscan module](https://github.com/gem-pasteur/Macsyfinder_models/tree/master/models/Conjugation)
+6. [macsyfinder](https://github.com/gem-pasteur/macsyfinder) v1.0.4 and [CONJScan module](https://github.com/gem-pasteur/Macsyfinder_models/tree/master/models/Conjugation)
 7. [Integron_Finder](https://github.com/gem-pasteur/Integron_Finder) v2.0
 8. [PHASTER](http://phaster.ca/)'s URLAPI
 9. [Vsearch](https://github.com/torognes/vsearch) v2.8.1
