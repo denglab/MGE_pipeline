@@ -6,11 +6,11 @@ This is a pipeline for the detection of mobile genetic elements (MGEs) from comp
 2. Python modules: biopython, pandas and numpy
 3. NCBI BLAST v2.7.1+
 4. [Prokka](https://github.com/tseemann/prokka) v1.12 
-5. ISEScan v1.6
-6. macsyfinder v1.0.4 and conjscan module
-7. Integron_Finder v2.0
-8. PHASTER's URLAPI
-9. Vsearch v2.8.1
+5. [ISEScan](https://github.com/xiezhq/ISEScan) v1.6
+6. [macsyfinder](https://github.com/gem-pasteur/macsyfinder) v1.0.4 and [conjscan module](https://github.com/gem-pasteur/Macsyfinder_models/tree/master/models/Conjugation)
+7. [Integron_Finder](https://github.com/gem-pasteur/Integron_Finder) v2.0
+8. [PHASTER](http://phaster.ca/)'s URLAPI
+9. [Vsearch](https://github.com/torognes/vsearch) v2.8.1
 
 # Instructions:
 The Executable scritps of NCBI BLAST, macsyfinder and Integron Finder are included in this repository, but the following programs and their required dependencies should be installed prior to the execution of the MGE pipeline.
