@@ -40,8 +40,4 @@ handle.write(','.join(cluster_list)+'\n')
 for row in mat:
   handle.write(','.join([str(x) for x in row])+'\n')
 handle.close
-#else:
-#  print '########################\n'
-#  print 'No '+mgetype+' was found\n'
-#  print '########################\n'
 

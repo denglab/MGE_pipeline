@@ -18,13 +18,13 @@ assembly_paths = [os.path.abspath(x) for x in assembly_files]
 os.chdir(outpath)
 
 os.system('mkdir Conjugation')
-os.system('mv ../prokka_output/prokka_faa prokka_FAA')
-os.system('mv ../prokka_output/prokka_gbk prokka_GBK')
+os.system('mv ../prokka_output/prokka_FAA .')
+os.system('mv ../prokka_output/prokka_GBK .')
 for faa in os.listdir('prokka_FAA'):
     faa_name=faa.split('.')[0]
     for conj_type in ['typeF', 'typeB', 'typeC', 'typeFATA', 'typeFA', 'typeG', 'typeI', 'typeT']:
         conj_name=faa_name+'_'+conj_type
-        os.system('macsyfinder '+conj_type+' -w 20 --db-type ordered_replicon -d '+currdir+'/macsyfinder-1.0.4/data/Conjugation/DEF -p '+currdir+'/macsyfinder-1.0.4/data/Conjugation/HMM --profile-suffix .HMM --sequence-db prokka_FAA/'+faa+' -o Conjugation/'+conj_name+' >> /dev/null') # stdout is already reported in output files from macsyfinder (macsyfinder.out)
+        os.system(currdir+'/macsyfinder-1.0.4/bin/macsyfinder '+conj_type+' -w 20 --db-type ordered_replicon -d '+currdir+'/macsyfinder-1.0.4/data/Conjugation/DEF -p '+currdir+'/macsyfinder-1.0.4/data/Conjugation/HMM --profile-suffix .HMM --sequence-db prokka_FAA/'+faa+' -o Conjugation/'+conj_name+' >> /dev/null') # stdout is already reported in output files from macsyfinder (macsyfinder.out)
 
 os.system('awk "NR==1||FNR>1" Conjugation/*/macsyfinder.report > Conj_results')
 os.system('mkdir ../ice_sequences')

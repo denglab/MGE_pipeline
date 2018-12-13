@@ -66,7 +66,6 @@ for mge in ['insertion','ice','integron','prophage']:
         blastn(mge_file,assembly_path)
 df.to_csv("mge_matrix_verified.csv", index=False)
 
-'''
 mge_output = open('mge_blast.txt','r')
 handle = open('mge_blast_verified.txt','w')
 for line in mge_output:
@@ -81,4 +80,3 @@ for line in mge_output:
 	else:
 	    handle.write(line+'\n')
 handle.close()
-'''

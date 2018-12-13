@@ -16,14 +16,14 @@ os.chdir(filepath)
 assembly_files = [x for x in os.listdir(filepath) if x.endswith(".fasta") or x.endswith(".fna")]
 assembly_paths = [os.path.abspath(x) for x in assembly_files]
 os.chdir(outpath)
-os.system('mkdir prokka_gbk')
+os.system('mkdir prokka_GBK')
 os.system('mkdir prokka_fna')
-os.system('mkdir prokka_faa')
+os.system('mkdir prokka_FAA')
 for assembly_path in assembly_paths:
     filestr=os.path.split(assembly_path)[1]
     filename=re.split(r'[_.]',filestr)[0]
     outdir=filename+'_prokka'
     os.system('prokka --mincontiglen 1 --force --kingdom Bacteria --addgenes --centre Prokka --locustag '+filename+' --prefix '+filename+' --outdir '+outdir+' --cpus '+thread+' '+assembly_path)
 os.system('cp *_prokka/*.fna prokka_fna')
-os.system('cp *_prokka/*.gbk prokka_gbk')
-os.system('cp *_prokka/*.faa prokka_faa')
+os.system('cp *_prokka/*.gbk prokka_GBK')
+os.system('cp *_prokka/*.faa prokka_FAA')
