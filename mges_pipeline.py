@@ -21,20 +21,20 @@ def main():
   os.system('mkdir '+output_dir)
   os.chdir(output_dir)
   print "Running Prokka for genome annotation..."
-  #os.system("python2.7 "+dirpath+"/libs/run_prokka.py "+input_dir+' '+thread+' prokka_output >> run_prokka.log 2>&1')
-  #os.system('mv prokka_output/prokka_fna ./')
+  os.system("python2.7 "+dirpath+"/libs/run_prokka.py "+input_dir+' '+thread+' prokka_output >> run_prokka.log 2>&1')
+  os.system('mv prokka_output/prokka_fna ./')
   print "Submitting genomes to PHAST web server..."
-  #os.system("python2.7 "+dirpath+"/libs/run_phaster_submit.py prokka_fna  phaster_output >> run_phaster.log 2>&1")
+  os.system("python2.7 "+dirpath+"/libs/run_phaster_submit.py prokka_fna  phaster_output >> run_phaster.log 2>&1")
   print "Running ISEScan for detection of insertion sequences..."
-  #os.system("python2.7 "+dirpath+"/libs/run_isescan.py prokka_fna "+thread+" isescan_output >> run_isescan.log 2>&1")
+  os.system("python2.7 "+dirpath+"/libs/run_isescan.py prokka_fna "+thread+" isescan_output >> run_isescan.log 2>&1")
   print "Running Integron Finder for detection of integrons..."
-  #os.system("python2.7 "+dirpath+"/libs/run_IntegronFinder2_virtualenv.py prokka_fna "+thread+" integron_output >> run_integron.log 2>&1")
+  os.system("python2.7 "+dirpath+"/libs/run_IntegronFinder2_virtualenv.py prokka_fna "+thread+" integron_output >> run_integron.log 2>&1")
   print "Running CONJScan for detection of ICEs..."
-  #os.system("python2.7 "+dirpath+"/libs/run_conjscan.py prokka_fna "+thread+" conjscan_output >> run_conjscan.log 2>&1")
+  os.system("python2.7 "+dirpath+"/libs/run_conjscan.py prokka_fna "+thread+" conjscan_output >> run_conjscan.log 2>&1")
   print "Downloading results of prophage detection from PHAST web server..."
-  #os.system("python2.7 "+dirpath+"/libs/run_phaster_download.py phaster_output 60 >> run_phaster.log 2>&1")
-  #os.system("python2.7 "+dirpath+"/libs/extract_insertion_sequence.py isescan_output/prediction/prokka_fna insertion_sequences prokka_fna >> extract_sequences.log 2>&1")
-  #os.system("python2.7 "+dirpath+"/libs/extract_prophage_sequence.py phaster_output prokka_fna prophage_sequences >> extract_sequences.log 2>&1")
+  os.system("python2.7 "+dirpath+"/libs/run_phaster_download.py phaster_output 60 >> run_phaster.log 2>&1")
+  os.system("python2.7 "+dirpath+"/libs/extract_insertion_sequence.py isescan_output/prediction/prokka_fna insertion_sequences prokka_fna >> extract_sequences.log 2>&1")
+  os.system("python2.7 "+dirpath+"/libs/extract_prophage_sequence.py phaster_output prokka_fna prophage_sequences >> extract_sequences.log 2>&1")
   print "Running clustering for insertion sequences..."
   os.system("python2.7 "+dirpath+"/libs/run_mges_cluster.py insertion_sequences insertion "+thread+" >> run_mges_cluster.log 2>&1")
   print "Running clustering for integron sequences..."
