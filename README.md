@@ -5,7 +5,7 @@ This is a pipeline for the detection of mobile genetic elements (MGEs) from comp
 1. Python 2.7 and Python 3.4
 2. Python modules: biopython, pandas and numpy
 3. NCBI BLAST v2.7.1+
-4. Prokka v1.12
+4. [Prokka] v1.12 (https://github.com/tseemann/prokka)
 5. ISEScan v1.6
 6. macsyfinder v1.0.4 and conjscan module
 7. Integron_Finder v2.0
