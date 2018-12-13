@@ -1,4 +1,4 @@
-# **Introduction**
+# Introduction
 This is a pipeline for the detection of mobile genetic elements (MGEs) from complete genomes or genome assemblies. The types of detected MGEs include prophage, insertion sequence (IS), integron and integrative and conjugative elements (ICEs). This pipeline integrates four tools for the detection of each MGE type into a single workflow. Prophages are detected using PHASTER's URLAPI, insertion sequences are detected using ISEScan, integrons are detected using Integron Finder and ICEs are detected using conjscan.
 
 # Dependencies
@@ -20,6 +20,7 @@ Vsearch v2.8.1
 5. Run the MGE pipeline using the following command.
 
 # Usage
+'''
 usage: mges_pipeline.py -i <assembily_path> -o <output_path> -t <threads> -c <minimum_coverage> -p <minimum_identity>
 
 optional arguments:
@@ -29,7 +30,7 @@ optional arguments:
   -t T <string>: threads
   -c C <int>: minimum coverage of each hit for MGE verification using BLASTn, default 90.
   -p P <int>: minimum identical percentage of each hit for MGE verification using BLASTn, default 90.
-
+'''
 # Output files
 1. mge_matrix.csv
 A binary matrix that summarizes the presence and absence of MGEs in each of the detected genomes.
