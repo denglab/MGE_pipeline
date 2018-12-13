@@ -32,7 +32,7 @@ optional arguments:
   -p P <int>: minimum identical percentage of each hit for MGE verification using BLASTn, default 90.
 ```
 # Output files
-1. mge_matrix.csv
+### 1. mge_matrix.csv
 A binary matrix that summarizes the presence and absence of MGEs in each of the detected genomes.
 ```
 Sample	prophage_1	prophage_2	prophage_3	insertion_1	insertion_2	insertion_3
