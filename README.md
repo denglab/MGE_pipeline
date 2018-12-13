@@ -52,7 +52,7 @@ A table that summarizes the total length of each type of MGEs.
 | SRR5932646 | 67484 | 11988 | 0 | 0 | 79472 |
 
 #### 3. mge_dist_matrix.csv
-A matrix that summarizes the number different MGEs in each pair of tested genomes.
+A matrix that summarizes the number of different MGEs in each pair of tested genomes.
 
 | 	 | SRR5336039 | SRR5852955 | SRR5932646 |
 | :----- | :----- | :----- | :----- |
