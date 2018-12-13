@@ -1,0 +1,61 @@
+# hmmsearch :: search profile(s) against a sequence database
+# HMMER 3.1b1 (May 2013); http://hmmer.org/
+# Copyright (C) 2013 Howard Hughes Medical Institute.
+# Freely distributed under the GNU General Public License (GPLv3).
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# query HMM file:                  /usr/local/share/macsyfinder/profiles/cas6_TypeI-III.hmm
+# target sequence database:        /home/shaoting/project/mge_nestle/macsyfinder-1.0.4/data/sequence_data/datatest_gembase.fasta
+# output directed to file:         /home/shaoting/project/mge_nestle/macsyfinder-1.0.4/macsyfinder-20180119_15-19-31/hmmer_results/cas6_TypeI-III.search_hmm.out
+# sequence reporting threshold:    E-value <= 1
+# number of worker threads:        0
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+Query:       TIGR01877  [M=200]
+Accession:   TIGR01877
+Description: cas_cas6: CRISPR-associated endoribonuclease Cas6
+Scores for complete sequences (score includes all domains):
+   --- full sequence ---   --- best 1 domain ---    -#dom-
+    E-value  score  bias    E-value  score  bias    exp  N  Sequence           Description
+    ------- ------ -----    ------- ------ -----   ---- --  --------           -----------
+    3.9e-28   97.9   0.0    6.1e-28   97.3   0.0    1.3  1  HAMA001p04a_000440  D ATG TGA 37302 38114 Valid pNG4046 813 _
+
+
+Domain annotation for each sequence (and alignments):
+>> HAMA001p04a_000440  D ATG TGA 37302 38114 Valid pNG4046 813 _YP_134126.1_ pNG4046 1 37302 38114 | hypothetical protei
+   #    score  bias  c-Evalue  i-Evalue hmmfrom  hmm to    alifrom  ali to    envfrom  env to     acc
+ ---   ------ ----- --------- --------- ------- -------    ------- -------    ------- -------    ----
+   1 !   97.3   0.0   8.5e-32   6.1e-28       2     200 .]      39     251 ..      38     251 .. 0.89
+
+  Alignments for each domain:
+  == domain 1  score: 97.3 bits;  conditional E-value: 8.5e-32
+           TIGR01877   2 lhdkkkfKpftfsvlfgekrkiekeilepegevsflissldeelieslyegllklkefkigntsfeveeikvleekk..ltdevtfktlSP 90 
+                         lhdk+++Kpf++s++f++++  e+      +e ++l+ s++e l+ ++ e l++++e++ig+++f+v +++ l++++    ++ t++t++ 
+  HAMA001p04a_000440  39 LHDKNQPKPFVYSNPFPPQDMDEG------DERTLLVASPEESLLAHIAEDLTHDRELNIGEMPFHVDKVSPLAPDVgePGTSGTIETGTG 123
+                         8****************9999999......6**********************************************887778******** PP
+
+           TIGR01877  91 ivirtkrpk..........kkkryyllpdde.lffesLkenlikkyklfyg.eepeee...efefeplk.fkk....yrlkvvkiky..kk 159
+                         +++r +  +           +++++ +++    f+ +L+ nl kk +l++  ++ +++   ++ f++ + +k+    +    + +    + 
+  HAMA001p04a_000440 124 LLVRIPPWRfddygmdvnhDQAEFWRPEHTLePFRTQLEANLDKKHRLYMPdYLAGPSdvdGDLFDSYElIKTfaipV----TPTTGrtEE 210
+                         ****77444669999999988888888887779******************888888889999999999999943222....333335566 PP
+
+           TIGR01877 160 ikgfvgegvfrlkgdpirellkfayeaGlGektslGFGmve 200
+                           +  +++ +++++d++r+ l++a ++GlGe++slGFG+++
+  HAMA001p04a_000440 211 WVLSKWRFDYTVRDDDHRRHLNLALDVGLGERNSLGFGFIN 251
+                         99999**********************************96 PP
+
+
+
+Internal pipeline statistics summary:
+-------------------------------------
+Query model(s):                              1  (200 nodes)
+Target sequences:                         7219  (2337224 residues searched)
+Passed MSV filter:                       225  (0.0311678); expected 144.4 (0.02)
+Passed bias filter:                      150  (0.0207785); expected 144.4 (0.02)
+Passed Vit filter:                        15  (0.00207785); expected 7.2 (0.001)
+Passed Fwd filter:                         1  (0.000138523); expected 0.1 (1e-05)
+Initial search space (Z):               7219  [actual number of targets]
+Domain search space  (domZ):               1  [number of targets reported over threshold]
+# CPU time: 0.08u 0.00s 00:00:00.08 Elapsed: 00:00:00.08
+# Mc/sec: 5843.06
+//
+[ok]

@@ -1,0 +1,192 @@
+# hmmsearch :: search profile(s) against a sequence database
+# HMMER 3.1b1 (May 2013); http://hmmer.org/
+# Copyright (C) 2013 Howard Hughes Medical Institute.
+# Freely distributed under the GNU General Public License (GPLv3).
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# query HMM file:                  /usr/local/share/macsyfinder/profiles/csf4_TypeU.hmm
+# target sequence database:        /home/shaoting/project/mge_nestle/macsyfinder-1.0.4/data/sequence_data/datatest_gembase.fasta
+# output directed to file:         /home/shaoting/project/mge_nestle/macsyfinder-1.0.4/macsyfinder-20180119_15-19-31/hmmer_results/csf4_TypeU.search_hmm.out
+# sequence reporting threshold:    E-value <= 1
+# number of worker threads:        0
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+Query:       TIGR03117  [M=676]
+Accession:   TIGR03117
+Description: cas_csf4: CRISPR type AFERR-associated DEAD/DEAH-box helicase Csf4
+Scores for complete sequences (score includes all domains):
+   --- full sequence ---   --- best 1 domain ---    -#dom-
+    E-value  score  bias    E-value  score  bias    exp  N  Sequence           Description
+    ------- ------ -----    ------- ------ -----   ---- --  --------           -----------
+    2.9e-16   57.7   0.4    1.2e-06   26.0   0.0    3.1  3  ESCO001c01a_018310  C GTG TAA 1889349 1891259 Valid yoaA 1911
+    1.2e-14   52.3   0.1    3.3e-06   24.5   0.0    3.2  3  LEPN003c01a_018960  C GTG TGA 2143762 2145720 Valid lpp1897 1
+    2.9e-06   24.7   1.1      0.002   15.4   0.0    3.0  4  ESCO001c01a_008060  D ATG TAA 832293 834443 Valid dinG 2151 _
+  ------ inclusion threshold ------
+      0.018   12.1   0.0       0.24    8.5   0.0    2.2  2  ESCO001c01a_013600  D GTG TAA 1407535 1408908 Valid dbpA 1374
+      0.021   11.9   0.0       0.07   10.2   0.0    1.7  2  ESCO001c01a_026100  D ATG TAA 2710918 2712252 Valid srmB 1335
+
+
+Domain annotation for each sequence (and alignments):
+>> ESCO001c01a_018310  C GTG TAA 1889349 1891259 Valid yoaA 1911 _b1808_NP_416322.1_ b1808 1 1889349 1891259 | putative 
+   #    score  bias  c-Evalue  i-Evalue hmmfrom  hmm to    alifrom  ali to    envfrom  env to     acc
+ ---   ------ ----- --------- --------- ------- -------    ------- -------    ------- -------    ----
+   1 !   18.2   0.1   1.8e-07   0.00027       3      95 ..      25     112 ..      23     121 .. 0.79
+   2 !   10.1   0.0   5.3e-05     0.076     242     279 ..     214     251 ..     200     279 .. 0.82
+   3 !   26.0   0.0   8.4e-10   1.2e-06     504     656 ..     458     600 ..     441     613 .. 0.75
+
+  Alignments for each domain:
+  == domain 1  score: 18.2 bits;  conditional E-value: 1.8e-07
+           TIGR03117   3 arfylnledalelkrialveaatGvGktlamllaaeallkerpdakvaiavPtlalldqlle.eyerlqaealaepvsaafliGrreFvsr 92 
+                          ++   + +a+e+++ ++vea+tG Gkt a+l+ a+       ++kv+i+    al dql++ ++  ++ +al    + a+l Gr +++  
+  ESCO001c01a_018310  25 RQMAVAVTQAIEKGQPLVVEAGTGTGKTYAYLAPALRA-----KKKVIISTGSKALQDQLYSrDLPTVS-KALKYTGNVALLKGRSNYLCL 109
+                         566678899************************99754.....4589************9861455555.777777777788888877766 PP
+
+           TIGR03117  93 dal 95 
+                         ++l
+  ESCO001c01a_018310 110 ERL 112
+                         555 PP
+
+  == domain 2  score: 10.1 bits;  conditional E-value: 5.3e-05
+           TIGR03117 242 gllpqldlLvvDeahlledalasvlssalslrrlhkav 279
+                         +l+p+ d+++ Deah+l d  ++ + + ls r+l+  +
+  ESCO001c01a_018310 214 ELIPEADVMIFDEAHQLPDIASQYFGQSLSSRQLLDLA 251
+                         689***************************99665443 PP
+
+  == domain 3  score: 26.0 bits;  conditional E-value: 8.4e-10
+           TIGR03117 504 aiqkkaqGGvlvLttafrdiaaigqLvelqlsaevvvqsedarlasaedqflalaaaGkkpvllavggaWtGlDlthepvspekdnvLtdl 594
+                          i + ++G   +L t++  + ++++     ++ +v++q e ++  ++ +qf  +     +++l+a+++ W G+D+        +   L+ +
+  ESCO001c01a_018310 458 PIIEANNGRCFMLCTSHAMMRDLAEQFRATMTLPVLLQGETSK-GQLLQQFVSAG----NALLVATSSFWEGVDV--------RGDTLSLV 535
+                         5666777999999999999999999999999999999988665.56677776554....58**************........3356899* PP
+
+           TIGR03117 595 vilraPfG.lnrsl..arekRirkksavpfeivdl..svlllrqGlGRlvRrpdlpanrrihlLDaR 656
+                         +i ++Pf   +  l  ar    r + + pf+ v+l  +v+ l+qG+GRl+R +d   +  + + D R
+  ESCO001c01a_018310 536 IIDKLPFTsPDDPLlkARMEDCRLRGGDPFDEVQLpdAVITLKQGVGRLIRDADD--RGVLVICDNR 600
+                         *******9533333223444556677889987775448**************996..3344455666 PP
+
+>> LEPN003c01a_018960  C GTG TGA 2143762 2145720 Valid lpp1897 1959 _YP_124214.1_ lpp1897 1 2143762 2145720 | hypothetic
+   #    score  bias  c-Evalue  i-Evalue hmmfrom  hmm to    alifrom  ali to    envfrom  env to     acc
+ ---   ------ ----- --------- --------- ------- -------    ------- -------    ------- -------    ----
+   1 !   16.3   0.0   7.1e-07     0.001       2      95 ..      34     122 ..      33     138 .. 0.80
+   2 !    7.7   0.0   0.00028       0.4     239     280 ..     221     262 ..     195     288 .. 0.87
+   3 !   24.5   0.0   2.3e-09   3.3e-06     507     641 ..     471     597 ..     453     612 .. 0.78
+
+  Alignments for each domain:
+  == domain 1  score: 16.3 bits;  conditional E-value: 7.1e-07
+           TIGR03117   2 qarfylnledalelkrialveaatGvGktlamllaaeallkerpdakvaiavPtlalldqlle.eyerlqaealaepvsaafliGrreFvs 91 
+                         qa +   + +a+ ++ i+++ea+tG Gkt a+ll  +     + ++k  i+  t  l dql++ ++  l   al+  v+   l Gr +++ 
+  LEPN003c01a_018960  34 QADLAVAIANAIVQRSILVAEAGTGTGKTFAYLLPCL-----LSGKKALISTATKTLQDQLFQkDLPTLI-RALGLSVRIQNLKGRSNYIC 118
+                         67777889999**********************9754.....3456778899999999998751566666.88888888888999988887 PP
+
+           TIGR03117  92 rdal 95 
+                         + ++
+  LEPN003c01a_018960 119 QYRV 122
+                         7666 PP
+
+  == domain 2  score: 7.7 bits;  conditional E-value: 0.00028
+           TIGR03117 239 eglgllpqldlLvvDeahlledalasvlssalslrrlhkave 280
+                            +llp +d++v Deah+l d  ++ + + l  r+++  v+
+  LEPN003c01a_018960 221 GFSELLPGVDVVVFDEAHQLADIASNFNGERLGTRQFKDLVD 262
+                         45689*************************999999887665 PP
+
+  == domain 3  score: 24.5 bits;  conditional E-value: 2.3e-09
+           TIGR03117 507 kkaqGGvlvLttafrdiaaigqLvelqlsaevvvqsedarlasaedqflalaaaGkkpvllavggaWtGlDlthepvspekdnvLtdlvil 597
+                         +   G    L t+++ ++ ++q+++  l+ ++++q ++a+   + + f++l +    +vll +++ W G+D+        k ++L+ ++i 
+  LEPN003c01a_018960 471 EACGGRCFFLFTSHKAVKLVAQMMNNTLKYPLLIQGDEAKP-ILLSRFRQLGN----AVLLGTSTFWEGVDV--------KGEALSCVIID 548
+                         4444667899************************9988874.56788999975....7**************........45788889*** PP
+
+           TIGR03117 598 raPfG..lnrsla.rekRirkksavpfeivdl..svlllrqGlGRlvRr 641
+                         ++Pf   ++  +  r   ++kk    f+ + l  +v+ l+qG+GRl+R 
+  LEPN003c01a_018960 549 KLPFAnpVDPVIRgRMAYLKKKGLSGFDELSLpnAVIALKQGVGRLIRD 597
+                         **999766555541344456666667876543228*************6 PP
+
+>> ESCO001c01a_008060  D ATG TAA 832293 834443 Valid dinG 2151 _b0799_NP_415320.1_ b0799 1 832293 834443 | putative enzy
+   #    score  bias  c-Evalue  i-Evalue hmmfrom  hmm to    alifrom  ali to    envfrom  env to     acc
+ ---   ------ ----- --------- --------- ------- -------    ------- -------    ------- -------    ----
+   1 !   15.4   0.0   1.4e-06     0.002      14      66 ..      45      96 ..      31     139 .. 0.71
+   2 ?   -3.1   0.1      0.53   7.7e+02     242     260 ..     235     255 ..     212     264 .. 0.69
+   3 ?   -2.2   0.0      0.27   3.9e+02     180     217 ..     453     490 ..     442     502 .. 0.82
+   4 !    6.8   0.0   0.00054      0.77     505     645 ..     529     664 ..     510     683 .. 0.78
+
+  Alignments for each domain:
+  == domain 1  score: 15.4 bits;  conditional E-value: 1.4e-06
+           TIGR03117 14 elkrialveaatGvGktlamllaaeallkerpdakvaiavPtlalldqlleey 66
+                        e++r + +ea tGvGktl++l+   a+++e +++  +++   +al dq++++ 
+  ESCO001c01a_008060 45 EEGRHLAIEAPTGVGKTLSYLIPGIAIAREEQKTL-VVSTANVALQDQIYSKD 96
+                        56788899*********************987655.55666899999998753 PP
+
+  == domain 2  score: -3.1 bits;  conditional E-value: 0.53
+           TIGR03117 242 gllpqld..lLvvDeahlled 260
+                           lp++   lLv De+h l d
+  ESCO001c01a_008060 235 AVLPDPKnlLLVLDEGHHLPD 255
+                         4455443226788***99866 PP
+
+  == domain 3  score: -2.2 bits;  conditional E-value: 0.27
+           TIGR03117 180 thamLgslvlrrkwvaaradkvralikeeidlllalra 217
+                          h +++s +lr +   +r ++ + l++++ d ++al +
+  ESCO001c01a_008060 453 PHIIVTSATLRSLNSFSRLQEMSGLKEKAGDRFVALDS 490
+                         57888888899999899999999999999999998876 PP
+
+  == domain 4  score: 6.8 bits;  conditional E-value: 0.00054
+           TIGR03117 505 iqkkaqGGvlvLttafrdiaaigqLvelqlsaevvvqsedarlasaedqflalaaaGkkpvllavggaWtGlDlthepvspekdnvLtdlv 595
+                         ++ k+  G+lvL  + r ++     v  +l+  ++vq ++ r+  + + +++  a+G ++vl+   +   GlDl        k  +L+++ 
+  ESCO001c01a_008060 529 VESKKHLGMLVLFASGRAMQRFLDYV-TDLRLMLLVQGDQPRY-RLVELHRKRVANGERSVLVGLQSFAEGLDL--------KGDLLSQVH 609
+                         55667789999988888888777755.3566667777666655.56677888999*******************........568999999 PP
+
+           TIGR03117 596 ilraPfG.lnrs..larekRirkksavpfeivdl..svlllrqGlGRlvRrpdlp 645
+                         i ++ f  ++    ++    ++  +  pfe+  l  + + l q +GRl+R+ +  
+  ESCO001c01a_008060 610 IHKIAFPpIDSPvvITEGEWLKSLNRYPFEVQSLpsASFNLIQQVGRLIRSHGCW 664
+                         999988877765225778899999*******6652267889999******98874 PP
+
+>> ESCO001c01a_013600  D GTG TAA 1407535 1408908 Valid dbpA 1374 _b1343_NP_415859.1_ b1343 1 1407535 1408908 | enzyme; R
+   #    score  bias  c-Evalue  i-Evalue hmmfrom  hmm to    alifrom  ali to    envfrom  env to     acc
+ ---   ------ ----- --------- --------- ------- -------    ------- -------    ------- -------    ----
+   1 ?    8.5   0.0   0.00017      0.24      21      70 ..      45      95 ..      34     122 .. 0.78
+   2 ?    1.0   0.0     0.029        42     550     581 ..     279     308 ..     243     317 .. 0.83
+
+  Alignments for each domain:
+  == domain 1  score: 8.5 bits;  conditional E-value: 0.00017
+           TIGR03117 21 veaatGvGktlamllaaeall.kerpdakvaiavPtlalldqlleeyerlq 70
+                        v a tG Gkt a+ l+ ++ +  ++ +++  +  Pt  l dq++ e++rl 
+  ESCO001c01a_013600 45 VQAKTGSGKTAAFGLGLLQQIdASLFQTQALVLCPTRELADQVAGELRRLA 95
+                        7899*********99987665157777999999****************98 PP
+
+  == domain 2  score: 1.0 bits;  conditional E-value: 0.029
+           TIGR03117 550 aedqflalaaaGkkpvllavggaWtGlDlthe 581
+                          +dq l   a+G   vl+a+  a  GlD+  +
+  ESCO001c01a_013600 279 DRDQTLVRFANGSARVLVATDVAARGLDI--K 308
+                         46788888999*****************9..3 PP
+
+>> ESCO001c01a_026100  D ATG TAA 2710918 2712252 Valid srmB 1335 _b2576_NP_417071.1_ b2576 1 2710918 2712252 | enzyme; R
+   #    score  bias  c-Evalue  i-Evalue hmmfrom  hmm to    alifrom  ali to    envfrom  env to     acc
+ ---   ------ ----- --------- --------- ------- -------    ------- -------    ------- -------    ----
+   1 ?   10.2   0.0   4.9e-05      0.07      20      70 ..      45     100 ..      35     150 .. 0.78
+   2 ?   -1.4   0.0      0.16   2.3e+02     558     580 ..     294     316 ..     282     322 .. 0.81
+
+  Alignments for each domain:
+  == domain 1  score: 10.2 bits;  conditional E-value: 4.9e-05
+           TIGR03117  20 lveaatGvGktlamllaaeallkerpd.....akvaiavPtlalldqlleeyerlq 70 
+                         l  a tG Gkt a+ll a++ l + p       ++ i  Pt  l  q+ +  + l 
+  ESCO001c01a_026100  45 LGSAPTGTGKTAAYLLPALQHLLDFPRkksgpPRILILTPTRELAMQVSDHARELA 100
+                         66799*************99987765411124589******999999887777665 PP
+
+  == domain 2  score: -1.4 bits;  conditional E-value: 0.16
+           TIGR03117 558 aaaGkkpvllavggaWtGlDlth 580
+                          ++G+  vl+a+  a  G+D+ +
+  ESCO001c01a_026100 294 LTEGRVNVLVATDVAARGIDIPD 316
+                         467999**************955 PP
+
+
+
+Internal pipeline statistics summary:
+-------------------------------------
+Query model(s):                              1  (676 nodes)
+Target sequences:                         7219  (2337224 residues searched)
+Passed MSV filter:                       238  (0.0329686); expected 144.4 (0.02)
+Passed bias filter:                      181  (0.0250727); expected 144.4 (0.02)
+Passed Vit filter:                        29  (0.00401718); expected 7.2 (0.001)
+Passed Fwd filter:                         5  (0.000692617); expected 0.1 (1e-05)
+Initial search space (Z):               7219  [actual number of targets]
+Domain search space  (domZ):               5  [number of targets reported over threshold]
+# CPU time: 0.20u 0.00s 00:00:00.20 Elapsed: 00:00:00.19
+# Mc/sec: 8315.60
+//
+[ok]

@@ -1,0 +1,290 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Installation &#8212; MacSyFinder 1.0.4 documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0.4',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="MacSyFinder Quick Start" href="quickstart.html" />
+    <link rel="prev" title="Welcome to MacSyFinder’s documentation!" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="quickstart.html" title="MacSyFinder Quick Start"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Welcome to MacSyFinder’s documentation!"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">MacSyFinder documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="installation">
+<span id="id1"></span><h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="macsyfinder-dependencies">
+<h2>MacSyFinder dependencies<a class="headerlink" href="#macsyfinder-dependencies" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt>MacSyFinder has two dependencies:</dt>
+<dd><ul class="first last simple">
+<li>the <em>formatdb</em> (&gt;=2.2.26) or <em>makeblastdb</em> (&gt;=2.2.28) tools provided with the Blast suite of programs</li>
+</ul>
+</dd>
+<dt>(<a class="reference external" href="http://blast.ncbi.nlm.nih.gov/Blast.cgi?CMD=Web&amp;PAGE_TYPE=BlastDocs&amp;DOC_TYPE=Download">http://blast.ncbi.nlm.nih.gov/Blast.cgi?CMD=Web&amp;PAGE_TYPE=BlastDocs&amp;DOC_TYPE=Download</a>)</dt>
+<dd><ul class="first last simple">
+<li>the program <em>Hmmer</em> version 3.1 (<a class="reference external" href="http://hmmer.janelia.org/">http://hmmer.janelia.org/</a>).</li>
+</ul>
+</dd>
+</dl>
+<p><em>formatdb</em> or <em>makeblastdb</em> and <em>hmmsearch</em> programs should be installed (<em>e.g.</em>, in the PATH) in order to use MacSyFinder. Otherwise, the paths to these executables must be specified in the command-line: see the <a class="reference internal" href="input.html#hmmer-options"><span class="std std-ref">command-line options</span></a>.</p>
+<p><strong>Python version 2.7</strong> is required to run MacSyFinder: <a class="reference external" href="https://docs.python.org/2.7/index.html">https://docs.python.org/2.7/index.html</a></p>
+</div>
+<div class="section" id="installation-procedure">
+<h2>Installation procedure<a class="headerlink" href="#installation-procedure" title="Permalink to this headline">¶</a></h2>
+<p>It is recommended to use the MacSyFinder package instead of the git repository.</p>
+<div class="section" id="archive-overview">
+<h3>Archive overview<a class="headerlink" href="#archive-overview" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>bin =&gt; contain the executables (macsyfinder)</li>
+<li>data =&gt; the hmm profiles and the systems definitions</li>
+<li>doc =&gt; the documentation in html and pdf</li>
+<li>etc =&gt; a template of macsyfinder configuration file</li>
+<li>test =&gt; all needed for unit tests</li>
+<li>macsypy =&gt; the macsyfinder python library</li>
+<li>setup.py =&gt; the installation script</li>
+</ul>
+</div>
+<div class="section" id="installation-steps">
+<h3>Installation steps:<a class="headerlink" href="#installation-steps" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="make-sure-every-required-dependence-software-is-present">
+<h4>Make sure every required dependence/software is present.<a class="headerlink" href="#make-sure-every-required-dependence-software-is-present" title="Permalink to this headline">¶</a></h4>
+<p>By default MacSyFinder will search if <cite>makeblastdb</cite> is on your PATH if not it will looking for <cite>formatdb</cite>.
+if neither <cite>makeblastdb</cite> nor <cite>formatdb</cite> are in your path you have to set the absolute path toward one of
+these tools in the configuration file.
+by default MacSyFinder will try to use <cite>hmmsearch</cite> in your PATH, if <cite>hmmsearch</cite> is not in the PATH,
+you have to set the absolute path to the <cite>hmmsearch</cite> in configuration.
+If the tools are not in the path, some test will be skipped and a warning will be raised.</p>
+</div>
+<div class="section" id="perform-the-installation">
+<h4>Perform the installation.<a class="headerlink" href="#perform-the-installation" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="uncompress-the-archive">
+<h5>Uncompress the archive<a class="headerlink" href="#uncompress-the-archive" title="Permalink to this headline">¶</a></h5>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">python</span> <span class="n">setup</span><span class="o">.</span><span class="n">py</span> <span class="n">install</span>
+<span class="n">tar</span> <span class="o">-</span><span class="n">xzf</span> <span class="n">macsyfinder</span><span class="o">-</span><span class="n">x</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">tar</span><span class="o">.</span><span class="n">gz</span>
+<span class="n">cd</span> <span class="n">macsyfinder</span><span class="o">-</span><span class="n">x</span><span class="o">.</span><span class="n">x</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="build-macsyfinder">
+<h5>Build MacSyFinder<a class="headerlink" href="#build-macsyfinder" title="Permalink to this headline">¶</a></h5>
+<p>macsyfinder installation follows classical “pythonic” installation procedure (see <a class="reference external" href="http://docs.python.org/2/install/">http://docs.python.org/2/install/</a>):</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">setup</span><span class="o">.</span><span class="n">py</span> <span class="n">build</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="test-macsyfinder">
+<h5>Test MacSyFinder<a class="headerlink" href="#test-macsyfinder" title="Permalink to this headline">¶</a></h5>
+<p>It is <strong>highly recommended</strong> to run tests before performing the full installation.
+To test the libraries you just build:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">setup</span><span class="o">.</span><span class="n">py</span> <span class="n">test</span> <span class="o">-</span><span class="n">vv</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="install">
+<h5>Install<a class="headerlink" href="#install" title="Permalink to this headline">¶</a></h5>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">python</span> <span class="n">setup</span><span class="o">.</span><span class="n">py</span> <span class="n">install</span>
+</pre></div>
+</div>
+<p>If you have not the privileges to perform a system wide installation,
+you can use a [virtual environment](<a class="reference external" href="https://virtualenv.pypa.io/en/stable/">https://virtualenv.pypa.io/en/stable/</a>).</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">vitualenv</span> <span class="n">macsyfinder</span>
+<span class="n">source</span> <span class="n">macsyfinder</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">activate</span>
+<span class="n">mkdir</span> <span class="n">macsyfinder</span><span class="o">/</span><span class="n">src</span>
+<span class="n">cd</span> <span class="n">macsyfinder</span><span class="o">/</span><span class="n">src</span>
+</pre></div>
+</div>
+<p>and follow the “regular” procedure:</p>
+<ul class="simple">
+<li>uncompress the archive</li>
+<li>build MacSyFinder</li>
+<li>test MacSyFinder</li>
+</ul>
+<p>for installation do not use neither <cite>–prefix</cite> nor <cite>sudo</cite></p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">setup</span><span class="o">.</span><span class="n">py</span> <span class="n">install</span>
+</pre></div>
+</div>
+<p>To exit the virtualenv just execute the <cite>deactivate</cite> command.
+To run <cite>macsyfinder</cite>, you need to activate the virtualenv:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">source</span> <span class="n">macsyfinder</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">activate</span>
+</pre></div>
+</div>
+<p>Then run macsyfinder/macsyview</p>
+<p>You can access all general cmd with</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">setup</span><span class="o">.</span><span class="n">py</span> <span class="o">--</span><span class="n">help</span>
+</pre></div>
+</div>
+<p>or specific options with</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">setup</span><span class="o">.</span><span class="n">py</span> <span class="n">cmd</span> <span class="o">--</span><span class="n">help</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Super-user privileges (<em>i.e.</em>, <code class="docutils literal"><span class="pre">sudo</span></code>) are necessary if you want to install the program in the general file architecture.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If you do not have the privileges, or if you do not want to install MacSyFinder in the Python libraries of your system,
+you can install MacSyFinder in a virtual environment (<a class="reference external" href="http://www.virtualenv.org/">http://www.virtualenv.org/</a>).</p>
+</div>
+<p>Procedures specific to MacSyFinder can be used instead of default. Please run the command for full options:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">setup</span><span class="o">.</span><span class="n">py</span> <span class="o">--</span><span class="n">help</span>
+</pre></div>
+</div>
+<p>The main ones are:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">setup</span><span class="o">.</span><span class="n">py</span> <span class="n">install</span> <span class="o">--</span><span class="n">prefix</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">bob</span><span class="o">/</span><span class="n">my_programs</span> <span class="c1"># Specifies an installation path</span>
+</pre></div>
+</div>
+<p>=&gt; It will install MacSyFinder and required data (profiles folder and systems definition folders) in the Home directory of “bob”, in the “my_progams” folder (useful if you do not have super-user privileges).</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">When installing a new version of MacSyFinder, do not forget to uninstall the previous version installed !</p>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="uninstalling-macsyfinder">
+<h3>Uninstalling MacSyFinder<a class="headerlink" href="#uninstalling-macsyfinder" title="Permalink to this headline">¶</a></h3>
+<p>To uninstall MacSyFinder (the last version installed), run:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">sudo</span><span class="p">)</span> <span class="n">python</span> <span class="n">setup</span><span class="o">.</span><span class="n">py</span> <span class="n">uninstall</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="if-you-want-to-install-from-the-git-repository">
+<h3>If You want to install from the git repository<a class="headerlink" href="#if-you-want-to-install-from-the-git-repository" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">virtualenv</span> <span class="n">macsytest</span>
+<span class="n">mkdir</span> <span class="n">macsytest</span><span class="o">/</span><span class="n">src</span>
+<span class="n">source</span> <span class="n">macsytest</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">activate</span>
+<span class="n">cd</span> <span class="n">macsytest</span><span class="o">/</span><span class="n">src</span>
+<span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">gem</span><span class="o">-</span><span class="n">pasteur</span><span class="o">/</span><span class="n">macsyfinder</span><span class="o">.</span><span class="n">git</span>
+<span class="n">cd</span> <span class="n">macsyfinder</span><span class="o">/</span>
+<span class="n">python</span> <span class="n">setup</span><span class="o">.</span><span class="n">py</span> <span class="n">build</span>
+<span class="n">python</span> <span class="n">setup</span><span class="o">.</span><span class="n">py</span> <span class="n">install</span> <span class="o">--</span><span class="n">no</span><span class="o">-</span><span class="n">viewer</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Installation</a><ul>
+<li><a class="reference internal" href="#macsyfinder-dependencies">MacSyFinder dependencies</a></li>
+<li><a class="reference internal" href="#installation-procedure">Installation procedure</a><ul>
+<li><a class="reference internal" href="#archive-overview">Archive overview</a></li>
+<li><a class="reference internal" href="#installation-steps">Installation steps:</a><ul>
+<li><a class="reference internal" href="#make-sure-every-required-dependence-software-is-present">Make sure every required dependence/software is present.</a></li>
+<li><a class="reference internal" href="#perform-the-installation">Perform the installation.</a><ul>
+<li><a class="reference internal" href="#uncompress-the-archive">Uncompress the archive</a></li>
+<li><a class="reference internal" href="#build-macsyfinder">Build MacSyFinder</a></li>
+<li><a class="reference internal" href="#test-macsyfinder">Test MacSyFinder</a></li>
+<li><a class="reference internal" href="#install">Install</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#uninstalling-macsyfinder">Uninstalling MacSyFinder</a></li>
+<li><a class="reference internal" href="#if-you-want-to-install-from-the-git-repository">If You want to install from the git repository</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">Welcome to MacSyFinder’s documentation!</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="quickstart.html"
+                        title="next chapter">MacSyFinder Quick Start</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/installation.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="quickstart.html" title="MacSyFinder Quick Start"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Welcome to MacSyFinder’s documentation!"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">MacSyFinder documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2014, Sophie Abby, Bertrand Néron.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.3.
+    </div>
+  </body>
+</html>

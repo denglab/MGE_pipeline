@@ -1,0 +1,6 @@
+# gene: cas7_TypeIE extract from /home/shaoting/project/mge_nestle/macsyfinder-1.0.4/macsyfinder-20180119_15-19-31/hmmer_results/cas7_TypeIE.search_hmm.out hmm output
+# profile length= 325
+# i_evalue threshold= 0.001
+# coverage threshold= 0.500
+# hit_id replicon_name position_hit hit_sequence_length gene_name gene_system i_eval score profile_coverage sequence_coverage begin end
+ESCO001c01a_027810	ESCO001c01a	2601	363	cas7_TypeIE	CAS-TypeIE	2.100e-129	430.800	1.000	0.884	3	323

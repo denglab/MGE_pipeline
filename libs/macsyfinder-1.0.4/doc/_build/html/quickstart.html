@@ -1,0 +1,183 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>MacSyFinder Quick Start &#8212; MacSyFinder 1.0.4 documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0.4',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Input and Options of MacSyFinder" href="input.html" />
+    <link rel="prev" title="Installation" href="installation.html" /> 
+  </head>
+  <body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="input.html" title="Input and Options of MacSyFinder"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="installation.html" title="Installation"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">MacSyFinder documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="macsyfinder-quick-start">
+<span id="quickstart"></span><h1>MacSyFinder Quick Start<a class="headerlink" href="#macsyfinder-quick-start" title="Permalink to this headline">¶</a></h1>
+<p>In order to run MacSyFinder on your favorite dataset as soon as you have installed it, you can simply follow the next steps:</p>
+<ul>
+<li><p class="first">Type:
+“<code class="docutils literal"><span class="pre">macsyfinder</span> <span class="pre">-h</span></code>”
+to see all options available. All command-line options are described in the <a class="reference internal" href="input.html#command-line-label"><span class="std std-ref">Command-line options section</span></a>.</p>
+</li>
+<li><p class="first">On a “metagenomic” dataset for example:</p>
+<p>“<code class="docutils literal"><span class="pre">macsyfinder</span> <span class="pre">--db-type</span> <span class="pre">unordered</span> <span class="pre">--sequence-db</span> <span class="pre">metagenome.fasta</span> <span class="pre">all</span></code>”
+will detect all systems modelled in .xml files placed in the default definition folder in a metagenomic dataset.</p>
+<p>“<code class="docutils literal"><span class="pre">macsyfinder</span> <span class="pre">--db-type</span> <span class="pre">unordered</span> <span class="pre">--sequence-db</span> <span class="pre">metagenome.fasta</span> <span class="pre">-d</span> <span class="pre">mydefinitions/</span> <span class="pre">all</span></code>”
+will detect all systems modelled in .xml files placed in the <em>“mydefinitions”</em> folder.</p>
+</li>
+<li><p class="first">On a completely assembled genome (where the gene order is known, and is relevant for systems detection):</p>
+<p>“<code class="docutils literal"><span class="pre">macsyfinder</span> <span class="pre">--db-type</span> <span class="pre">ordered-replicon</span> <span class="pre">--sequence-db</span> <span class="pre">mygenome.fasta</span> <span class="pre">-d</span> <span class="pre">mydefinitions/</span> <span class="pre">SystemA</span> <span class="pre">SystemB</span></code>”
+will detect the systems <em>“SystemA”</em> and <em>“SystemB”</em> in a complete genome from <em>“SystemA.xml”</em> and <em>“SystemB.xml”</em> definition files placed in the folder <em>“mydefinitions”</em>.</p>
+</li>
+</ul>
+<p>See <a class="reference internal" href="input.html#input-dataset-label"><span class="std std-ref">Input dataset</span></a> for more on input datasets.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>Systems have to be spelled in a case-sensitive way to run their detection from the command-line. The name of the system corresponds to the suffix defined for xml files (.xml by default), for example <em>“toto”</em> for a system defined in <em>“toto.xml”</em>.</p>
+<p class="last">The <em>“all”</em> keyword allows to detect all systems available in the definition folder in a single run. See the <a class="reference internal" href="input.html#command-line-label"><span class="std std-ref">Command-line options</span></a>.</p>
+</div>
+<div class="section" id="first-trial-with-a-test-dataset">
+<span id="datatest"></span><h2>First trial with a test dataset<a class="headerlink" href="#first-trial-with-a-test-dataset" title="Permalink to this headline">¶</a></h2>
+<p>We included a test dataset in the MacSyFinder package. <strong>By default, it will be installed</strong> in /share/macsyfinder or /usr/share/macsyfinder. But it can be located elsewhere if it was specified during installation.</p>
+<p>This dataset consists in the detection of CRISPR-Cas SubTypes with the definitions in the /share/macsyfinder/DEF folder, using the profiles in the /share/macsyfinder/profiles folder. This classification was previously described in <a class="reference external" href="http://www.ncbi.nlm.nih.gov/pubmed/21552286">Makarova et al. 2011</a>, and the profiles are from  the <a class="reference external" href="http://www.jcvi.org/cgi-bin/tigrfams/index.cgi">TIGRFAM database</a> (release 13 of August 15 2012) and some of them were specifically designed for CRISPR-Cas classification (<a class="reference external" href="http://www.ncbi.nlm.nih.gov/pubmed/16292354">Haft et. al, 2005</a>). The definitions are detailed in the MacSyFinder’s paper.</p>
+<dl class="docutils">
+<dt>As a sequence dataset, we propose three replicons in /share/macsyfinder/sequence_data/datatest_gembase.fasta:</dt>
+<dd><ul class="first last simple">
+<li><em>Escherichia coli</em> str. K-12 substr. MG1655 chromosome (ESCO001c01a). Genbank accession number: <a class="reference external" href="http://www.ncbi.nlm.nih.gov/nuccore/NC_000913">NC_000913</a>.</li>
+<li><em>Haloarcula marismortui</em> ATCC 43049 plasmid pNG400 (HAMA001p04a). Genbank accession number: <a class="reference external" href="http://www.ncbi.nlm.nih.gov/nuccore/NC_006392">NC_006392</a>.</li>
+<li><em>Legionella pneumophila</em> str. Paris, complete genome (LEPN003c01a). Genbank accession number: <a class="reference external" href="http://www.ncbi.nlm.nih.gov/nuccore/NC_006368">NC_006368</a>.</li>
+</ul>
+</dd>
+</dl>
+<p>They were concatenated in a single fasta file, following the “gembase” format proposed <a class="reference internal" href="gembase_convention.html#gembase-convention"><span class="std std-ref">here</span></a>, and thus MacSyfinder will treat the three different replicons separately for systems inference.</p>
+<p>To run the detection and classification of all subtypes, type:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="s2">&quot;macsyfinder --db-type gembase --sequence-db</span>
+<span class="o">/</span><span class="n">share</span><span class="o">/</span><span class="n">macsyfinder</span><span class="o">/</span><span class="n">sequence_data</span><span class="o">/</span><span class="n">datatest_gembase</span><span class="o">.</span><span class="n">fasta</span> <span class="nb">all</span><span class="s2">&quot;</span>
+</pre></div>
+</div>
+<p>To run the detection of the Type-IE subtype only, type:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="s2">&quot;macsyfinder --db-type gembase --sequence-db</span>
+<span class="o">/</span><span class="n">share</span><span class="o">/</span><span class="n">macsyfinder</span><span class="o">/</span><span class="n">sequence_data</span><span class="o">/</span><span class="n">datatest_gembase</span><span class="o">.</span><span class="n">fasta</span> <span class="n">CAS</span><span class="o">-</span><span class="n">TypeIE</span><span class="s2">&quot;</span>
+</pre></div>
+</div>
+<p>A sample topology file is included /share/macsyfinder/sequence_data/datatest_gembase.topology, and follows the convention in <a class="reference internal" href="gembase_convention.html#topology-files"><span class="std std-ref">here</span></a>. It allows to specify a different topology “linear” or “circular” for each replicon in the “gembase” format. Otherwise, by default the topology is set to “circular”. It can also be specified in the commmand-line (see the <a class="reference internal" href="input.html#command-line-label"><span class="std std-ref">Command-line options</span></a>).</p>
+<p>To run the detection using the topology file, type:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="s2">&quot;macsyfinder --db-type gembase --sequence-db</span>
+<span class="o">/</span><span class="n">share</span><span class="o">/</span><span class="n">macsyfinder</span><span class="o">/</span><span class="n">sequence_data</span><span class="o">/</span><span class="n">datatest_gembase</span><span class="o">.</span><span class="n">fasta</span>
+<span class="o">--</span><span class="n">topology</span><span class="o">-</span><span class="n">file</span> <span class="o">/</span><span class="n">share</span><span class="o">/</span><span class="n">macsyfinder</span><span class="o">/</span><span class="n">sequence_data</span><span class="o">/</span><span class="n">datatest_gembase</span><span class="o">.</span><span class="n">topology</span> <span class="nb">all</span><span class="s2">&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="visualizing-expected-results-with-macsyview">
+<h2>Visualizing expected results with MacSyView<a class="headerlink" href="#visualizing-expected-results-with-macsyview" title="Permalink to this headline">¶</a></h2>
+<p>To have an idea of what should be detected with the above test dataset, run <a class="reference internal" href="macsyview.html#macsyview"><span class="std std-ref">MacSyView</span></a>, the web-browser application for MacSyFinder’s results visualization. To do that, open the expected JSON result file with MacSyView: /share/macsyfinder/sequence_data/results.macsyfinder.json.</p>
+<p>A screenshot of MacSyView is included <a class="reference internal" href="macsyview.html#screenshot"><span class="std std-ref">here</span></a>.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">MacSyFinder Quick Start</a><ul>
+<li><a class="reference internal" href="#first-trial-with-a-test-dataset">First trial with a test dataset</a></li>
+<li><a class="reference internal" href="#visualizing-expected-results-with-macsyview">Visualizing expected results with MacSyView</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="installation.html"
+                        title="previous chapter">Installation</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="input.html"
+                        title="next chapter">Input and Options of MacSyFinder</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/quickstart.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="input.html" title="Input and Options of MacSyFinder"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="installation.html" title="Installation"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">MacSyFinder documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2014, Sophie Abby, Bertrand Néron.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.3.
+    </div>
+  </body>
+</html>

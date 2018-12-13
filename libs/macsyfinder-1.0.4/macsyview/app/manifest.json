@@ -1,0 +1,16 @@
+{
+    "name": "__MSG_appName__",
+    "version": "0.0.1",
+    "manifest_version": 2,
+    "description": "__MSG_appDescription__",
+    "icons": {
+        "16": "images/logo_macsyview_sq_16.png",
+        "128": "images/logo_macsyview_sq_128.png"
+    },
+    "default_locale": "en",
+    "app": {
+      "background": {
+        "scripts": ["scripts/background.js"]
+      }
+    }
+}

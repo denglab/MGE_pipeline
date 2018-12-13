@@ -1,0 +1,7 @@
+# gene: cas1_TypeIB extract from /home/shaoting/project/mge_nestle/macsyfinder-1.0.4/macsyfinder-20180119_15-19-31/hmmer_results/cas1_TypeIB.search_hmm.out hmm output
+# profile length= 324
+# i_evalue threshold= 0.001
+# coverage threshold= 0.500
+# hit_id replicon_name position_hit hit_sequence_length gene_name gene_system i_eval score profile_coverage sequence_coverage begin end
+HAMA001p04a_000500	HAMA001p04a	4191	330	cas1_TypeIB	CAS-TypeIB	9.900e-134	444.300	0.997	0.991	4	330
+LEPN003c01a_001570	LEPN003c01a	4348	330	cas1_TypeIB	CAS-TypeIB	2.300e-20	71.800	0.944	0.936	22	330

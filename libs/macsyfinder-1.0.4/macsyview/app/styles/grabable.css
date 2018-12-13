@@ -1,0 +1,6 @@
+.grabbing{
+    cursor: url("../images/closedhand.cur") , default !important;
+}
+.grabbable{
+    cursor: url("../images/openhand.cur") , default !important;
+}

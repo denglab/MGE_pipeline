@@ -1,0 +1,97 @@
+# hmmsearch :: search profile(s) against a sequence database
+# HMMER 3.1b1 (May 2013); http://hmmer.org/
+# Copyright (C) 2013 Howard Hughes Medical Institute.
+# Freely distributed under the GNU General Public License (GPLv3).
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# query HMM file:                  /usr/local/share/macsyfinder/profiles/cpf1_TypeU.hmm
+# target sequence database:        /home/shaoting/project/mge_nestle/macsyfinder-1.0.4/data/sequence_data/datatest_gembase.fasta
+# output directed to file:         /home/shaoting/project/mge_nestle/macsyfinder-1.0.4/macsyfinder-20180119_15-19-31/hmmer_results/cpf1_TypeU.search_hmm.out
+# sequence reporting threshold:    E-value <= 1
+# number of worker threads:        0
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+Query:       TIGR04330  [M=1288]
+Accession:   TIGR04330
+Description: cas_Cpf1: CRISPR-associated protein Cpf1, subtype PREFRAN
+Scores for complete sequences (score includes all domains):
+   --- full sequence ---   --- best 1 domain ---    -#dom-
+    E-value  score  bias    E-value  score  bias    exp  N  Sequence           Description
+    ------- ------ -----    ------- ------ -----   ---- --  --------           -----------
+     0.0065   12.8   0.9       0.43    6.8   0.2    2.2  2  LEPN003c01a_030560  C ATG TAA 3480004 3480870 Valid atpG 867 
+  ------ inclusion threshold ------
+      0.014   11.7   0.1       0.97    5.6   0.1    2.1  2  ESCO001c01a_037600  C ATG TAA 3915425 3916288 Valid atpG 864 
+      0.053    9.8   0.1       0.07    9.4   0.1    1.1  1  ESCO001c01a_019620  D ATG TGA 2012904 2013899 Valid fliG 996 
+
+
+Domain annotation for each sequence (and alignments):
+>> LEPN003c01a_030560  C ATG TAA 3480004 3480870 Valid atpG 867 _lpp3054_YP_125356.1_ lpp3054 1 3480004 3480870 | ATP sy
+   #    score  bias  c-Evalue  i-Evalue hmmfrom  hmm to    alifrom  ali to    envfrom  env to     acc
+ ---   ------ ----- --------- --------- ------- -------    ------- -------    ------- -------    ----
+   1 !    4.8   0.0   0.00072       1.7     525     573 ..     159     211 ..     154     224 .. 0.75
+   2 !    6.8   0.2   0.00018      0.43    1003    1046 ..     224     268 ..     219     277 .. 0.88
+
+  Alignments for each domain:
+  == domain 1  score: 4.8 bits;  conditional E-value: 0.00072
+           TIGR04330 525 elye.kleeivplyNkvRNyvTqkPysdekikl...nfenpkLlngWdenkei 573
+                          +y+ +++ +  +yN   N +TqkP+ ++ + l     ++ +L  +Wd   e 
+  LEPN003c01a_030560 159 AYYNgAIDSLHIVYNEFINTMTQKPFVKQLLPLpksEEDKKTLGHHWDYIYEP 211
+                         566535788999*****************998863233445999999865555 PP
+
+  == domain 2  score: 6.8 bits;  conditional E-value: 0.00018
+           TIGR04330 1003 kvekqvyqk.fEkmLidklnylvskkkkedeaGgllkayqltskf 1046
+                           +e qvyq+ +E+  +++   ++  k  +d+aG l+k +ql+++ 
+  LEPN003c01a_030560  224 YIELQVYQAvVENIACEQAAKMIAMKSATDNAGDLIKEFQLAYNK 268 
+                          6999****9459999***************************984 PP
+
+>> ESCO001c01a_037600  C ATG TAA 3915425 3916288 Valid atpG 864 _b3733_NP_418189.1_ b3733 1 3915425 3916288 | enzyme; AT
+   #    score  bias  c-Evalue  i-Evalue hmmfrom  hmm to    alifrom  ali to    envfrom  env to     acc
+ ---   ------ ----- --------- --------- ------- -------    ------- -------    ------- -------    ----
+   1 ?    4.0   0.0    0.0013       3.1     330     364 ..     147     181 ..     130     186 .. 0.88
+   2 ?    5.6   0.1    0.0004      0.97    1001    1046 ..     221     267 ..     218     276 .. 0.84
+
+  Alignments for each domain:
+  == domain 1  score: 4.0 bits;  conditional E-value: 0.0013
+           TIGR04330 330 knvlkklktllekldkldlkkiyikndeqlttlSq 364
+                          + ++++k +l+++d+  l+k+yi+ +++++t+Sq
+  ESCO001c01a_037600 147 SELIGPVKVMLQAYDEGRLDKLYIVSNKFINTMSQ 181
+                         6789999***************************9 PP
+
+  == domain 2  score: 5.6 bits;  conditional E-value: 0.0004
+           TIGR04330 1001 rfkvekqvyqkfEkmLi.dklnylvskkkkedeaGgllkayqltskf 1046
+                          r  ve qvyq + + L  ++   +v  k+ +d+ G+l+k +ql ++ 
+  ESCO001c01a_037600  221 RRYVESQVYQGVVENLAsEQAARMVAMKAATDNGGSLIKELQLVYNK 267 
+                          568*******9766665278999********************9884 PP
+
+>> ESCO001c01a_019620  D ATG TGA 2012904 2013899 Valid fliG 996 _b1939_NP_416449.1_ b1939 1 2012904 2013899 | structural
+   #    score  bias  c-Evalue  i-Evalue hmmfrom  hmm to    alifrom  ali to    envfrom  env to     acc
+ ---   ------ ----- --------- --------- ------- -------    ------- -------    ------- -------    ----
+   1 ?    9.4   0.1   2.9e-05      0.07     394     481 ..      30     123 ..      12     157 .. 0.80
+
+  Alignments for each domain:
+  == domain 1  score: 9.4 bits;  conditional E-value: 2.9e-05
+           TIGR04330 394 kekyeekvkkvvkkqkslSieeindllekyikekdskerksekikdylaeislvenedektkdlianiktkyqavekll......qkekkd 478
+                         ++++ +++ +++ ++ + S +++ d+l ++ +e ++   ++++++dyl+++ ++  ++e++  l+++i +   ++  +        ++++d
+  ESCO001c01a_019620  30 SQREVQTLSAAMANVTQISNKQLTDVLAEFEQEAEQFAALNINANDYLRSVLVKALGEERAASLLEDILETRDTASGIEtlnfmePQSAAD 120
+                         5667778899999************************************999999999999999999988777665432334444444555 PP
+
+           TIGR04330 479 llq 481
+                         l++
+  ESCO001c01a_019620 121 LIR 123
+                         555 PP
+
+
+
+Internal pipeline statistics summary:
+-------------------------------------
+Query model(s):                              1  (1288 nodes)
+Target sequences:                         7219  (2337224 residues searched)
+Passed MSV filter:                       403  (0.0558249); expected 144.4 (0.02)
+Passed bias filter:                      152  (0.0210555); expected 144.4 (0.02)
+Passed Vit filter:                        10  (0.00138523); expected 7.2 (0.001)
+Passed Fwd filter:                         3  (0.00041557); expected 0.1 (1e-05)
+Initial search space (Z):               7219  [actual number of targets]
+Domain search space  (domZ):               3  [number of targets reported over threshold]
+# CPU time: 0.25u 0.00s 00:00:00.25 Elapsed: 00:00:00.25
+# Mc/sec: 12041.38
+//
+[ok]

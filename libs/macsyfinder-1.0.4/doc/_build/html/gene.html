@@ -1,0 +1,710 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Gene API &#8212; MacSyFinder 1.0.4 documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0.4',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Profile API" href="profile.html" />
+    <link rel="prev" title="The Parser of Systems definitions" href="system_parser.html" /> 
+  </head>
+  <body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="profile.html" title="Profile API"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="system_parser.html" title="The Parser of Systems definitions"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">MacSyFinder documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="gene-api">
+<span id="gene"></span><h1>Gene API<a class="headerlink" href="#gene-api" title="Permalink to this headline">¶</a></h1>
+<p>The Gene object represents genes encoding the protein components of a System. See <a class="reference internal" href="implementation.html#gene-implementation"><span class="std std-ref">The Gene object</span></a> for an overview of the implementation.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">To optimize computation and to avoid concurrency problems when we search several systems, each gene must be instanciated only once, and stored in gene_bank.
+gene_bank is a <a class="reference internal" href="#macsypy.gene.GeneBank" title="macsypy.gene.GeneBank"><code class="xref py py-class docutils literal"><span class="pre">macsypy.gene.GeneBank</span></code></a> object.
+The gene_bank and system_bank (<a class="reference internal" href="system.html#macsypy.system.SystemBank" title="macsypy.system.SystemBank"><code class="xref py py-class docutils literal"><span class="pre">macsypy.system.SystemBank</span></code></a> object) are filled by a system_parser (<a class="reference internal" href="system_parser.html#macsypy.system_parser.SystemParser" title="macsypy.system_parser.SystemParser"><code class="xref py py-class docutils literal"><span class="pre">macsypy.system_parser.SystemParser</span></code></a>)</p>
+</div>
+<p>Example to get a gene object:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">macsypy.system</span> <span class="k">import</span> <span class="n">system_bank</span>
+<span class="kn">from</span> <span class="nn">macsypy.config</span> <span class="k">import</span> <span class="n">Config</span>
+<span class="kn">from</span> <span class="nn">macsypy.gene</span> <span class="k">import</span> <span class="n">gene_bank</span>
+
+
+<span class="c1">#get a system</span>
+<span class="n">t2ss</span> <span class="o">=</span>  <span class="n">system_bank</span><span class="p">[</span><span class="s2">&quot;T2SS&quot;</span><span class="p">]</span>
+
+<span class="c1">#get of a gene</span>
+<span class="n">pilO</span> <span class="o">=</span> <span class="n">gene_bank</span><span class="p">[</span><span class="s2">&quot;pilO&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+<div class="section" id="genebank-api-reference">
+<h2>GeneBank API reference<a class="headerlink" href="#genebank-api-reference" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><span class="target" id="module-macsypy.gene"></span><dl class="class">
+<dt id="macsypy.gene.GeneBank">
+<em class="property">class </em><code class="descclassname">macsypy.gene.</code><code class="descname">GeneBank</code><a class="reference internal" href="_modules/macsypy/gene.html#GeneBank"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.gene.GeneBank" title="Permalink to this definition">¶</a></dt>
+<dd><p>Store all Gene objects. Ensure that genes are instanciated only once.</p>
+<dl class="method">
+<dt id="macsypy.gene.GeneBank.__contains__">
+<code class="descname">__contains__</code><span class="sig-paren">(</span><em>gene</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/macsypy/gene.html#GeneBank.__contains__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.gene.GeneBank.__contains__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Implement the membership test operator</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>gene</strong> (<a class="reference internal" href="#macsypy.gene.Gene" title="macsypy.gene.Gene"><code class="xref py py-class docutils literal"><span class="pre">macsypy.gene.Gene</span></code></a> object) – the gene to test</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True if the gene is in, False otherwise</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">boolean</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="macsypy.gene.GeneBank.__getitem__">
+<code class="descname">__getitem__</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/macsypy/gene.html#GeneBank.__getitem__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.gene.GeneBank.__getitem__" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>name</strong> (<em>string</em>) – the name of the Gene</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">return the Gene corresponding to the name.
+If the Gene already exists, return it, otherwise, build it and return it</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#macsypy.gene.Gene" title="macsypy.gene.Gene"><code class="xref py py-class docutils literal"><span class="pre">macsypy.gene.Gene</span></code></a> object</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="macsypy.gene.GeneBank.__iter__">
+<code class="descname">__iter__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/macsypy/gene.html#GeneBank.__iter__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.gene.GeneBank.__iter__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return an iterator object on the genes contained in the bank</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="macsypy.gene.GeneBank.__weakref__">
+<code class="descname">__weakref__</code><a class="headerlink" href="#macsypy.gene.GeneBank.__weakref__" title="Permalink to this definition">¶</a></dt>
+<dd><p>list of weak references to the object (if defined)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="macsypy.gene.GeneBank.add_gene">
+<code class="descname">add_gene</code><span class="sig-paren">(</span><em>gene</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/macsypy/gene.html#GeneBank.add_gene"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.gene.GeneBank.add_gene" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a gene in the bank</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>gene</strong> (<a class="reference internal" href="#macsypy.gene.Gene" title="macsypy.gene.Gene"><code class="xref py py-class docutils literal"><span class="pre">macsypy.gene.Gene</span></code></a> object) – the gene to add</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise:</th><td class="field-body">KeyError if a gene with the same name is already registered</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div></blockquote>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>Don’t instanciate your own GeneFactory use the gene_bank at the top level of the module.</p>
+<div class="last highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">macsypy.gene</span> <span class="k">import</span> <span class="n">gene_bank</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="module-macsypy.gene">
+<span id="gene-api-reference"></span><h2>Gene API reference<a class="headerlink" href="#module-macsypy.gene" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="macsypy.gene.Gene">
+<em class="property">class </em><code class="descclassname">macsypy.gene.</code><code class="descname">Gene</code><span class="sig-paren">(</span><em>cfg</em>, <em>name</em>, <em>system</em>, <em>profiles_registry</em>, <em>loner=False</em>, <em>exchangeable=False</em>, <em>multi_system=False</em>, <em>inter_gene_max_space=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/macsypy/gene.html#Gene"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.gene.Gene" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handle Gene of a (secretion) System</p>
+<dl class="method">
+<dt id="macsypy.gene.Gene.__eq__">
+<code class="descname">__eq__</code><span class="sig-paren">(</span><em>gene</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/macsypy/gene.html#Gene.__eq__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.gene.Gene.__eq__" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">True if the gene names (gene.name) are the same, False otherwise.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Parameters:</th><td class="field-body"><strong>gene</strong> (<a class="reference internal" href="#macsypy.gene.Gene" title="macsypy.gene.Gene"><code class="xref py py-class docutils literal"><span class="pre">macsypy.gene.Gene</span></code></a> object.) – the query of the test</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">boolean.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="macsypy.gene.Gene.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>cfg</em>, <em>name</em>, <em>system</em>, <em>profiles_registry</em>, <em>loner=False</em>, <em>exchangeable=False</em>, <em>multi_system=False</em>, <em>inter_gene_max_space=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/macsypy/gene.html#Gene.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.gene.Gene.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>handle gene</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>cfg</strong> (<a class="reference internal" href="config.html#macsypy.config.Config" title="macsypy.config.Config"><code class="xref py py-class docutils literal"><span class="pre">macsypy.config.Config</span></code></a> object) – the configuration object.</li>
+<li><strong>name</strong> (<em>string.</em>) – the name of the Gene.</li>
+<li><strong>system</strong> (<a class="reference internal" href="system.html#macsypy.system.System" title="macsypy.system.System"><code class="xref py py-class docutils literal"><span class="pre">macsypy.system.System</span></code></a> object.) – the system that owns this Gene</li>
+<li><strong>profiles_registry</strong> (<code class="xref py py-class docutils literal"><span class="pre">macsypy.registries.ProfilesRegistry</span></code> object.) – where all the paths profiles where register.</li>
+<li><strong>loner</strong> (<em>boolean.</em>) – True if the Gene can be isolated on the genome (with no contiguous genes), False otherwise.</li>
+<li><strong>exchangeable</strong> (<em>boolean.</em>) – True if this Gene can be replaced with one of its homologs or analogs
+without any effects on the system assessment, False otherwise.</li>
+<li><strong>multi_system</strong> (<em>boolean.</em>) – True if this Gene can belong to different occurrences of this System.</li>
+<li><strong>inter_gene_max_space</strong> (<em>integer</em>) – the maximum space between this Gene and another gene of the System.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="macsypy.gene.Gene.__str__">
+<code class="descname">__str__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/macsypy/gene.html#Gene.__str__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.gene.Gene.__str__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print the name of the gene and of its homologs/analogs.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="macsypy.gene.Gene.__weakref__">
+<code class="descname">__weakref__</code><a class="headerlink" href="#macsypy.gene.Gene.__weakref__" title="Permalink to this definition">¶</a></dt>
+<dd><p>list of weak references to the object (if defined)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="macsypy.gene.Gene.add_analog">
+<code class="descname">add_analog</code><span class="sig-paren">(</span><em>analog</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/macsypy/gene.html#Gene.add_analog"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.gene.Gene.add_analog" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add an analogous gene to the Gene</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>analog</strong> (<a class="reference internal" href="#macsypy.gene.Analog" title="macsypy.gene.Analog"><code class="xref py py-class docutils literal"><span class="pre">macsypy.gene.Analog</span></code></a> object) – analog to add</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="macsypy.gene.Gene.add_homolog">
+<code class="descname">add_homolog</code><span class="sig-paren">(</span><em>homolog</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/macsypy/gene.html#Gene.add_homolog"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.gene.Gene.add_homolog" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a homolog gene to the Gene</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>homolog</strong> (<a class="reference internal" href="#macsypy.gene.Homolog" title="macsypy.gene.Homolog"><code class="xref py py-class docutils literal"><span class="pre">macsypy.gene.Homolog</span></code></a> object) – homolog to add</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="macsypy.gene.Gene.exchangeable">
+<code class="descname">exchangeable</code><a class="headerlink" href="#macsypy.gene.Gene.exchangeable" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">True if this gene can be replaced with one of its homologs or analogs whithout any effects on the system, False otherwise.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">boolean.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="macsypy.gene.Gene.get_analogs">
+<code class="descname">get_analogs</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/macsypy/gene.html#Gene.get_analogs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.gene.Gene.get_analogs" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">the Gene analogs</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Type:</th><td class="field-body">list of <a class="reference internal" href="#macsypy.gene.Analog" title="macsypy.gene.Analog"><code class="xref py py-class docutils literal"><span class="pre">macsypy.gene.Analog</span></code></a> object</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="macsypy.gene.Gene.get_compatible_systems">
+<code class="descname">get_compatible_systems</code><span class="sig-paren">(</span><em>system_list</em>, <em>include_forbidden=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/macsypy/gene.html#Gene.get_compatible_systems"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.gene.Gene.get_compatible_systems" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test every system in system_list for compatibility with the gene using the is_authorized function.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>system_list</strong> (<em>list of strings</em>) – a list of system names to test</li>
+<li><strong>include_forbidden</strong> (<em>boolean</em>) – tells if forbidden genes should be considered as defining a compatible systems or not</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">the list of compatible systems</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">list of string, or void list if none compatible</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="macsypy.gene.Gene.get_homologs">
+<code class="descname">get_homologs</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/macsypy/gene.html#Gene.get_homologs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.gene.Gene.get_homologs" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">the Gene homologs</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Type:</th><td class="field-body">list of <a class="reference internal" href="#macsypy.gene.Homolog" title="macsypy.gene.Homolog"><code class="xref py py-class docutils literal"><span class="pre">macsypy.gene.Homolog</span></code></a> object</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="macsypy.gene.Gene.inter_gene_max_space">
+<code class="descname">inter_gene_max_space</code><a class="headerlink" href="#macsypy.gene.Gene.inter_gene_max_space" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The maximum distance allowed between this gene and another gene for them to be considered co-localized. 
+If the value is not set at the Gene level, return the value set at the System level.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">integer.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="macsypy.gene.Gene.is_accessory">
+<code class="descname">is_accessory</code><span class="sig-paren">(</span><em>system</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/macsypy/gene.html#Gene.is_accessory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.gene.Gene.is_accessory" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">True if the gene is within the <em>accessory</em> genes of the system, False otherwise.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Parameters:</th><td class="field-body"><strong>system</strong> (<a class="reference internal" href="system.html#macsypy.system.System" title="macsypy.system.System"><code class="xref py py-class docutils literal"><span class="pre">macsypy.system.System</span></code></a> object.) – the query of the test</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">boolean.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="macsypy.gene.Gene.is_analog">
+<code class="descname">is_analog</code><span class="sig-paren">(</span><em>gene</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/macsypy/gene.html#Gene.is_analog"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.gene.Gene.is_analog" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">True if the two genes are analogs, False otherwise.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Parameters:</th><td class="field-body"><strong>gene</strong> (<a class="reference internal" href="#macsypy.gene.Gene" title="macsypy.gene.Gene"><code class="xref py py-class docutils literal"><span class="pre">macsypy.gene.Gene</span></code></a> object.) – the query of the test</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">boolean.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="macsypy.gene.Gene.is_authorized">
+<code class="descname">is_authorized</code><span class="sig-paren">(</span><em>system</em>, <em>include_forbidden=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/macsypy/gene.html#Gene.is_authorized"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.gene.Gene.is_authorized" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">True if the genes are found in the System definition file (.xml), False otherwise.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>system</strong> (<a class="reference internal" href="system.html#macsypy.system.System" title="macsypy.system.System"><code class="xref py py-class docutils literal"><span class="pre">macsypy.system.System</span></code></a> object.) – the query of the test</li>
+<li><strong>include_forbidden</strong> (<em>boolean</em>) – tells if forbidden genes should be considered as “authorized” or not</li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">boolean.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="macsypy.gene.Gene.is_forbidden">
+<code class="descname">is_forbidden</code><span class="sig-paren">(</span><em>system</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/macsypy/gene.html#Gene.is_forbidden"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.gene.Gene.is_forbidden" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">True if the gene is within the <em>forbidden</em> genes of the system, False otherwise.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Parameters:</th><td class="field-body"><strong>system</strong> (<a class="reference internal" href="system.html#macsypy.system.System" title="macsypy.system.System"><code class="xref py py-class docutils literal"><span class="pre">macsypy.system.System</span></code></a> object.) – the query of the test</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">boolean.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="macsypy.gene.Gene.is_homolog">
+<code class="descname">is_homolog</code><span class="sig-paren">(</span><em>gene</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/macsypy/gene.html#Gene.is_homolog"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.gene.Gene.is_homolog" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">True if the two genes are homologs, False otherwise.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Parameters:</th><td class="field-body"><strong>gene</strong> (<a class="reference internal" href="#macsypy.gene.Gene" title="macsypy.gene.Gene"><code class="xref py py-class docutils literal"><span class="pre">macsypy.gene.Gene</span></code></a> object.) – the query of the test</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">boolean.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="macsypy.gene.Gene.is_mandatory">
+<code class="descname">is_mandatory</code><span class="sig-paren">(</span><em>system</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/macsypy/gene.html#Gene.is_mandatory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.gene.Gene.is_mandatory" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">True if the gene is within the <em>mandatory</em> genes of the system, False otherwise.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Parameters:</th><td class="field-body"><strong>system</strong> (<a class="reference internal" href="system.html#macsypy.system.System" title="macsypy.system.System"><code class="xref py py-class docutils literal"><span class="pre">macsypy.system.System</span></code></a> object.) – the query of the test</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">boolean.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="macsypy.gene.Gene.loner">
+<code class="descname">loner</code><a class="headerlink" href="#macsypy.gene.Gene.loner" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">True if the gene can be isolated on the genome, False otherwise</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">boolean</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="macsypy.gene.Gene.multi_system">
+<code class="descname">multi_system</code><a class="headerlink" href="#macsypy.gene.Gene.multi_system" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">True if this Gene can belong to different occurrences of <strong>this System</strong> (and can be used for multiple System assessments), False otherwise.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">boolean.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="macsypy.gene.Gene.profile">
+<code class="descname">profile</code><em class="property"> = None</em><a class="headerlink" href="#macsypy.gene.Gene.profile" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Variables:</th><td class="field-body"><a class="reference internal" href="#macsypy.gene.Gene.profile" title="macsypy.gene.Gene.profile"><strong>profile</strong></a> – The HMM protein Profile corresponding to this gene <a class="reference internal" href="profile.html#macsypy.gene.Profile" title="macsypy.gene.Profile"><code class="xref py py-class docutils literal"><span class="pre">macsypy.gene.Profile</span></code></a> object</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="macsypy.gene.Gene.system">
+<code class="descname">system</code><a class="headerlink" href="#macsypy.gene.Gene.system" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">the System that owns this Gene</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="system.html#macsypy.system.System" title="macsypy.system.System"><code class="xref py py-class docutils literal"><span class="pre">macsypy.system.System</span></code></a> object</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">All attributes/methods which are not directly implemented in Homolog are redirected to that of the encapsulated Gene.</p>
+</div>
+</div>
+<div class="section" id="module-macsypy.gene">
+<span id="homolog-api-reference"></span><span id="homolog-api"></span><h2>Homolog API reference<a class="headerlink" href="#module-macsypy.gene" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="macsypy.gene.Homolog">
+<em class="property">class </em><code class="descclassname">macsypy.gene.</code><code class="descname">Homolog</code><span class="sig-paren">(</span><em>gene</em>, <em>gene_ref</em>, <em>aligned=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/macsypy/gene.html#Homolog"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.gene.Homolog" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handle homologs, encapsulate a Gene</p>
+<dl class="method">
+<dt id="macsypy.gene.Homolog.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>gene</em>, <em>gene_ref</em>, <em>aligned=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/macsypy/gene.html#Homolog.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.gene.Homolog.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>gene</strong> (<a class="reference internal" href="#macsypy.gene.Gene" title="macsypy.gene.Gene"><code class="xref py py-class docutils literal"><span class="pre">macsypy.gene.Gene</span></code></a> object.) – the gene</li>
+<li><strong>gene_ref</strong> (<a class="reference internal" href="#macsypy.gene.Gene" title="macsypy.gene.Gene"><code class="xref py py-class docutils literal"><span class="pre">macsypy.gene.Gene</span></code></a> object.) – the gene to which the current is homolog.</li>
+<li><strong>aligned</strong> (<em>boolean</em>) – if True, the profile of this gene overlaps totally the sequence of the reference gene profile.
+Otherwise, only partial overlapping between the profiles.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="macsypy.gene.Homolog.__weakref__">
+<code class="descname">__weakref__</code><a class="headerlink" href="#macsypy.gene.Homolog.__weakref__" title="Permalink to this definition">¶</a></dt>
+<dd><p>list of weak references to the object (if defined)</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="macsypy.gene.Homolog.gene">
+<code class="descname">gene</code><em class="property"> = None</em><a class="headerlink" href="#macsypy.gene.Homolog.gene" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Variables:</th><td class="field-body"><a class="reference internal" href="#macsypy.gene.Homolog.gene" title="macsypy.gene.Homolog.gene"><strong>gene</strong></a> – gene</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="macsypy.gene.Homolog.gene_ref">
+<code class="descname">gene_ref</code><a class="headerlink" href="#macsypy.gene.Homolog.gene_ref" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">the gene to which this one is homolog to (reference gene)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#macsypy.gene.Gene" title="macsypy.gene.Gene"><code class="xref py py-class docutils literal"><span class="pre">macsypy.gene.Gene</span></code></a> object</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="macsypy.gene.Homolog.is_aligned">
+<code class="descname">is_aligned</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/macsypy/gene.html#Homolog.is_aligned"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.gene.Homolog.is_aligned" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">True if this gene homolog is aligned to its homolog, False otherwise.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">boolean</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-macsypy.gene">
+<span id="analog-api-reference"></span><span id="analog-api"></span><h2>Analog API reference<a class="headerlink" href="#module-macsypy.gene" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="macsypy.gene.Analog">
+<em class="property">class </em><code class="descclassname">macsypy.gene.</code><code class="descname">Analog</code><span class="sig-paren">(</span><em>gene</em>, <em>gene_ref</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/macsypy/gene.html#Analog"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.gene.Analog" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handle analogs, encapsulate a Gene</p>
+<dl class="method">
+<dt id="macsypy.gene.Analog.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>gene</em>, <em>gene_ref</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/macsypy/gene.html#Analog.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.gene.Analog.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>gene</strong> (<a class="reference internal" href="#macsypy.gene.Gene" title="macsypy.gene.Gene"><code class="xref py py-class docutils literal"><span class="pre">macsypy.gene.Gene</span></code></a> object.) – the gene</li>
+<li><strong>gene_ref</strong> (<a class="reference internal" href="#macsypy.gene.Gene" title="macsypy.gene.Gene"><code class="xref py py-class docutils literal"><span class="pre">macsypy.gene.Gene</span></code></a> object.) – the gene to which the current is analog.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="macsypy.gene.Analog.__weakref__">
+<code class="descname">__weakref__</code><a class="headerlink" href="#macsypy.gene.Analog.__weakref__" title="Permalink to this definition">¶</a></dt>
+<dd><p>list of weak references to the object (if defined)</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="macsypy.gene.Analog.gene">
+<code class="descname">gene</code><em class="property"> = None</em><a class="headerlink" href="#macsypy.gene.Analog.gene" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Variables:</th><td class="field-body"><a class="reference internal" href="#macsypy.gene.Homolog.gene" title="macsypy.gene.Homolog.gene"><strong>gene</strong></a> – gene</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="macsypy.gene.Analog.gene_ref">
+<code class="descname">gene_ref</code><a class="headerlink" href="#macsypy.gene.Analog.gene_ref" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">the gene to which this one is analog to (reference gene)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#macsypy.gene.Gene" title="macsypy.gene.Gene"><code class="xref py py-class docutils literal"><span class="pre">macsypy.gene.Gene</span></code></a> object</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Gene API</a><ul>
+<li><a class="reference internal" href="#genebank-api-reference">GeneBank API reference</a></li>
+<li><a class="reference internal" href="#module-macsypy.gene">Gene API reference</a></li>
+<li><a class="reference internal" href="#module-macsypy.gene">Homolog API reference</a></li>
+<li><a class="reference internal" href="#module-macsypy.gene">Analog API reference</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="system_parser.html"
+                        title="previous chapter">The Parser of Systems definitions</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="profile.html"
+                        title="next chapter">Profile API</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/gene.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="profile.html" title="Profile API"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="system_parser.html" title="The Parser of Systems definitions"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">MacSyFinder documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2014, Sophie Abby, Bertrand Néron.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.3.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,253 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Welcome to MacSyFinder’s documentation! &#8212; MacSyFinder 1.0.4 documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0.4',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Installation" href="installation.html" /> 
+  </head>
+  <body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="installation.html" title="Installation"
+             accesskey="N">next</a> |</li>
+        <li class="nav-item nav-item-0"><a href="#">MacSyFinder documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="welcome-to-macsyfinder-s-documentation">
+<h1>Welcome to MacSyFinder’s documentation!<a class="headerlink" href="#welcome-to-macsyfinder-s-documentation" title="Permalink to this headline">¶</a></h1>
+<blockquote>
+<div><p>MacSyFinder is a program to model and detect macromolecular systems, genetic pathways… in protein datasets. In prokaryotes, these systems have often evolutionarily conserved properties: they are made of conserved components, and are encoded in compact loci (conserved genetic architecture). The user models these systems with MacSyFinder to reflect these conserved features, and to allow their efficient detection.</p>
+<p>Criteria for systems detection include <strong>component content (quorum)</strong>, and <strong>genomic co-localization</strong>. Each component corresponds to a hidden Markov model (HMM) protein profile to perform homology searches with the program Hmmer.</p>
+<dl class="docutils">
+<dt>In order to model macromolecular systems, the user:</dt>
+<dd><ul class="first simple">
+<li>builds or gather from databanks <strong>HMM protein profiles</strong> for components of interest,</li>
+<li>defines <strong>decision rules</strong> for each system in a dedicated XML grammar (see <a class="reference internal" href="system_definition.html#system-definition"><span class="std std-ref">Macromolecular systems definition</span></a>).</li>
+</ul>
+<a class="last reference internal image-reference" href="_images/figure_main-2.svg"><div align="left" class="align-left"><img alt="_images/figure_main-2.svg" height="600px" src="_images/figure_main-2.svg" /></div>
+</a>
+</dd>
+</dl>
+</div></blockquote>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If you use MacSyFinder, please cite:</p>
+</div>
+<p><a class="reference external" href="http://www.plosone.org/article/info%3Adoi%2F10.1371%2Fjournal.pone.0110726">Abby SS, Néron B, Ménager H, Touchon M, Rocha EPC (2014). MacSyFinder: A Program to Mine Genomes for Molecular Systems with an Application to CRISPR-Cas Systems. PLoS ONE 9(10): e110726. doi:10.1371/journal.pone.0110726</a></p>
+</div>
+<div class="section" id="running-macsyfinder">
+<h1>Running MacSyFinder<a class="headerlink" href="#running-macsyfinder" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#macsyfinder-dependencies">MacSyFinder dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#installation-procedure">Installation procedure</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">MacSyFinder Quick Start</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#first-trial-with-a-test-dataset">First trial with a test dataset</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#visualizing-expected-results-with-macsyview">Visualizing expected results with MacSyView</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="input.html">Input and Options of MacSyFinder</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="input.html#input-dataset">Input dataset</a></li>
+<li class="toctree-l2"><a class="reference internal" href="input.html#command-line-options">Command-line options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="input.html#configuration-file">Configuration file</a></li>
+<li class="toctree-l2"><a class="reference internal" href="input.html#in-house-input-files">In-house input files</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="outputs.html">Output format</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="outputs.html#hmmer-results-outputs">Hmmer results outputs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="outputs.html#systems-detection-results">Systems detection results</a></li>
+<li class="toctree-l2"><a class="reference internal" href="outputs.html#logs-and-configuration-files">Logs and configuration files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="outputs.html#file-for-macsyview-results-macsyfinder-json">File for MacSyview: results.macsyfinder.json</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="macsyview.html">MacSyView: visualizing MacSyFinder’s results!</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="macsyview.html#macsyview-how-to">MacSyView How To</a></li>
+<li class="toctree-l2"><a class="reference internal" href="macsyview.html#graphical-output-description">Graphical output description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="macsyview.html#technology-used">Technology used</a></li>
+<li class="toctree-l2"><a class="reference internal" href="macsyview.html#screenshot">Screenshot</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="macsyfinder-functioning">
+<h1>MacSyFinder functioning<a class="headerlink" href="#macsyfinder-functioning" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="system_definition.html">Macromolecular systems definition</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="system_definition.html#principles">Principles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="system_definition.html#the-xml-hierarchy">The XML hierarchy</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="implementation.html">MacSyFinder implementation overview</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="implementation.html#the-system-object">The System object</a></li>
+<li class="toctree-l2"><a class="reference internal" href="implementation.html#the-gene-object">The Gene object</a></li>
+<li class="toctree-l2"><a class="reference internal" href="implementation.html#the-profile-object">The Profile object</a></li>
+<li class="toctree-l2"><a class="reference internal" href="implementation.html#reporting-hmmer-search-results">Reporting Hmmer search results</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="functioning.html">MacSyFinder functioning</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="functioning.html#functioning-overview">Functioning overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="functioning.html#a-searching-for-systems-components">A. Searching for systems’ components</a></li>
+<li class="toctree-l2"><a class="reference internal" href="functioning.html#b-assessing-systems-presence">B. Assessing systems presence</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="macsyfinder-api-documentation">
+<h1>MacSyFinder API documentation<a class="headerlink" href="#macsyfinder-api-documentation" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="config.html">Configuration API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="config.html#module-macsypy.config">Config API reference</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="database.html">Database API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="database.html#module-macsypy.database">database API reference</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="system.html">System API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="system.html#systembank-api-reference">SystemBank API reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="system.html#module-macsypy.system">System API reference</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="system_parser.html">The Parser of Systems definitions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="system_parser.html#module-macsypy.system_parser">SystemParser API reference</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="gene.html">Gene API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="gene.html#genebank-api-reference">GeneBank API reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gene.html#module-macsypy.gene">Gene API reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gene.html#module-macsypy.gene">Homolog API reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gene.html#module-macsypy.gene">Analog API reference</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="profile.html">Profile API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="profile.html#profilefactory-api-reference">ProfileFactory API reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="profile.html#module-macsypy.gene">Profile API reference</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="HMMReport.html">HMMReport API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="HMMReport.html#module-macsypy.report">HMMReport API reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="HMMReport.html#module-macsypy.report">GeneralHMMReport API reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="HMMReport.html#module-macsypy.report">OrderedHMMReport</a></li>
+<li class="toctree-l2"><a class="reference internal" href="HMMReport.html#module-macsypy.report">GembaseHMMReport</a></li>
+<li class="toctree-l2"><a class="reference internal" href="HMMReport.html#module-macsypy.report">Hit</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="search_genes.html">search_genes API reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="search_systems.html">search_systems API reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="macsypy_error.html">MacSyFinder errors</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="macsypy_error.html#module-macsypy.macsypy_error">macsypy_error API reference</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="indices-and-tables">
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></li>
+<li><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></li>
+<li><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></li>
+</ul>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="#">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Welcome to MacSyFinder’s documentation!</a></li>
+<li><a class="reference internal" href="#running-macsyfinder">Running MacSyFinder</a></li>
+<li><a class="reference internal" href="#macsyfinder-functioning">MacSyFinder functioning</a></li>
+<li><a class="reference internal" href="#macsyfinder-api-documentation">MacSyFinder API documentation</a></li>
+<li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
+</ul>
+
+  <h4>Next topic</h4>
+  <p class="topless"><a href="installation.html"
+                        title="next chapter">Installation</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/index.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="installation.html" title="Installation"
+             >next</a> |</li>
+        <li class="nav-item nav-item-0"><a href="#">MacSyFinder documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2014, Sophie Abby, Bertrand Néron.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.3.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,65 @@
+# hmmsearch :: search profile(s) against a sequence database
+# HMMER 3.1b1 (May 2013); http://hmmer.org/
+# Copyright (C) 2013 Howard Hughes Medical Institute.
+# Freely distributed under the GNU General Public License (GPLv3).
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# query HMM file:                  /usr/local/share/macsyfinder/profiles/csn2_TypeIIA.hmm
+# target sequence database:        /home/shaoting/project/mge_nestle/macsyfinder-1.0.4/data/sequence_data/datatest_gembase.fasta
+# output directed to file:         /home/shaoting/project/mge_nestle/macsyfinder-1.0.4/macsyfinder-20180119_15-19-31/hmmer_results/csn2_TypeIIA.search_hmm.out
+# sequence reporting threshold:    E-value <= 1
+# number of worker threads:        0
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+Query:       TIGR01866  [M=222]
+Accession:   TIGR01866
+Description: cas_Csn2: CRISPR type II-A/NMEMI-associated protein Csn2
+Scores for complete sequences (score includes all domains):
+   --- full sequence ---   --- best 1 domain ---    -#dom-
+    E-value  score  bias    E-value  score  bias    exp  N  Sequence           Description
+    ------- ------ -----    ------- ------ -----   ---- --  --------           -----------
+     0.0017   16.7   4.5     0.0017   16.7   4.5    3.4  3  LEPN003c01a_008040  D ATG TAG 905323 906873 Valid lpp0809 155
+
+
+Domain annotation for each sequence (and alignments):
+>> LEPN003c01a_008040  D ATG TAG 905323 906873 Valid lpp0809 1551 _YP_123139.1_ lpp0809 1 905323 906873 | hypothetical p
+   #    score  bias  c-Evalue  i-Evalue hmmfrom  hmm to    alifrom  ali to    envfrom  env to     acc
+ ---   ------ ----- --------- --------- ------- -------    ------- -------    ------- -------    ----
+   1 !    4.3   3.7    0.0014        10      80     158 ..       4      83 ..       1      94 [. 0.84
+   2 !   16.7   4.5   2.3e-07    0.0017     134     208 ..     167     241 ..      98     250 .. 0.76
+   3 ?   -1.4   2.8     0.079   5.7e+02      57     110 ..     298     349 ..     266     360 .. 0.57
+
+  Alignments for each domain:
+  == domain 1  score: 4.3 bits;  conditional E-value: 0.0014
+           TIGR01866  80 kkiykkleeeit.deelrekiqelksqlvelieellleldleleveeeldlkellKavgikieteedt.lleklveylkil 158
+                         +++ kk+ + i+ +e ++ k+q++ ++l++ i++l+  + + +++e +  l++l  +++ ++e  + +  +++l e+l+ +
+  LEPN003c01a_008040   4 QELKKKIVNTISqYEHKCDKMQSQINTLRSVINQLI-INPIGINYELDDRLSQLRNYLDTEFEPAVIEkKVKRLAEILSKM 83 
+                         6788999999999999****************9995.57899999889999999999999999888777888888877655 PP
+
+  == domain 2  score: 16.7 bits;  conditional E-value: 2.3e-07
+           TIGR01866 134 KavgikieteedtlleklveylkileellkkkililvNvssyLtkeeleelieyikytkikvlliEnseieskeq 208
+                         K  + +i+ ++++ l++l++ l+i ++l++k+ +i +N+++ Lt+eel+ +i+  ++  ++ +++E  +++ + q
+  LEPN003c01a_008040 167 KSYQSEISLKVNDSLQQLLNHLSIPQDLDSKRGVIKTNLEHALTDEELSTIIDNLTELVVESFNVEQNRFKGFLQ 241
+                         77778899999*******************************************************998887665 PP
+
+  == domain 3  score: -1.4 bits;  conditional E-value: 0.079
+           TIGR01866  57 eiekeielitdvlnldindkkllkkiykkleeeitdeelrekiqelksqlveli 110
+                         +++++i +i+d l+   +++k+ ++ y+k  +e++   ++++ ++  +++++l+
+  LEPN003c01a_008040 298 KVSQNIKMIGDRLKEYRHNEKIREEEYAKQVSELQ--ARLQESEQNAEEIKNLL 349
+                         45556666666666666666666655555555554..44444444444455544 PP
+
+
+
+Internal pipeline statistics summary:
+-------------------------------------
+Query model(s):                              1  (222 nodes)
+Target sequences:                         7219  (2337224 residues searched)
+Passed MSV filter:                       336  (0.0465438); expected 144.4 (0.02)
+Passed bias filter:                      141  (0.0195318); expected 144.4 (0.02)
+Passed Vit filter:                        11  (0.00152376); expected 7.2 (0.001)
+Passed Fwd filter:                         1  (0.000138523); expected 0.1 (1e-05)
+Initial search space (Z):               7219  [actual number of targets]
+Domain search space  (domZ):               1  [number of targets reported over threshold]
+# CPU time: 0.06u 0.00s 00:00:00.06 Elapsed: 00:00:00.06
+# Mc/sec: 8647.73
+//
+[ok]

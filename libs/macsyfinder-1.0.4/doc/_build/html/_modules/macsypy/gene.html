@@ -1,0 +1,666 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>macsypy.gene &#8212; MacSyFinder 1.0.4 documentation</title>
+    <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.0.4',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+  </head>
+  <body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">MacSyFinder documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for macsypy.gene</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+
+<span class="c1">################################################################################</span>
+<span class="c1"># MacSyFinder - Detection of macromolecular systems in protein datasets        #</span>
+<span class="c1">#               using systems modelling and similarity search.                 #</span>
+<span class="c1"># Authors: Sophie Abby, Bertrand Néron                                         #</span>
+<span class="c1"># Copyright © 2014  Institut Pasteur (Paris) and CNRS.                         #</span>
+<span class="c1"># See the COPYRIGHT file for details                                           #</span>
+<span class="c1">#                                                                              #</span>
+<span class="c1"># MacsyFinder is distributed under the terms of the GNU General Public License #</span>
+<span class="c1"># (GPLv3). See the COPYING file for details.                                   #</span>
+<span class="c1">################################################################################</span>
+
+
+
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="n">_log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s1">&#39;macsyfinder.&#39;</span> <span class="o">+</span> <span class="vm">__name__</span><span class="p">)</span>
+
+<span class="kn">from</span> <span class="nn">subprocess</span> <span class="k">import</span> <span class="n">Popen</span>
+<span class="kn">from</span> <span class="nn">threading</span> <span class="k">import</span> <span class="n">Lock</span>
+<span class="kn">from</span> <span class="nn">.report</span> <span class="k">import</span> <span class="n">GembaseHMMReport</span><span class="p">,</span> <span class="n">GeneralHMMReport</span><span class="p">,</span> <span class="n">OrderedHMMReport</span>
+<span class="kn">from</span> <span class="nn">.macsypy_error</span> <span class="k">import</span> <span class="n">MacsypyError</span>
+
+
+<div class="viewcode-block" id="GeneBank"><a class="viewcode-back" href="../../gene.html#macsypy.gene.GeneBank">[docs]</a><span class="k">class</span> <span class="nc">GeneBank</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Store all Gene objects. Ensure that genes are instanciated only once.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">_genes_bank</span> <span class="o">=</span> <span class="p">{}</span>
+
+<div class="viewcode-block" id="GeneBank.__getitem__"><a class="viewcode-back" href="../../gene.html#macsypy.gene.GeneBank.__getitem__">[docs]</a>    <span class="k">def</span> <span class="nf">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param name: the name of the Gene</span>
+<span class="sd">        :type name: string</span>
+<span class="sd">        :return: return the Gene corresponding to the name.</span>
+<span class="sd">          If the Gene already exists, return it, otherwise, build it and return it</span>
+<span class="sd">        :rtype: :class:`macsypy.gene.Gene` object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_genes_bank</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_genes_bank</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="n">name</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="GeneBank.__contains__"><a class="viewcode-back" href="../../gene.html#macsypy.gene.GeneBank.__contains__">[docs]</a>    <span class="k">def</span> <span class="nf">__contains__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gene</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Implement the membership test operator</span>
+
+<span class="sd">        :param gene: the gene to test</span>
+<span class="sd">        :type gene: :class:`macsypy.gene.Gene` object</span>
+<span class="sd">        :return: True if the gene is in, False otherwise</span>
+<span class="sd">        :rtype: boolean</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">gene</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_genes_bank</span><span class="o">.</span><span class="n">values</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="GeneBank.__iter__"><a class="viewcode-back" href="../../gene.html#macsypy.gene.GeneBank.__iter__">[docs]</a>    <span class="k">def</span> <span class="nf">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return an iterator object on the genes contained in the bank</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_genes_bank</span><span class="o">.</span><span class="n">itervalues</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="GeneBank.add_gene"><a class="viewcode-back" href="../../gene.html#macsypy.gene.GeneBank.add_gene">[docs]</a>    <span class="k">def</span> <span class="nf">add_gene</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gene</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Add a gene in the bank</span>
+
+<span class="sd">        :param gene: the gene to add</span>
+<span class="sd">        :type gene: :class:`macsypy.gene.Gene` object</span>
+<span class="sd">        :raise: KeyError if a gene with the same name is already registered</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">gene</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_genes_bank</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="s2">&quot;a gene named </span><span class="si">{0}</span><span class="s2"> is already registered&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">gene</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_genes_bank</span><span class="p">[</span><span class="n">gene</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">gene</span></div></div>
+
+<span class="n">gene_bank</span> <span class="o">=</span> <span class="n">GeneBank</span><span class="p">()</span>
+
+
+<div class="viewcode-block" id="Gene"><a class="viewcode-back" href="../../gene.html#macsypy.gene.Gene">[docs]</a><span class="k">class</span> <span class="nc">Gene</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Handle Gene of a (secretion) System</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="Gene.__init__"><a class="viewcode-back" href="../../gene.html#macsypy.gene.Gene.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cfg</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span>
+                 <span class="n">system</span><span class="p">,</span>
+                 <span class="n">profiles_registry</span><span class="p">,</span>
+                 <span class="n">loner</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                 <span class="n">exchangeable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                 <span class="n">multi_system</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                 <span class="n">inter_gene_max_space</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        handle gene</span>
+
+<span class="sd">        :param cfg: the configuration object. </span>
+<span class="sd">        :type cfg: :class:`macsypy.config.Config` object</span>
+<span class="sd">        :param name: the name of the Gene.</span>
+<span class="sd">        :type name: string.</span>
+<span class="sd">        :param system: the system that owns this Gene</span>
+<span class="sd">        :type system: :class:`macsypy.system.System` object.</span>
+<span class="sd">        :param profiles_registry: where all the paths profiles where register.</span>
+<span class="sd">        :type profiles_registry: :class:`macsypy.registries.ProfilesRegistry` object.</span>
+<span class="sd">        :param loner: True if the Gene can be isolated on the genome (with no contiguous genes), False otherwise.</span>
+<span class="sd">        :type loner: boolean.</span>
+<span class="sd">        :param exchangeable: True if this Gene can be replaced with one of its homologs or analogs</span>
+<span class="sd">          without any effects on the system assessment, False otherwise.</span>
+<span class="sd">        :type exchangeable: boolean.</span>
+<span class="sd">        :param multi_system: True if this Gene can belong to different occurrences of this System. </span>
+<span class="sd">        :type multi_system: boolean.</span>
+<span class="sd">        :param inter_gene_max_space: the maximum space between this Gene and another gene of the System.</span>
+<span class="sd">        :type inter_gene_max_space: integer</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span> 
+        <span class="bp">self</span><span class="o">.</span><span class="n">profile</span> <span class="o">=</span> <span class="n">profile_factory</span><span class="o">.</span><span class="n">get_profile</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cfg</span><span class="p">,</span> <span class="n">profiles_registry</span><span class="p">)</span>
+        <span class="sd">&quot;&quot;&quot;:ivar profile: The HMM protein Profile corresponding to this gene :class:`macsypy.gene.Profile` object&quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">homologs</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">analogs</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_system</span> <span class="o">=</span> <span class="n">system</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_loner</span> <span class="o">=</span> <span class="n">loner</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_exchangeable</span> <span class="o">=</span> <span class="n">exchangeable</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_multi_system</span> <span class="o">=</span> <span class="n">multi_system</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_inter_gene_max_space</span> <span class="o">=</span> <span class="n">inter_gene_max_space</span></div>
+
+
+<div class="viewcode-block" id="Gene.__str__"><a class="viewcode-back" href="../../gene.html#macsypy.gene.Gene.__str__">[docs]</a>    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Print the name of the gene and of its homologs/analogs.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="s2">&quot;name : </span><span class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="n">s</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">inter_gene_max_space: </span><span class="si">{:d}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">inter_gene_max_space</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">loner</span><span class="p">:</span>
+            <span class="n">s</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">loner&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">multi_system</span><span class="p">:</span>
+            <span class="n">s</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">multi_system&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">exchangeable</span><span class="p">:</span>
+            <span class="n">s</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">exchangeable&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">homologs</span><span class="p">:</span>
+            <span class="n">s</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">    homologs: &quot;</span>
+            <span class="k">for</span> <span class="n">h</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">homologs</span><span class="p">:</span>
+                <span class="n">s</span> <span class="o">+=</span> <span class="n">h</span><span class="o">.</span><span class="n">name</span> <span class="o">+</span> <span class="s2">&quot;, &quot;</span>
+            <span class="n">s</span> <span class="o">=</span> <span class="n">s</span><span class="p">[:</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">analogs</span><span class="p">:</span>
+            <span class="n">s</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">    analogs: &quot;</span>
+            <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">analogs</span><span class="p">:</span>
+                <span class="n">s</span> <span class="o">+=</span> <span class="n">a</span><span class="o">.</span><span class="n">name</span> <span class="o">+</span> <span class="s2">&quot;, &quot;</span>
+            <span class="n">s</span> <span class="o">=</span> <span class="n">s</span><span class="p">[:</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">s</span></div>
+
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">system</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :return: the System that owns this Gene</span>
+<span class="sd">        :rtype: :class:`macsypy.system.System` object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_system</span>
+
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">loner</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :return: True if the gene can be isolated on the genome, False otherwise</span>
+<span class="sd">        :rtype: boolean</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_loner</span>
+
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">exchangeable</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :return: True if this gene can be replaced with one of its homologs or analogs whithout any effects on the system, False otherwise.</span>
+<span class="sd">        :rtype: boolean.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_exchangeable</span>
+
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">multi_system</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :return: True if this Gene can belong to different occurrences of **this System** (and can be used for multiple System assessments), False otherwise.</span>
+<span class="sd">        :rtype: boolean.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_multi_system</span>
+
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">inter_gene_max_space</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :return: The maximum distance allowed between this gene and another gene for them to be considered co-localized. </span>
+<span class="sd">                 If the value is not set at the Gene level, return the value set at the System level.</span>
+<span class="sd">        :rtype: integer.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inter_gene_max_space</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inter_gene_max_space</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_system</span><span class="o">.</span><span class="n">inter_gene_max_space</span>
+
+
+<div class="viewcode-block" id="Gene.add_homolog"><a class="viewcode-back" href="../../gene.html#macsypy.gene.Gene.add_homolog">[docs]</a>    <span class="k">def</span> <span class="nf">add_homolog</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">homolog</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Add a homolog gene to the Gene</span>
+
+<span class="sd">        :param homolog: homolog to add</span>
+<span class="sd">        :type homolog:  :class:`macsypy.gene.Homolog` object </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">homologs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">homolog</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Gene.get_homologs"><a class="viewcode-back" href="../../gene.html#macsypy.gene.Gene.get_homologs">[docs]</a>    <span class="k">def</span> <span class="nf">get_homologs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :return: the Gene homologs</span>
+<span class="sd">        :type: list of :class:`macsypy.gene.Homolog` object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">homologs</span></div>
+
+<div class="viewcode-block" id="Gene.add_analog"><a class="viewcode-back" href="../../gene.html#macsypy.gene.Gene.add_analog">[docs]</a>    <span class="k">def</span> <span class="nf">add_analog</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">analog</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Add an analogous gene to the Gene</span>
+
+<span class="sd">        :param analog: analog to add</span>
+<span class="sd">        :type analog:  :class:`macsypy.gene.Analog` object </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">analogs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">analog</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Gene.get_analogs"><a class="viewcode-back" href="../../gene.html#macsypy.gene.Gene.get_analogs">[docs]</a>    <span class="k">def</span> <span class="nf">get_analogs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :return: the Gene analogs</span>
+<span class="sd">        :type: list of :class:`macsypy.gene.Analog` object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">analogs</span></div>
+
+<div class="viewcode-block" id="Gene.__eq__"><a class="viewcode-back" href="../../gene.html#macsypy.gene.Gene.__eq__">[docs]</a>    <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gene</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :return: True if the gene names (gene.name) are the same, False otherwise.</span>
+<span class="sd">        :param gene: the query of the test</span>
+<span class="sd">        :type gene: :class:`macsypy.gene.Gene` object.</span>
+<span class="sd">        :rtype: boolean.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">gene</span><span class="o">.</span><span class="n">name</span></div>
+
+
+<div class="viewcode-block" id="Gene.is_homolog"><a class="viewcode-back" href="../../gene.html#macsypy.gene.Gene.is_homolog">[docs]</a>    <span class="k">def</span> <span class="nf">is_homolog</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gene</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :return: True if the two genes are homologs, False otherwise.</span>
+<span class="sd">        :param gene: the query of the test</span>
+<span class="sd">        :type gene: :class:`macsypy.gene.Gene` object.</span>
+<span class="sd">        :rtype: boolean.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="bp">self</span> <span class="o">==</span> <span class="n">gene</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">h</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">homologs</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">gene</span> <span class="o">==</span> <span class="n">h</span><span class="o">.</span><span class="n">gene</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+
+<div class="viewcode-block" id="Gene.is_analog"><a class="viewcode-back" href="../../gene.html#macsypy.gene.Gene.is_analog">[docs]</a>    <span class="k">def</span> <span class="nf">is_analog</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gene</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :return: True if the two genes are analogs, False otherwise.</span>
+<span class="sd">        :param gene: the query of the test</span>
+<span class="sd">        :type gene: :class:`macsypy.gene.Gene` object.</span>
+<span class="sd">        :rtype: boolean.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="bp">self</span> <span class="o">==</span> <span class="n">gene</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">h</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">analogs</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">gene</span> <span class="o">==</span> <span class="n">h</span><span class="o">.</span><span class="n">gene</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+
+<div class="viewcode-block" id="Gene.is_mandatory"><a class="viewcode-back" href="../../gene.html#macsypy.gene.Gene.is_mandatory">[docs]</a>    <span class="k">def</span> <span class="nf">is_mandatory</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">system</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :return: True if the gene is within the *mandatory* genes of the system, False otherwise.</span>
+<span class="sd">        :param system: the query of the test</span>
+<span class="sd">        :type system: :class:`macsypy.system.System` object.</span>
+<span class="sd">        :rtype: boolean.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span> <span class="ow">in</span> <span class="n">system</span><span class="o">.</span><span class="n">mandatory_genes</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span></div>
+
+
+<div class="viewcode-block" id="Gene.is_accessory"><a class="viewcode-back" href="../../gene.html#macsypy.gene.Gene.is_accessory">[docs]</a>    <span class="k">def</span> <span class="nf">is_accessory</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">system</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :return: True if the gene is within the *accessory* genes of the system, False otherwise.</span>
+<span class="sd">        :param system: the query of the test</span>
+<span class="sd">        :type system: :class:`macsypy.system.System` object.</span>
+<span class="sd">        :rtype: boolean.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span> <span class="ow">in</span> <span class="n">system</span><span class="o">.</span><span class="n">accessory_genes</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span></div>
+
+
+<div class="viewcode-block" id="Gene.is_forbidden"><a class="viewcode-back" href="../../gene.html#macsypy.gene.Gene.is_forbidden">[docs]</a>    <span class="k">def</span> <span class="nf">is_forbidden</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">system</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :return: True if the gene is within the *forbidden* genes of the system, False otherwise.</span>
+<span class="sd">        :param system: the query of the test</span>
+<span class="sd">        :type system: :class:`macsypy.system.System` object.</span>
+<span class="sd">        :rtype: boolean.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span> <span class="ow">in</span> <span class="n">system</span><span class="o">.</span><span class="n">forbidden_genes</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span></div>
+
+
+<div class="viewcode-block" id="Gene.is_authorized"><a class="viewcode-back" href="../../gene.html#macsypy.gene.Gene.is_authorized">[docs]</a>    <span class="k">def</span> <span class="nf">is_authorized</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">system</span><span class="p">,</span> <span class="n">include_forbidden</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :return: True if the genes are found in the System definition file (.xml), False otherwise.</span>
+<span class="sd">        :param system: the query of the test</span>
+<span class="sd">        :type system: :class:`macsypy.system.System` object.</span>
+<span class="sd">        :param include_forbidden: tells if forbidden genes should be considered as &quot;authorized&quot; or not</span>
+<span class="sd">        :type include_forbidden: boolean</span>
+<span class="sd">        :rtype: boolean.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="k">if</span> <span class="n">include_forbidden</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="p">(</span><span class="n">system</span><span class="o">.</span><span class="n">mandatory_genes</span><span class="o">+</span><span class="n">system</span><span class="o">.</span><span class="n">accessory_genes</span><span class="o">+</span><span class="n">system</span><span class="o">.</span><span class="n">forbidden_genes</span><span class="p">):</span>
+                <span class="k">if</span> <span class="bp">self</span> <span class="o">==</span> <span class="n">m</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="kc">True</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">exchangeable</span> <span class="ow">and</span> <span class="n">m</span><span class="o">.</span><span class="n">is_homolog</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span> <span class="ow">or</span> <span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">exchangeable</span> <span class="ow">and</span> <span class="n">m</span><span class="o">.</span><span class="n">is_analog</span><span class="p">(</span><span class="bp">self</span><span class="p">)):</span>
+                    <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="p">(</span><span class="n">system</span><span class="o">.</span><span class="n">mandatory_genes</span><span class="o">+</span><span class="n">system</span><span class="o">.</span><span class="n">accessory_genes</span><span class="p">):</span>
+                <span class="k">if</span> <span class="bp">self</span> <span class="o">==</span> <span class="n">m</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="kc">True</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">exchangeable</span> <span class="ow">and</span> <span class="n">m</span><span class="o">.</span><span class="n">is_homolog</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span> <span class="ow">or</span> <span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">exchangeable</span> <span class="ow">and</span> <span class="n">m</span><span class="o">.</span><span class="n">is_analog</span><span class="p">(</span><span class="bp">self</span><span class="p">)):</span>
+                    <span class="k">return</span> <span class="kc">True</span> 
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+
+<div class="viewcode-block" id="Gene.get_compatible_systems"><a class="viewcode-back" href="../../gene.html#macsypy.gene.Gene.get_compatible_systems">[docs]</a>    <span class="k">def</span> <span class="nf">get_compatible_systems</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">system_list</span><span class="p">,</span> <span class="n">include_forbidden</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Test every system in system_list for compatibility with the gene using the is_authorized function.</span>
+
+<span class="sd">        :param system_list: a list of system names to test</span>
+<span class="sd">        :type system_list: list of strings        </span>
+<span class="sd">        :param include_forbidden: tells if forbidden genes should be considered as defining a compatible systems or not</span>
+<span class="sd">        :type include_forbidden: boolean</span>
+<span class="sd">        :return: the list of compatible systems</span>
+<span class="sd">        :rtype: list of string, or void list if none compatible</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">compatibles</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">system_list</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_authorized</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">include_forbidden</span><span class="p">):</span>
+                <span class="n">compatibles</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">compatibles</span></div></div>
+
+
+<div class="viewcode-block" id="Homolog"><a class="viewcode-back" href="../../gene.html#macsypy.gene.Homolog">[docs]</a><span class="k">class</span> <span class="nc">Homolog</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Handle homologs, encapsulate a Gene</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="Homolog.__init__"><a class="viewcode-back" href="../../gene.html#macsypy.gene.Homolog.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gene</span><span class="p">,</span> <span class="n">gene_ref</span><span class="p">,</span> <span class="n">aligned</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param gene: the gene</span>
+<span class="sd">        :type gene: :class:`macsypy.gene.Gene` object.</span>
+<span class="sd">        :param gene_ref: the gene to which the current is homolog.</span>
+<span class="sd">        :type gene_ref: :class:`macsypy.gene.Gene` object.</span>
+<span class="sd">        :param aligned: if True, the profile of this gene overlaps totally the sequence of the reference gene profile.</span>
+<span class="sd">                        Otherwise, only partial overlapping between the profiles.</span>
+<span class="sd">        :type aligned: boolean</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gene</span> <span class="o">=</span> <span class="n">gene</span> 
+        <span class="sd">&quot;&quot;&quot;:ivar gene: gene &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">ref</span> <span class="o">=</span> <span class="n">gene_ref</span> 
+        <span class="bp">self</span><span class="o">.</span><span class="n">aligned</span> <span class="o">=</span> <span class="n">aligned</span></div>
+
+    <span class="k">def</span> <span class="nf">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">gene</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Homolog.is_aligned"><a class="viewcode-back" href="../../gene.html#macsypy.gene.Homolog.is_aligned">[docs]</a>    <span class="k">def</span> <span class="nf">is_aligned</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :return: True if this gene homolog is aligned to its homolog, False otherwise.</span>
+<span class="sd">        :rtype: boolean</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">aligned</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">gene_ref</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :return: the gene to which this one is homolog to (reference gene)</span>
+<span class="sd">        :rtype: :class:`macsypy.gene.Gene` object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ref</span></div>
+
+
+<div class="viewcode-block" id="Analog"><a class="viewcode-back" href="../../gene.html#macsypy.gene.Analog">[docs]</a><span class="k">class</span> <span class="nc">Analog</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Handle analogs, encapsulate a Gene</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="Analog.__init__"><a class="viewcode-back" href="../../gene.html#macsypy.gene.Analog.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gene</span><span class="p">,</span> <span class="n">gene_ref</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param gene: the gene</span>
+<span class="sd">        :type gene: :class:`macsypy.gene.Gene` object.</span>
+<span class="sd">        :param gene_ref: the gene to which the current is analog.</span>
+<span class="sd">        :type gene_ref: :class:`macsypy.gene.Gene` object.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gene</span> <span class="o">=</span> <span class="n">gene</span> 
+        <span class="sd">&quot;&quot;&quot;:ivar gene: gene &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">ref</span> <span class="o">=</span> <span class="n">gene_ref</span> </div>
+
+    <span class="k">def</span> <span class="nf">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">gene</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">gene_ref</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :return: the gene to which this one is analog to (reference gene)</span>
+<span class="sd">        :rtype: :class:`macsypy.gene.Gene` object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ref</span></div>
+
+
+<div class="viewcode-block" id="ProfileFactory"><a class="viewcode-back" href="../../profile.html#macsypy.gene.ProfileFactory">[docs]</a><span class="k">class</span> <span class="nc">ProfileFactory</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Build and store all Profile objects. Profiles must not be instanciated directly.</span>
+<span class="sd">    The profile_factory must be used. The profile_factory ensures there is only one instance</span>
+<span class="sd">    of profile for a given name.</span>
+<span class="sd">    To get a profile, use the method get_profile. If the profile is already cached, this instance is returned.</span>
+<span class="sd">    Otherwise a new profile is built, stored in the profile_factory and then returned.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">_profiles</span> <span class="o">=</span> <span class="p">{}</span>
+
+<div class="viewcode-block" id="ProfileFactory.get_profile"><a class="viewcode-back" href="../../profile.html#macsypy.gene.ProfileFactory.get_profile">[docs]</a>    <span class="k">def</span> <span class="nf">get_profile</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gene</span><span class="p">,</span> <span class="n">cfg</span><span class="p">,</span> <span class="n">profiles_registry</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param gene: the gene associated to this profile</span>
+<span class="sd">        :type gene: :class:`macsypy.gene.Gene` or :class:`macsypy.gene.Homolog` or :class:`macsypy.gene.Analog` object</span>
+<span class="sd">        :param profiles_registry: the registry where are stored the path of the profiles</span>
+<span class="sd">        :type profiles_registry: the registry of profiles</span>
+<span class="sd">        :param profiles_registry: :class:`macsypy.registries.ProfilesRegistry` instance.</span>
+<span class="sd">        :return: the profile corresponding to the name.</span>
+<span class="sd">                 If the profile already exists, return it. Otherwise build it, store it and return it.</span>
+<span class="sd">        :rtype: :class:`macsypy.gene.Profile` object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">gene</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_profiles</span><span class="p">:</span>
+            <span class="n">profile</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_profiles</span><span class="p">[</span><span class="n">gene</span><span class="o">.</span><span class="n">name</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">path</span> <span class="o">=</span> <span class="n">profiles_registry</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">gene</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">path</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">MacsypyError</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{0}</span><span class="s2">: No such profile&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">gene</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
+            <span class="n">profile</span> <span class="o">=</span> <span class="n">Profile</span><span class="p">(</span><span class="n">gene</span><span class="p">,</span> <span class="n">cfg</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_profiles</span><span class="p">[</span><span class="n">gene</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">profile</span>
+        <span class="k">return</span> <span class="n">profile</span></div></div>
+
+<span class="n">profile_factory</span> <span class="o">=</span> <span class="n">ProfileFactory</span><span class="p">()</span>
+
+
+<div class="viewcode-block" id="Profile"><a class="viewcode-back" href="../../profile.html#macsypy.gene.Profile">[docs]</a><span class="k">class</span> <span class="nc">Profile</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Handle a HMM protein profile</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="Profile.__init__"><a class="viewcode-back" href="../../profile.html#macsypy.gene.Profile.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gene</span><span class="p">,</span> <span class="n">cfg</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">        :param gene: the gene corresponding to this profile</span>
+<span class="sd">        :type gene_name: :class:`macsypy.secretion.Gene` object</span>
+<span class="sd">        :param cfg: the configuration </span>
+<span class="sd">        :type cfg: :class:`macsypy.config.Config` object</span>
+<span class="sd">        :param path: the path to the hmm profile.</span>
+<span class="sd">        :type path: string</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gene</span> <span class="o">=</span> <span class="n">gene</span> 
+        <span class="bp">self</span><span class="o">.</span><span class="n">path</span> <span class="o">=</span> <span class="n">path</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">len</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_len</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cfg</span> <span class="o">=</span> <span class="n">cfg</span> 
+        <span class="bp">self</span><span class="o">.</span><span class="n">hmm_raw_output</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_report</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_lock</span> <span class="o">=</span> <span class="n">Lock</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Profile.__len__"><a class="viewcode-back" href="../../profile.html#macsypy.gene.Profile.__len__">[docs]</a>    <span class="k">def</span> <span class="nf">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :return: the length of the HMM protein profile</span>
+<span class="sd">        :rtype: int</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">len</span></div>
+
+<div class="viewcode-block" id="Profile._len"><a class="viewcode-back" href="../../profile.html#macsypy.gene.Profile._len">[docs]</a>    <span class="k">def</span> <span class="nf">_len</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Parse the HMM profile file to get and store the length.</span>
+<span class="sd">        This private method is called at the Profile init.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">length</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">f</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">l</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;LENG&quot;</span><span class="p">):</span>
+                    <span class="n">length</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">l</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">1</span><span class="p">])</span>
+                    <span class="k">break</span>
+        <span class="k">return</span> <span class="n">length</span></div>
+
+<div class="viewcode-block" id="Profile.__str__"><a class="viewcode-back" href="../../profile.html#macsypy.gene.Profile.__str__">[docs]</a>    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Print the name of the corresponding gene and the path to the HMM profile.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="s2">&quot;</span><span class="si">{0}</span><span class="s2"> : </span><span class="si">{1}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">gene</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Profile.execute"><a class="viewcode-back" href="../../profile.html#macsypy.gene.Profile.execute">[docs]</a>    <span class="k">def</span> <span class="nf">execute</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Launch the Hmmer search (hmmsearch executable) with this profile</span>
+
+<span class="sd">        :return: an object storing information on th results of the HMM search (HMMReport)</span>
+<span class="sd">        :rtype:  :class:`macsypy.report.HMMReport` object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lock</span><span class="p">:</span>
+            <span class="c1"># the results of HMM is cached </span>
+            <span class="c1"># so HMMsearch is executed only once per run</span>
+            <span class="c1"># if this method is called several times,</span>
+            <span class="c1"># the first call induce the execution of HMMsearch and generate a report</span>
+            <span class="c1"># the other calls return directly this report</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_report</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_report</span>
+            <span class="n">output_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">working_dir</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">hmmer_dir</span><span class="p">,</span>
+                                       <span class="bp">self</span><span class="o">.</span><span class="n">gene</span><span class="o">.</span><span class="n">name</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">res_search_suffix</span><span class="p">)</span>
+            <span class="n">err_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">working_dir</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">hmmer_dir</span><span class="p">,</span>
+                                    <span class="bp">self</span><span class="o">.</span><span class="n">gene</span><span class="o">.</span><span class="n">name</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">res_search_suffix</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;.err&quot;</span><span class="p">)</span>
+
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">err_path</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">err_file</span><span class="p">:</span>
+                <span class="n">options</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;hmmer_exe&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">hmmer_exe</span><span class="p">,</span>
+                           <span class="s2">&quot;output_file&quot;</span><span class="p">:</span> <span class="n">output_path</span><span class="p">,</span>
+                           <span class="s2">&quot;e_value_res&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">e_value_res</span><span class="p">,</span>
+                           <span class="s2">&quot;profile&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span>
+                           <span class="s2">&quot;sequence_db&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">sequence_db</span><span class="p">,</span>
+                           <span class="p">}</span>
+                <span class="n">command</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{hmmer_exe}</span><span class="s2"> --cpu 0 -o </span><span class="si">{output_file}</span><span class="s2"> -E </span><span class="si">{e_value_res:f}</span><span class="s2"> </span><span class="si">{profile}</span><span class="s2"> </span><span class="si">{sequence_db}</span><span class="s2"> &quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">**</span><span class="n">options</span><span class="p">)</span>
+                <span class="n">_log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{0}</span><span class="s2"> Hmmer command line : </span><span class="si">{1}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">gene</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">command</span><span class="p">))</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">hmmer</span> <span class="o">=</span> <span class="n">Popen</span><span class="p">(</span><span class="n">command</span><span class="p">,</span>
+                                  <span class="n">shell</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                                  <span class="n">stdout</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                                  <span class="n">stdin</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                                  <span class="n">stderr</span><span class="o">=</span><span class="n">err_file</span><span class="p">,</span>
+                                  <span class="n">close_fds</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                                 <span class="p">)</span>
+                <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
+                    <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Hmmer execution failed: command = </span><span class="si">{0}</span><span class="s2"> : </span><span class="si">{1}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">command</span><span class="p">,</span> <span class="n">err</span><span class="p">)</span>
+                    <span class="n">_log</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">exc_info</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                    <span class="k">raise</span> <span class="n">err</span>
+
+                <span class="n">hmmer</span><span class="o">.</span><span class="n">wait</span><span class="p">()</span>
+
+            <span class="k">if</span> <span class="n">hmmer</span><span class="o">.</span><span class="n">returncode</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">hmmer</span><span class="o">.</span><span class="n">returncode</span> <span class="o">==</span> <span class="o">-</span><span class="mi">15</span><span class="p">:</span>
+                    <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;the Hmmer execution was aborted: command = </span><span class="si">{0}</span><span class="s2"> : return code = </span><span class="si">{1:d}</span><span class="s2"> check </span><span class="si">{2}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">command</span><span class="p">,</span> <span class="n">hmmer</span><span class="o">.</span><span class="n">returncode</span><span class="p">,</span> <span class="n">err_path</span><span class="p">)</span>
+                    <span class="n">_log</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+                    <span class="k">return</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;an error occurred during Hmmer execution: command = </span><span class="si">{0}</span><span class="s2"> : return code = </span><span class="si">{1:d}</span><span class="s2"> check </span><span class="si">{2}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">command</span><span class="p">,</span> <span class="n">hmmer</span><span class="o">.</span><span class="n">returncode</span><span class="p">,</span> <span class="n">err_path</span><span class="p">)</span>
+                    <span class="n">_log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">exc_info</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                    <span class="n">_log</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+                    <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">hmm_raw_output</span> <span class="o">=</span> <span class="n">output_path</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">db_type</span> <span class="o">==</span> <span class="s1">&#39;gembase&#39;</span><span class="p">:</span>
+                <span class="n">report</span> <span class="o">=</span> <span class="n">GembaseHMMReport</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">gene</span><span class="p">,</span> <span class="n">output_path</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">db_type</span> <span class="o">==</span> <span class="s1">&#39;ordered_replicon&#39;</span><span class="p">:</span>
+                <span class="n">report</span> <span class="o">=</span> <span class="n">OrderedHMMReport</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">gene</span><span class="p">,</span> <span class="n">output_path</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">report</span> <span class="o">=</span> <span class="n">GeneralHMMReport</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">gene</span><span class="p">,</span> <span class="n">output_path</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_report</span> <span class="o">=</span> <span class="n">report</span>
+            <span class="k">return</span> <span class="n">report</span></div></div>
+
+
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">MacSyFinder documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2014, Sophie Abby, Bertrand Néron.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.3.
+    </div>
+  </body>
+</html>

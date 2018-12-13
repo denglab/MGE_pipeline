@@ -1,0 +1,10 @@
+
+
+Building a new DB, current time: 01/19/2018 15:19:31
+New DB name:   /home/shaoting/project/mge_nestle/macsyfinder-1.0.4/data/sequence_data/datatest_gembase.fasta
+New DB title:  datatest_gembase.fasta
+Sequence type: Protein
+Keep Linkouts: T
+Keep MBits: T
+Maximum file size: 1000000000B
+Adding sequences from FASTA; added 7219 sequences in 0.269356 seconds.

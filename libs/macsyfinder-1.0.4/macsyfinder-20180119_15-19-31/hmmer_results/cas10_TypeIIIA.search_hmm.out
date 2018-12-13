@@ -1,0 +1,66 @@
+# hmmsearch :: search profile(s) against a sequence database
+# HMMER 3.1b1 (May 2013); http://hmmer.org/
+# Copyright (C) 2013 Howard Hughes Medical Institute.
+# Freely distributed under the GNU General Public License (GPLv3).
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# query HMM file:                  /usr/local/share/macsyfinder/profiles/cas10_TypeIIIA.hmm
+# target sequence database:        /home/shaoting/project/mge_nestle/macsyfinder-1.0.4/data/sequence_data/datatest_gembase.fasta
+# output directed to file:         /home/shaoting/project/mge_nestle/macsyfinder-1.0.4/macsyfinder-20180119_15-19-31/hmmer_results/cas10_TypeIIIA.search_hmm.out
+# sequence reporting threshold:    E-value <= 1
+# number of worker threads:        0
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+Query:       TIGR02578  [M=650]
+Accession:   TIGR02578
+Description: cas_TM1811_Csm1: CRISPR-associated protein Cas10/Csm1, subtype III-A/MTUBE
+Scores for complete sequences (score includes all domains):
+   --- full sequence ---   --- best 1 domain ---    -#dom-
+    E-value  score  bias    E-value  score  bias    exp  N  Sequence           Description
+    ------- ------ -----    ------- ------ -----   ---- --  --------           -----------
+  ------ inclusion threshold ------
+      0.045   11.1   2.7       0.68    7.2   0.0    2.7  3  ESCO001c01a_015070  C ATG TAG 1563782 1565164 Valid dosC 1383
+
+
+Domain annotation for each sequence (and alignments):
+>> ESCO001c01a_015070  C ATG TAG 1563782 1565164 Valid dosC 1383 _b1490_NP_416007.3_ b1490 1 1563782 1565164 | diguanyla
+   #    score  bias  c-Evalue  i-Evalue hmmfrom  hmm to    alifrom  ali to    envfrom  env to     acc
+ ---   ------ ----- --------- --------- ------- -------    ------- -------    ------- -------    ----
+   1 ?   -2.3   0.1      0.07     5e+02     473     528 ..     132     190 ..     121     197 .. 0.64
+   2 ?    3.0   0.2    0.0017        13     256     285 ..     242     272 ..     235     289 .. 0.79
+   3 ?    7.2   0.0   9.4e-05      0.68     305     373 ..     374     447 ..     356     452 .. 0.57
+
+  Alignments for each domain:
+  == domain 1  score: -2.3 bits;  conditional E-value: 0.07
+           TIGR02578 473 egelireysrdeknarr.ivasellilekeikkdesalkelsekalgee..gekklgvL 528
+                         e+ +++++s + ++ +   +   + +++    k++++++ +s+ + +ee  + +++ +L
+  ESCO001c01a_015070 132 EKLQVYHFSINSIDIAMeVMTRAFTFSDSSASKEDENYRIFSLLENAEEekERQIASIL 190
+                         56678888888888554045556778888888888888888864444442244444455 PP
+
+  == domain 2  score: 3.0 bits;  conditional E-value: 0.0017
+           TIGR02578 256 IQdF..IfritskkalksLrGRSfyieLlaev 285
+                         IQdF  If++t  + ++ L  RS+++++l ++
+  ESCO001c01a_015070 242 IQDFdgIFNQTM-RNTRNLNNRSLRVKFLLQI 272
+                         999999***986.679***********99764 PP
+
+  == domain 3  score: 7.2 bits;  conditional E-value: 9.4e-05
+           TIGR02578 305 agGkfllllpnteear....leklreeieeellkefrg.elslkiasdaesendlenfakllkklseklekkKk 373
+                         +g++f+++l    e++     e++r++ e++ lk  +g +++l ++  a+  n   +++ l++   e+l  +K+
+  ESCO001c01a_015070 374 GGDEFIIVLTEASENEtlrtAERIRSRVEKTKLKAANGeDIALSLSIGAAMFNGHPDYERLIQIADEALYIAKR 447
+                         55555555555555555444455555555555555544455555555555555555555555555555544444 PP
+
+
+
+Internal pipeline statistics summary:
+-------------------------------------
+Query model(s):                              1  (650 nodes)
+Target sequences:                         7219  (2337224 residues searched)
+Passed MSV filter:                       307  (0.0425267); expected 144.4 (0.02)
+Passed bias filter:                      174  (0.0241031); expected 144.4 (0.02)
+Passed Vit filter:                        20  (0.00277047); expected 7.2 (0.001)
+Passed Fwd filter:                         1  (0.000138523); expected 0.1 (1e-05)
+Initial search space (Z):               7219  [actual number of targets]
+Domain search space  (domZ):               1  [number of targets reported over threshold]
+# CPU time: 0.14u 0.00s 00:00:00.14 Elapsed: 00:00:00.13
+# Mc/sec: 11686.12
+//
+[ok]

@@ -1,0 +1,109 @@
+# hmmsearch :: search profile(s) against a sequence database
+# HMMER 3.1b1 (May 2013); http://hmmer.org/
+# Copyright (C) 2013 Howard Hughes Medical Institute.
+# Freely distributed under the GNU General Public License (GPLv3).
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# query HMM file:                  /usr/local/share/macsyfinder/profiles/cas1_TypeID.hmm
+# target sequence database:        /home/shaoting/project/mge_nestle/macsyfinder-1.0.4/data/sequence_data/datatest_gembase.fasta
+# output directed to file:         /home/shaoting/project/mge_nestle/macsyfinder-1.0.4/macsyfinder-20180119_15-19-31/hmmer_results/cas1_TypeID.search_hmm.out
+# sequence reporting threshold:    E-value <= 1
+# number of worker threads:        0
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+Query:       TIGR04093  [M=334]
+Accession:   TIGR04093
+Description: cas1_CYANO: CRISPR-associated endonuclease Cas1, subtype CYANO
+Scores for complete sequences (score includes all domains):
+   --- full sequence ---   --- best 1 domain ---    -#dom-
+    E-value  score  bias    E-value  score  bias    exp  N  Sequence           Description
+    ------- ------ -----    ------- ------ -----   ---- --  --------           -----------
+    6.1e-63  211.4   0.0    7.6e-63  211.1   0.0    1.0  1  HAMA001p04a_000500  D ATG TAA 45291 46283 Valid cas1 993 _pNG
+    2.1e-39  134.0   0.0    2.6e-39  133.7   0.0    1.1  1  LEPN003c01a_001570  D ATG TAA 187946 188938 Valid lpp0161 993
+     0.0011   16.7   0.0      0.002   15.8   0.0    1.4  2  ESCO001c01a_027780  C ATG TGA 2876877 2877794 Valid ygbT 918 
+
+
+Domain annotation for each sequence (and alignments):
+>> HAMA001p04a_000500  D ATG TAA 45291 46283 Valid cas1 993 _pNG4053_YP_134132.1_ pNG4053 1 45291 46283 | CRISPR-associa
+   #    score  bias  c-Evalue  i-Evalue hmmfrom  hmm to    alifrom  ali to    envfrom  env to     acc
+ ---   ------ ----- --------- --------- ------- -------    ------- -------    ------- -------    ----
+   1 !  211.1   0.0   3.2e-66   7.6e-63      11     331 ..      12     326 ..       5     328 .. 0.93
+
+  Alignments for each domain:
+  == domain 1  score: 211.1 bits;  conditional E-value: 3.2e-66
+           TIGR04093  11 liskdeeellvveipedgeekivsvPlekvetivvlGeitlttsalaellekkivihflsklGkykGslvPeltrn.tllrlaqyraaeek 100
+                          + ++++++ +v     ++++++ +P+e+ e + + G+i   t +++ l++ ++ ih +  +  y Gs++Pe  +   +  + q ra  ++
+  HAMA001p04a_000500  12 RLERHNDTIRLV----TEDGEKKYLPIENAEALFLHGQIDYNTRLVSFLNDVGVAIHVFGWNDYYAGSIMPERGQTsGQTLVEQVRAYDDS 98 
+                         555666666666....455667789**********************************************98765168899********* PP
+
+           TIGR04093 101 eqrleiareivkgklknsrtlllRrsrkesedtlidsisdieelvkrldkknsldslrGleGeaaaiYfeclsdllndewsfekRsrRPPt 191
+                          +r +iar++++g ++n+r+ ++  + +    ++   i+++e  ++ l+++ + ++l G+e +a ++Y+++++d+l+d ++f +R+  PP 
+  HAMA001p04a_000500  99 TRRRAIARQFIEGSIHNMRANVKYYDDR--GYDFDAIIDRLEAQAESLSDEMDTNELMGVEATARKAYYSIFDDVLPDGFDFGGRQYNPPD 187
+                         *******************999877666..58999999***************************************************** PP
+
+           TIGR04093 192 DpvnaLLsygYallksevlsalrivglDPyiGflhedryGrPaLaLDlleeFRPiivDavvlsllnkkllkkkdFqeelgavrLkkealkl 282
+                         ++vn+L+s+g +l+  +v+sa+r   lDP + flhe    r +LaLD+ + F+P+++D ++ +++n++ l+ +dF+++l++  L+++++k+
+  HAMA001p04a_000500 188 NEVNSLISFGNSLVYANVVSAIRATALDPAVSFLHEPGERRYSLALDIADLFKPLLADRIIFRVVNRNQLQLDDFESDLNGCLLNENGRKT 278
+                         ******************************************************************************************* PP
+
+           TIGR04093 283 fLtkfeekleeelkhPifkykvsyrraielqarllakaltgeikeYepl 331
+                         f ++fee le+ + hP++++kvsy+  +++    l+k+l  +  eY p+
+  HAMA001p04a_000500 279 FSKAFEESLEQTVDHPRLNRKVSYQYLLRVEVYKLKKHLLTGE-EYVPF 326
+                         **************************************98764.58887 PP
+
+>> LEPN003c01a_001570  D ATG TAA 187946 188938 Valid lpp0161 993 _YP_122508.1_ lpp0161 1 187946 188938 | hypothetical pr
+   #    score  bias  c-Evalue  i-Evalue hmmfrom  hmm to    alifrom  ali to    envfrom  env to     acc
+ ---   ------ ----- --------- --------- ------- -------    ------- -------    ------- -------    ----
+   1 !  133.7   0.0   1.1e-42   2.6e-39       5     256 ..       6     264 ..       2     289 .. 0.84
+
+  Alignments for each domain:
+  == domain 1  score: 133.7 bits;  conditional E-value: 1.1e-42
+           TIGR04093   5 lteedaliskdeeellvveipedgeekivsvPlekvetivvlGe.itlttsalaellekkivihflsklGkykGslvPeltrntllrlaqy 94 
+                         l+e+ ++ + + e++lv     ++++ + +  l++++ti ++ + +tlt+++l  +  ++i+i  l+++Gk + sl+  l r + +r +q+
+  LEPN003c01a_001570   6 LSEQGSFCKLQGERILVF----NKDQMVFEGTLNRLKTISIVKQgVTLTSNLLVACAMRGIQIFILDYSGKAVCSLQGGLHRTAKVRESQF 92 
+                         667755555555666655....56778889999*****98765439********************************************* PP
+
+           TIGR04093  95 raaeekeqrleiareivkgklknsrtlllRrsrkesedtlidsi.....sdieelvkrldkkn..sld....slrGleGeaaaiYfeclsd 174
+                         ++  +ke   ++a +++ +k+k + ++l+ + + ++ ++  + i     +++  +v++++++n  +l+     l+G+eG aa+iY+e  ++
+  LEPN003c01a_001570  93 KYIYTKEA-SNMAARFILAKIKKQSAVLKYFAKAKNRPENEKIIlhaasQKMAGIVANITETNwiKLQdwrfTLLGFEGSAARIYWETVKE 182
+                         **988765.5788889**********9987666555544444444444689999*****9999774542223699***************9 PP
+
+           TIGR04093 175 llndewsfekRsrRPPtDpvnaLLsygYallksevlsalrivglDPyiGflhedryGrPaLaLDlleeFRPiivDavvlsll 256
+                         +     +fe+R+ R  +D  n++L y+Y++l s v  a+  +gl+ y G+lh+++ G+P+L+LDl+eeFRP  +D ++ +l 
+  LEPN003c01a_001570 183 VNLVCSDFEGRRPRVNKDITNSMLNYAYSILSSWVWQAITNAGLELYAGILHTSKPGKPSLVLDLMEEFRPWCADRIIFKLH 264
+                         98888899*******************************************************************9998764 PP
+
+>> ESCO001c01a_027780  C ATG TGA 2876877 2877794 Valid ygbT 918 _b2755_NP_417235.1_ b2755 1 2876877 2877794 | multifunct
+   #    score  bias  c-Evalue  i-Evalue hmmfrom  hmm to    alifrom  ali to    envfrom  env to     acc
+ ---   ------ ----- --------- --------- ------- -------    ------- -------    ------- -------    ----
+   1 ?   -2.1   0.0      0.22   5.4e+02      28     110 ..      37     119 ..      21     126 .. 0.73
+   2 !   15.8   0.0   8.2e-07     0.002     150     231 ..     130     210 ..      95     229 .. 0.82
+
+  Alignments for each domain:
+  == domain 1  score: -2.1 bits;  conditional E-value: 0.22
+           TIGR04093  28 geekivsvPlekvetivvlGeitlttsalaellekkivihflsklG.kykGslvPeltrntllrlaqyraaeekeqrleiarei 110
+                         +++  +++P+  v  i++   + ++ +a++ + + +  + ++ + G +   s +P   r   l l q + a +++ rl+++r++
+  ESCO001c01a_027780  37 KTGIRTHIPVGSVACIMLEPGTRVSHAAVRLAAQVGTLLVWVGEAGvRVYASGQPGGARSDKL-LYQAKLALDEDLRLKVVRKM 119
+                         445556799999999999988899999999888888888888888845566777776666554.45667777777788887776 PP
+
+  == domain 2  score: 15.8 bits;  conditional E-value: 8.2e-07
+           TIGR04093 150 kknsldslrGleGeaaaiYfeclsdllndewsfekRsrRPPt....DpvnaLLsygYallksevlsalrivglDPyiGflhedryG 231
+                          + s+++lrG+eG   ++ +++l +     w+  +R+  P      D +n  +s + + l     +a+  +g+ P iGf+h+   G
+  ESCO001c01a_027780 130 ARRSVEQLRGIEGSRVRATYALLAKQYGVTWN--GRRYDPKDwekgDTINQCISAATSCLYGVTEAAILAAGYAPAIGFVHT---G 210
+                         4568******************9998877765..6655554222339**********************************6...4 PP
+
+
+
+Internal pipeline statistics summary:
+-------------------------------------
+Query model(s):                              1  (334 nodes)
+Target sequences:                         7219  (2337224 residues searched)
+Passed MSV filter:                       221  (0.0306137); expected 144.4 (0.02)
+Passed bias filter:                      156  (0.0216096); expected 144.4 (0.02)
+Passed Vit filter:                        11  (0.00152376); expected 7.2 (0.001)
+Passed Fwd filter:                         3  (0.00041557); expected 0.1 (1e-05)
+Initial search space (Z):               7219  [actual number of targets]
+Domain search space  (domZ):               3  [number of targets reported over threshold]
+# CPU time: 0.08u 0.00s 00:00:00.08 Elapsed: 00:00:00.08
+# Mc/sec: 9757.91
+//
+[ok]

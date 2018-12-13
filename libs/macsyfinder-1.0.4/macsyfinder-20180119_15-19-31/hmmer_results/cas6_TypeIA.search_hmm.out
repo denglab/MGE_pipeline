@@ -1,0 +1,52 @@
+# hmmsearch :: search profile(s) against a sequence database
+# HMMER 3.1b1 (May 2013); http://hmmer.org/
+# Copyright (C) 2013 Howard Hughes Medical Institute.
+# Freely distributed under the GNU General Public License (GPLv3).
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# query HMM file:                  /usr/local/share/macsyfinder/profiles/cas6_TypeIA.hmm
+# target sequence database:        /home/shaoting/project/mge_nestle/macsyfinder-1.0.4/data/sequence_data/datatest_gembase.fasta
+# output directed to file:         /home/shaoting/project/mge_nestle/macsyfinder-1.0.4/macsyfinder-20180119_15-19-31/hmmer_results/cas6_TypeIA.search_hmm.out
+# sequence reporting threshold:    E-value <= 1
+# number of worker threads:        0
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+Query:       TIGR02807  [M=197]
+Accession:   TIGR02807
+Description: cas6_var: CRISPR-associated protein Cas6, subtype MYXAN
+Scores for complete sequences (score includes all domains):
+   --- full sequence ---   --- best 1 domain ---    -#dom-
+    E-value  score  bias    E-value  score  bias    exp  N  Sequence           Description
+    ------- ------ -----    ------- ------ -----   ---- --  --------           -----------
+  ------ inclusion threshold ------
+      0.024   13.2   0.0      0.031   12.8   0.0    1.2  1  LEPN003c01a_014920  D ATG TAA 1670678 1671100 Valid lpp1497 4
+
+
+Domain annotation for each sequence (and alignments):
+>> LEPN003c01a_014920  D ATG TAA 1670678 1671100 Valid lpp1497 423 _YP_123821.1_ lpp1497 1 1670678 1671100 | hypothetica
+   #    score  bias  c-Evalue  i-Evalue hmmfrom  hmm to    alifrom  ali to    envfrom  env to     acc
+ ---   ------ ----- --------- --------- ------- -------    ------- -------    ------- -------    ----
+   1 ?   12.8   0.0   4.3e-06     0.031      69     116 ..      61     110 ..      56     130 .. 0.88
+
+  Alignments for each domain:
+  == domain 1  score: 12.8 bits;  conditional E-value: 4.3e-06
+           TIGR02807  69 veavplvlpLagksLdiaghk..vrlgapkiralePasslkarlvtikha 116
+                         +e  ++vl+L+g+sL+i +++  v++g+ k ++l+ a+ l+ +l+ i++ 
+  LEPN003c01a_014920  61 KEDAQTVLSLIGESLQIPQEQqfVEIGSVKEHILNKAKDLNCQLIIIGSH 110
+                         678899***********8765459*********************99876 PP
+
+
+
+Internal pipeline statistics summary:
+-------------------------------------
+Query model(s):                              1  (197 nodes)
+Target sequences:                         7219  (2337224 residues searched)
+Passed MSV filter:                       170  (0.023549); expected 144.4 (0.02)
+Passed bias filter:                      132  (0.0182851); expected 144.4 (0.02)
+Passed Vit filter:                        10  (0.00138523); expected 7.2 (0.001)
+Passed Fwd filter:                         1  (0.000138523); expected 0.1 (1e-05)
+Initial search space (Z):               7219  [actual number of targets]
+Domain search space  (domZ):               1  [number of targets reported over threshold]
+# CPU time: 0.08u 0.00s 00:00:00.08 Elapsed: 00:00:00.07
+# Mc/sec: 6577.62
+//
+[ok]

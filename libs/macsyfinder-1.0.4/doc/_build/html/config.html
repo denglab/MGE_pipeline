@@ -1,0 +1,609 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Configuration API &#8212; MacSyFinder 1.0.4 documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0.4',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Database API" href="database.html" />
+    <link rel="prev" title="MacSyFinder functioning" href="functioning.html" /> 
+  </head>
+  <body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="database.html" title="Database API"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="functioning.html" title="MacSyFinder functioning"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">MacSyFinder documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="configuration-api">
+<span id="config"></span><h1>Configuration API<a class="headerlink" href="#configuration-api" title="Permalink to this headline">¶</a></h1>
+<p>Options to run MacSyFinder can be specified in a <a class="reference internal" href="input.html#config-definition-label"><span class="std std-ref">Configuration file</span></a>. The API described below handles all configuration options for MacSyFinder. The Config object provides some default values, and performs some validations of the values.</p>
+<div class="section" id="module-macsypy.config">
+<span id="config-api-reference"></span><h2>Config API reference<a class="headerlink" href="#module-macsypy.config" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="macsypy.config.Config">
+<em class="property">class </em><code class="descclassname">macsypy.config.</code><code class="descname">Config</code><span class="sig-paren">(</span><em>cfg_file=''</em>, <em>sequence_db=None</em>, <em>db_type=None</em>, <em>replicon_topology=None</em>, <em>topology_file=None</em>, <em>inter_gene_max_space=None</em>, <em>min_mandatory_genes_required=None</em>, <em>min_genes_required=None</em>, <em>max_nb_genes=None</em>, <em>multi_loci=None</em>, <em>hmmer_exe=None</em>, <em>index_db_exe=None</em>, <em>e_value_res=None</em>, <em>i_evalue_sel=None</em>, <em>coverage_profile=None</em>, <em>def_dir=None</em>, <em>res_search_dir=None</em>, <em>res_search_suffix=None</em>, <em>profile_dir=None</em>, <em>profile_suffix=None</em>, <em>res_extract_suffix=None</em>, <em>out_dir=None</em>, <em>log_level=None</em>, <em>log_file=None</em>, <em>worker_nb=None</em>, <em>config_file=None</em>, <em>previous_run=None</em>, <em>build_indexes=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/macsypy/config.html#Config"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.config.Config" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse configuration files and handle the configuration according to the following file location precedence:
+/etc/macsyfinder/macsyfinder.conf &lt; ~/.macsyfinder/macsyfinder.conf &lt; .macsyfinder.conf</p>
+<p>If a configuration file is given on the command-line, this file will be used.
+<em>In fine</em> the arguments passed on the command-line have the highest priority.</p>
+<dl class="method">
+<dt id="macsypy.config.Config.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>cfg_file=''</em>, <em>sequence_db=None</em>, <em>db_type=None</em>, <em>replicon_topology=None</em>, <em>topology_file=None</em>, <em>inter_gene_max_space=None</em>, <em>min_mandatory_genes_required=None</em>, <em>min_genes_required=None</em>, <em>max_nb_genes=None</em>, <em>multi_loci=None</em>, <em>hmmer_exe=None</em>, <em>index_db_exe=None</em>, <em>e_value_res=None</em>, <em>i_evalue_sel=None</em>, <em>coverage_profile=None</em>, <em>def_dir=None</em>, <em>res_search_dir=None</em>, <em>res_search_suffix=None</em>, <em>profile_dir=None</em>, <em>profile_suffix=None</em>, <em>res_extract_suffix=None</em>, <em>out_dir=None</em>, <em>log_level=None</em>, <em>log_file=None</em>, <em>worker_nb=None</em>, <em>config_file=None</em>, <em>previous_run=None</em>, <em>build_indexes=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/macsypy/config.html#Config.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.config.Config.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>cfg_file</strong> (<em>string</em>) – the path to the MacSyFinder configuration file to use</li>
+<li><strong>previous_run</strong> (<em>string</em>) – the path to the results directory of a previous run</li>
+<li><strong>sequence_db</strong> (<em>string</em>) – the path to the sequence input dataset (fasta format)</li>
+<li><strong>db_type</strong> (<em>string</em>) – the type of dataset to deal with. 
+“unordered_replicon” corresponds to a non-assembled genome,
+“unordered” to a metagenomic dataset,
+“ordered_replicon” to an assembled genome, and
+“gembase” to a set of replicons where sequence identifiers follow this convention “&gt;RepliconName_SequenceID”.”</li>
+<li><strong>replicon_topology</strong> (<em>string</em>) – the topology (‘linear’ or ‘circular’) of the replicons. This option is meaningful
+only if the db_type is ‘ordered_replicon’ or ‘gembase’</li>
+<li><strong>topology_file</strong> (<em>string</em>) – a tabular file of mapping between replicon names and the corresponding topology
+(e.g. “RepliconA linear”)</li>
+<li><strong>inter_gene_max_space</strong> (<em>list of list of 2 elements</em><em> [</em><em>[ </em><em>string system</em><em>, </em><em>integer space</em><em>] </em><em>, </em><em>..</em><em>]</em>) – </li>
+<li><strong>min_mandatory_genes_required</strong> (<em>list of list of 2 elements</em><em> [</em><em>[ </em><em>string system</em><em>, </em><em>integer</em><em> ] </em><em>, </em><em>..</em><em>]</em>) – </li>
+<li><strong>min_genes_required</strong> (<em>list of list of 2 elements</em><em> [</em><em>[ </em><em>string system</em><em>, </em><em>integer</em><em> ] </em><em>, </em><em>..</em><em>]</em>) – </li>
+<li><strong>max_nb_genes</strong> (<em>list of list of 2 elements</em><em> [</em><em>[ </em><em>string system</em><em>, </em><em>integer</em><em> ] </em><em>, </em><em>..</em><em>]</em>) – </li>
+<li><strong>multi_loci</strong> (<em>string</em>) – </li>
+<li><strong>hmmer_exe</strong> (<em>string</em>) – the Hmmer “hmmsearch” executable</li>
+<li><strong>index_db_exe</strong> (<em>string</em>) – the indexer executable (“makeblastdb” or “formatdb”)</li>
+<li><strong>e_value_res</strong> (<em>float</em>) – maximal e-value for hits to be reported during Hmmer search</li>
+<li><strong>i_evalue_sel</strong> (<em>float</em>) – maximal independent e-value for Hmmer hits to be selected for system detection</li>
+<li><strong>coverage_profile</strong> (<em>float</em>) – minimal profile coverage required in the hit alignment to allow the hit selection
+for system detection</li>
+<li><strong>def_dir</strong> (<em>string</em>) – the path to the directory containing systems definition files (.xml)</li>
+<li><strong>res_search_dir</strong> (<em>string</em>) – the path to the directory where to store MacSyFinder search results directories.</li>
+<li><strong>out_dir</strong> (<em>string</em>) – The results are written in a directory. By default the directory is named macsyfinder-{date},
+but this option allow to override this behavior. If out-dir option is set out-dir will be created
+if outdir already exists it must be empty.
+If out-dir and res-search-dir are sets res-search-dir will be ignore.</li>
+<li><strong>res_search_suffix</strong> (<em>string</em>) – the suffix to give to Hmmer raw output files</li>
+<li><strong>res_extract_suffix</strong> (<em>string</em>) – the suffix to give to filtered hits output files</li>
+<li><strong>profile_dir</strong> (<em>string</em>) – path to the profiles directory</li>
+<li><strong>profile_suffix</strong> (<em>string</em>) – the suffix of profile files. For each ‘Gene’ element,
+the corresponding profile is searched in the ‘profile_dir’,
+in a file which name is based on the Gene name + the profile suffix.</li>
+<li><strong>log_level</strong> (<em>int</em>) – the level of log output</li>
+<li><strong>log_file</strong> (<em>string</em>) – the path to the directory to write MacSyFinder log files</li>
+<li><strong>worker_nb</strong> (<em>int</em>) – maximal number of processes to be used in parallel (multi-thread run, 0 use all cores available)</li>
+<li><strong>build_indexes</strong> (<em>boolean</em>) – build the indexes from the sequence dataset in fasta format</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="macsypy.config.Config.__weakref__">
+<code class="descname">__weakref__</code><a class="headerlink" href="#macsypy.config.Config.__weakref__" title="Permalink to this definition">¶</a></dt>
+<dd><p>list of weak references to the object (if defined)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="macsypy.config.Config._validate">
+<code class="descname">_validate</code><span class="sig-paren">(</span><em>cmde_line_opt</em>, <em>cmde_line_values</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/macsypy/config.html#Config._validate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.config.Config._validate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get all configuration values and check the validity of their values.
+Create the working directory</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>cmde_line_opt</strong> (<em>dict</em><em>, </em><em>all values are cast in string</em>) – the options from the command line</li>
+<li><strong>cmde_line_values</strong> (<em>dict</em><em>, </em><em>values are not cast</em>) – the options from the command line</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">all the options for this execution</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">dictionary</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="macsypy.config.Config.build_indexes">
+<code class="descname">build_indexes</code><a class="headerlink" href="#macsypy.config.Config.build_indexes" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">True if the indexes must be rebuilt, False otherwise</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">boolean</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="macsypy.config.Config.coverage_profile">
+<code class="descname">coverage_profile</code><a class="headerlink" href="#macsypy.config.Config.coverage_profile" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">the coverage threshold used to select a hit for systems detection and for the Hmmer report (filtered hits)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">float</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="macsypy.config.Config.db_type">
+<code class="descname">db_type</code><a class="headerlink" href="#macsypy.config.Config.db_type" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">the type of the input sequence data set. The allowed values are :
+* ‘unordered_replicon’,
+* ‘ordered_replicon’,
+* ‘gembase’,
+* ‘unordered’</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">string</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="macsypy.config.Config.def_dir">
+<code class="descname">def_dir</code><a class="headerlink" href="#macsypy.config.Config.def_dir" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">the path to the directory where are stored definitions of secretion systems (.xml files)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">string</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="macsypy.config.Config.e_value_res">
+<code class="descname">e_value_res</code><a class="headerlink" href="#macsypy.config.Config.e_value_res" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The e_value threshold used by Hmmer to report hits in the Hmmer raw output file</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">float</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="macsypy.config.Config.hmmer_dir">
+<code class="descname">hmmer_dir</code><a class="headerlink" href="#macsypy.config.Config.hmmer_dir" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">the name of the directory where the hmmer results are stored</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">string</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="macsypy.config.Config.hmmer_exe">
+<code class="descname">hmmer_exe</code><a class="headerlink" href="#macsypy.config.Config.hmmer_exe" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">the name of the binary to execute for homology search from HMM protein profiles (Hmmer)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">string</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="macsypy.config.Config.i_evalue_sel">
+<code class="descname">i_evalue_sel</code><a class="headerlink" href="#macsypy.config.Config.i_evalue_sel" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">the i_evalue threshold used to select a hit for systems detection and for the Hmmer report (filtered hits)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">float</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="macsypy.config.Config.index_db_exe">
+<code class="descname">index_db_exe</code><a class="headerlink" href="#macsypy.config.Config.index_db_exe" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">the name of the binary to index the input sequences dataset for Hmmer</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">string</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="macsypy.config.Config.inter_gene_max_space">
+<code class="descname">inter_gene_max_space</code><span class="sig-paren">(</span><em>system</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/macsypy/config.html#Config.inter_gene_max_space"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.config.Config.inter_gene_max_space" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>system</strong> (<em>string</em>) – the name of a system</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the maximum number of components with no match allowed between two genes
+with a match to consider them contiguous (at the system level)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">integer</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="macsypy.config.Config.max_nb_genes">
+<code class="descname">max_nb_genes</code><span class="sig-paren">(</span><em>system</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/macsypy/config.html#Config.max_nb_genes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.config.Config.max_nb_genes" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>system</strong> (<em>string</em>) – the name of a system</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the maximum number of genes to assess the system presence</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">integer</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="macsypy.config.Config.min_genes_required">
+<code class="descname">min_genes_required</code><span class="sig-paren">(</span><em>system</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/macsypy/config.html#Config.min_genes_required"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.config.Config.min_genes_required" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>system</strong> (<em>string</em>) – the name of a system</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the genes (mandatory+accessory) quorum to assess the system presence</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">integer</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="macsypy.config.Config.min_mandatory_genes_required">
+<code class="descname">min_mandatory_genes_required</code><span class="sig-paren">(</span><em>system</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/macsypy/config.html#Config.min_mandatory_genes_required"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.config.Config.min_mandatory_genes_required" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>system</strong> (<em>string</em>) – the name of a system</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the mandatory genes quorum to assess the system presence</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">integer</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="macsypy.config.Config.multi_loci">
+<code class="descname">multi_loci</code><span class="sig-paren">(</span><em>system</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/macsypy/config.html#Config.multi_loci"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.config.Config.multi_loci" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>system</strong> (<em>string</em>) – the name of a system</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the genes (mandatory+accessory) quorum to assess the system presence</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">boolean</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="macsypy.config.Config.previous_run">
+<code class="descname">previous_run</code><a class="headerlink" href="#macsypy.config.Config.previous_run" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">the path to the previous run directory to use (to recover Hmmer raw output)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">string</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="macsypy.config.Config.profile_dir">
+<code class="descname">profile_dir</code><a class="headerlink" href="#macsypy.config.Config.profile_dir" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">the path to the directory where are the HMM protein profiles which corresponds to Gene</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">string</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="macsypy.config.Config.profile_suffix">
+<code class="descname">profile_suffix</code><a class="headerlink" href="#macsypy.config.Config.profile_suffix" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">the suffix for profile files</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">string</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="macsypy.config.Config.replicon_topology">
+<code class="descname">replicon_topology</code><a class="headerlink" href="#macsypy.config.Config.replicon_topology" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">the topology of the replicons. Two values are supported ‘linear’ (default) and circular.
+Only relevant for ‘ordered’ datasets</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">string</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="macsypy.config.Config.res_extract_suffix">
+<code class="descname">res_extract_suffix</code><a class="headerlink" href="#macsypy.config.Config.res_extract_suffix" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">the suffix of extract files (tabulated files after HMM output parsing and filtering of hits)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">string</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="macsypy.config.Config.res_search_dir">
+<code class="descname">res_search_dir</code><a class="headerlink" href="#macsypy.config.Config.res_search_dir" title="Permalink to this definition">¶</a></dt>
+<dd><p>:return the path to the directory to store results of MacSyFinder runs
+:rtype: string</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="macsypy.config.Config.res_search_suffix">
+<code class="descname">res_search_suffix</code><a class="headerlink" href="#macsypy.config.Config.res_search_suffix" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">the suffix for Hmmer raw output files</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">string</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="macsypy.config.Config.save">
+<code class="descname">save</code><span class="sig-paren">(</span><em>dir_path</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/macsypy/config.html#Config.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.config.Config.save" title="Permalink to this definition">¶</a></dt>
+<dd><p>save the configuration used for this run in the ini format file</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="macsypy.config.Config.sequence_db">
+<code class="descname">sequence_db</code><a class="headerlink" href="#macsypy.config.Config.sequence_db" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">the path to the input sequence dataset (in fasta format)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">string</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="macsypy.config.Config.topology_file">
+<code class="descname">topology_file</code><a class="headerlink" href="#macsypy.config.Config.topology_file" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">the path to the file of replicons topology.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">string</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="macsypy.config.Config.worker_nb">
+<code class="descname">worker_nb</code><a class="headerlink" href="#macsypy.config.Config.worker_nb" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">the maximum number of parallel jobs</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">int</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="macsypy.config.Config.working_dir">
+<code class="descname">working_dir</code><a class="headerlink" href="#macsypy.config.Config.working_dir" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">the path to the working directory to use for this run</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Rtpe:</th><td class="field-body">string</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Configuration API</a><ul>
+<li><a class="reference internal" href="#module-macsypy.config">Config API reference</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="functioning.html"
+                        title="previous chapter">MacSyFinder functioning</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="database.html"
+                        title="next chapter">Database API</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/config.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="database.html" title="Database API"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="functioning.html" title="MacSyFinder functioning"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">MacSyFinder documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2014, Sophie Abby, Bertrand Néron.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.3.
+    </div>
+  </body>
+</html>

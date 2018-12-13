@@ -1,0 +1,56 @@
+# hmmsearch :: search profile(s) against a sequence database
+# HMMER 3.1b1 (May 2013); http://hmmer.org/
+# Copyright (C) 2013 Howard Hughes Medical Institute.
+# Freely distributed under the GNU General Public License (GPLv3).
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# query HMM file:                  /usr/local/share/macsyfinder/profiles/cse2_TypeIE.hmm
+# target sequence database:        /home/shaoting/project/mge_nestle/macsyfinder-1.0.4/data/sequence_data/datatest_gembase.fasta
+# output directed to file:         /home/shaoting/project/mge_nestle/macsyfinder-1.0.4/macsyfinder-20180119_15-19-31/hmmer_results/cse2_TypeIE.search_hmm.out
+# sequence reporting threshold:    E-value <= 1
+# number of worker threads:        0
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+Query:       TIGR02548  [M=159]
+Accession:   TIGR02548
+Description: casB_cse2: CRISPR type I-E/ECOLI-associated protein CasB/Cse2
+Scores for complete sequences (score includes all domains):
+   --- full sequence ---   --- best 1 domain ---    -#dom-
+    E-value  score  bias    E-value  score  bias    exp  N  Sequence           Description
+    ------- ------ -----    ------- ------ -----   ---- --  --------           -----------
+    4.9e-33  113.3   2.9    5.5e-33  113.2   2.9    1.0  1  ESCO001c01a_027820  C ATG TAA 2880177 2880659 Valid casB 483 
+
+
+Domain annotation for each sequence (and alignments):
+>> ESCO001c01a_027820  C ATG TAA 2880177 2880659 Valid casB 483 _b2759_NP_417239.1_ b2759 1 2880177 2880659 | CRISP RNA 
+   #    score  bias  c-Evalue  i-Evalue hmmfrom  hmm to    alifrom  ali to    envfrom  env to     acc
+ ---   ------ ----- --------- --------- ------- -------    ------- -------    ------- -------    ----
+   1 !  113.2   2.9   7.6e-37   5.5e-33       1     158 [.      10     154 ..      10     155 .. 0.98
+
+  Alignments for each domain:
+  == domain 1  score: 113.2 bits;  conditional E-value: 7.6e-37
+           TIGR02548   1 lkealerlderderaraalRagLrraaepdpellafvfprllkd.gaekeerraaylvaalaaahp.....qsreekseqegislaralae 85 
+                         l++a+++ld+++       +a++rr++epd+  + ++f+rl+++ g+e++++++a+l++++++ ++     ++++++++++gisl+rala+
+  ESCO001c01a_027820  10 LYRAWQQLDNGS-------CAQIRRVSEPDELRDIPAFYRLVQPfGWENPRHQQALLRMVFCLSAGknvirHQDKKSEQTTGISLGRALAN 93 
+                         689********8.......************************************************************************ PP
+
+           TIGR02548  86 kgrslasavsekRfeaLleakapeellrhLrrlvsllkseeipvdyaqLasdllrWneesqrvrrrwardYyr 158
+                         +gr     ++e+R+++L++a+ +++++++Lrrl++++++    +d++ +a++l++W++++   r+++++d+++
+  ESCO001c01a_027820  94 SGR-----INERRIFQLIRAD-RTADMVQLRRLLTHAEPV---LDWPLMARMLTWWGKRE---RQQLLEDFVL 154
+                         **9.....9************.9*****************...*****************...********86 PP
+
+
+
+Internal pipeline statistics summary:
+-------------------------------------
+Query model(s):                              1  (159 nodes)
+Target sequences:                         7219  (2337224 residues searched)
+Passed MSV filter:                       289  (0.0400332); expected 144.4 (0.02)
+Passed bias filter:                      167  (0.0231334); expected 144.4 (0.02)
+Passed Vit filter:                        16  (0.00221637); expected 7.2 (0.001)
+Passed Fwd filter:                         1  (0.000138523); expected 0.1 (1e-05)
+Initial search space (Z):               7219  [actual number of targets]
+Domain search space  (domZ):               1  [number of targets reported over threshold]
+# CPU time: 0.05u 0.00s 00:00:00.05 Elapsed: 00:00:00.05
+# Mc/sec: 7432.37
+//
+[ok]

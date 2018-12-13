@@ -1,0 +1,91 @@
+# hmmsearch :: search profile(s) against a sequence database
+# HMMER 3.1b1 (May 2013); http://hmmer.org/
+# Copyright (C) 2013 Howard Hughes Medical Institute.
+# Freely distributed under the GNU General Public License (GPLv3).
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# query HMM file:                  /usr/local/share/macsyfinder/profiles/cas9_TypeIIB.hmm
+# target sequence database:        /home/shaoting/project/mge_nestle/macsyfinder-1.0.4/data/sequence_data/datatest_gembase.fasta
+# output directed to file:         /home/shaoting/project/mge_nestle/macsyfinder-1.0.4/macsyfinder-20180119_15-19-31/hmmer_results/cas9_TypeIIB.search_hmm.out
+# sequence reporting threshold:    E-value <= 1
+# number of worker threads:        0
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+Query:       TIGR03031  [M=802]
+Accession:   TIGR03031
+Description: cas_csx12: CRISPR-associated protein Cas9/Csx12, subtype II-B/NMENI
+Scores for complete sequences (score includes all domains):
+   --- full sequence ---   --- best 1 domain ---    -#dom-
+    E-value  score  bias    E-value  score  bias    exp  N  Sequence           Description
+    ------- ------ -----    ------- ------ -----   ---- --  --------           -----------
+          0 1158.4  30.2          0 1157.6  30.2    1.5  1  LEPN003c01a_001560  D ATG TGA 183831 187949 Valid lpp0160 411
+
+
+Domain annotation for each sequence (and alignments):
+>> LEPN003c01a_001560  D ATG TGA 183831 187949 Valid lpp0160 4119 _YP_122507.1_ lpp0160 1 183831 187949 | hypothetical p
+   #    score  bias  c-Evalue  i-Evalue hmmfrom  hmm to    alifrom  ali to    envfrom  env to     acc
+ ---   ------ ----- --------- --------- ------- -------    ------- -------    ------- -------    ----
+   1 ! 1157.6  30.2         0         0       1     802 []       9     754 ..       9     754 .. 1.00
+
+  Alignments for each domain:
+  == domain 1  score: 1157.6 bits;  conditional E-value: 0
+           TIGR03031   1 PiaiDLggkntGvfsaflekgaslekldnkkskvvlldkdsftLsqanrrakrhkkrnkkrkqlvkrlfllvlqeqlnleldkkeeeaisf 91 
+                         Pi+iDLggk+tGv++++le++a+l++++n+k++v+l+d+++f+Lsqa+rra+rh++rnkkr+q+vkr++l+++q++l+++l++kee+a+++
+  LEPN003c01a_001560   9 PIGIDLGGKFTGVCLSHLEAFAELPNHANTKYSVILIDHNNFQLSQAQRRATRHRVRNKKRNQFVKRVALQLFQHILSRDLNAKEETALCH 99 
+                         9****************************************************************************************** PP
+
+           TIGR03031  92 lfnkrGytyveddLDeylkdateqellkelLefklrsikedkvvekfLkeiassadyladyseelkkvlvsktdkkkdkkeLkdelkdkyn 182
+                         ++n+rGytyv++dLDey+kd+t+++llkelL+    s++e++++++fL++++ss         e++k+lvsk+++kkd+keLk+++k   n
+  LEPN003c01a_001560 100 YLNNRGYTYVDTDLDEYIKDETTINLLKELLP----SESEHNFIDWFLQKMQSS---------EFRKILVSKVEEKKDDKELKNAVK---N 174
+                         ********************************....******************.........9***********************...* PP
+
+           TIGR03031 183 ikeflkgatindeildefdkneekGgrhrskYfeeikevldennklesylkksnlsvknlvnLvGnlsnlelkeLrrYfndkihekadqwd 273
+                         ik+f++g          f+kn+++G+rhr++Yfe+ik++++++n+l+s++kk  +++++l+nL+G+lsnl++k+L+rY++    ++++q+d
+  LEPN003c01a_001560 175 IKNFITG----------FEKNSVEGHRHRKVYFENIKSDITKDNQLDSIKKK--IPSVCLSNLLGHLSNLQWKNLHRYLA----KNPKQFD 249
+                         *******..........***********************************..**************************....9****** PP
+
+           TIGR03031 274 eqkftetylrfikewrhdkkdaeklsvkdLikeLkqkaelidlLleldPvitiPPYedrnnrkaekcqsLlLnpefLdnqyPnWrdllqel 364
+                         eq+f++++lr++k++rh k+++e+l+v++Li++L+q++++i++L++++P+itiPPYe+r+n+++ek+qsLlLnpe+L+n+yPnWr+l++++
+  LEPN003c01a_001560 250 EQTFGNEFLRMLKNFRHLKGSQESLAVRNLIQQLEQSQDYISILEKTPPEITIPPYEARTNTGMEKDQSLLLNPEKLNNLYPNWRNLIPGI 340
+                         ******************************************************************************************* PP
+
+           TIGR03031 365 kklqsildkdLksskykdskqliasskkdykeDsriLqrllDrvkeiDelklkseleklesgkkldevlvetlkeqetngifelatvlilv 455
+                         ++++++l+kdL+++k++d+k++i++sk+d+k+Ds+iLqr+lD++k+iD++k+k++l++l++gk+l+++l+et+ke+et+++++l++vli++
+  LEPN003c01a_001560 341 IDAHPFLEKDLEHTKLRDRKRIISPSKQDEKRDSYILQRYLDLNKKIDKFKIKKQLSFLGQGKQLPANLIETQKEMETHFNSSLVSVLIQI 431
+                         ******************************************************************************************* PP
+
+           TIGR03031 456 akyYkkrrraadsglyikldkkddtgrfddnsqllklcnhkPrrkkkqllnlvagiLqvsreelleskeew.....fwqaqkvGeiklasy 541
+                         a++Y+k+r++a++g++           fd++++l++l+n++P+rk+k+l++lv++iL   +e+++++k++w     fw+++k+G+++l+s+
+  LEPN003c01a_001560 432 ASAYNKEREDAAQGIW-----------FDNAFSLCELSNINPPRKQKILPLLVGAIL---SEDFINNKDKWakfkiFWNTHKIGRTSLKSK 508
+                         ****************...........******************************...9****************************** PP
+
+           TIGR03031 542 CkeieelrkqygntlkidieealskdvkeltadekallkliediaeasqkiaeslglnDkqikkfnnlfslaqlqtiletkrkGfaktCav 632
+                         Ckeiee+rk++gn++kid+eeal +++++  +++kal+k+i++i++++q+i+++lg+nD+q+ +++n+fsl+ql+tiletkr+Gf+k+C++
+  LEPN003c01a_001560 509 CKEIEEARKNSGNAFKIDYEEAL-NHPEH--SNNKALIKIIQTIPDIIQAIQSHLGHNDSQALIYHNPFSLSQLYTILETKRDGFHKNCVA 596
+                         ***********************.*****..************************************************************ PP
+
+           TIGR03031 633 vtaenafrsqkikideednkdniilsakaqrLPadstrivdGavkrmidkLakeiakakwkeikqvleakelkiPiileqnafefeeslkk 723
+                         vt+en++rsqk++id+e        +++a+rLPads+r++dG+++rm+++La+eia+akw++ik+++++++l+iPi+leqn+fefees+kk
+  LEPN003c01a_001560 597 VTCENYWRSQKTEIDPE--------ISYASRLPADSVRPFDGVLARMMQRLAYEIAMAKWEQIKHIPDNSSLLIPIYLEQNRFEFEESFKK 679
+                         *****************........9***************************************************************** PP
+
+           TIGR03031 724 vkgkslddrrkkaLekakekaenrfkdknkrikefskgisaYsGaslGakeelDhilPrshskkkyGtlfndeanLiyv 802
+                         +kg+s+d    k+Le+a+ek+++++++k++ri+++s++i++Y+Gas+G+++e+Dhi+Prs+skk++G++fn+e+nLiy+
+  LEPN003c01a_001560 680 IKGSSSD----KTLEQAIEKQNIQWEEKFQRIINASMNICPYKGASIGGQGEIDHIYPRSLSKKHFGVIFNSEVNLIYC 754
+                         *******....*******************************************************************8 PP
+
+
+
+Internal pipeline statistics summary:
+-------------------------------------
+Query model(s):                              1  (802 nodes)
+Target sequences:                         7219  (2337224 residues searched)
+Passed MSV filter:                       299  (0.0414185); expected 144.4 (0.02)
+Passed bias filter:                      143  (0.0198088); expected 144.4 (0.02)
+Passed Vit filter:                         9  (0.00124671); expected 7.2 (0.001)
+Passed Fwd filter:                         1  (0.000138523); expected 0.1 (1e-05)
+Initial search space (Z):               7219  [actual number of targets]
+Domain search space  (domZ):               1  [number of targets reported over threshold]
+# CPU time: 0.16u 0.00s 00:00:00.16 Elapsed: 00:00:00.16
+# Mc/sec: 11715.34
+//
+[ok]

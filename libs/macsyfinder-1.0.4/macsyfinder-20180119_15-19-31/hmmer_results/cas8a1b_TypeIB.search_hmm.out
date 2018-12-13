@@ -1,0 +1,42 @@
+# hmmsearch :: search profile(s) against a sequence database
+# HMMER 3.1b1 (May 2013); http://hmmer.org/
+# Copyright (C) 2013 Howard Hughes Medical Institute.
+# Freely distributed under the GNU General Public License (GPLv3).
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# query HMM file:                  /usr/local/share/macsyfinder/profiles/cas8a1b_TypeIB.hmm
+# target sequence database:        /home/shaoting/project/mge_nestle/macsyfinder-1.0.4/data/sequence_data/datatest_gembase.fasta
+# output directed to file:         /home/shaoting/project/mge_nestle/macsyfinder-1.0.4/macsyfinder-20180119_15-19-31/hmmer_results/cas8a1b_TypeIB.search_hmm.out
+# sequence reporting threshold:    E-value <= 1
+# number of worker threads:        0
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+Query:       TIGR01908  [M=308]
+Accession:   TIGR01908
+Description: cas_CXXC_CXXC: CRISPR-associated protein Cas8a1/Cst1, subtype I-B/TNEAP
+Scores for complete sequences (score includes all domains):
+   --- full sequence ---   --- best 1 domain ---    -#dom-
+    E-value  score  bias    E-value  score  bias    exp  N  Sequence Description
+    ------- ------ -----    ------- ------ -----   ---- --  -------- -----------
+
+   [No hits detected that satisfy reporting thresholds]
+
+
+Domain annotation for each sequence (and alignments):
+
+   [No targets detected that satisfy reporting thresholds]
+
+
+Internal pipeline statistics summary:
+-------------------------------------
+Query model(s):                              1  (308 nodes)
+Target sequences:                         7219  (2337224 residues searched)
+Passed MSV filter:                       310  (0.0429422); expected 144.4 (0.02)
+Passed bias filter:                      174  (0.0241031); expected 144.4 (0.02)
+Passed Vit filter:                        15  (0.00207785); expected 7.2 (0.001)
+Passed Fwd filter:                         0  (0); expected 0.1 (1e-05)
+Initial search space (Z):               7219  [actual number of targets]
+Domain search space  (domZ):               0  [number of targets reported over threshold]
+# CPU time: 0.10u 0.00s 00:00:00.10 Elapsed: 00:00:00.10
+# Mc/sec: 7198.65
+//
+[ok]

@@ -1,0 +1,52 @@
+# hmmsearch :: search profile(s) against a sequence database
+# HMMER 3.1b1 (May 2013); http://hmmer.org/
+# Copyright (C) 2013 Howard Hughes Medical Institute.
+# Freely distributed under the GNU General Public License (GPLv3).
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# query HMM file:                  /usr/local/share/macsyfinder/profiles/cas5b_TypeIB.hmm
+# target sequence database:        /home/shaoting/project/mge_nestle/macsyfinder-1.0.4/data/sequence_data/datatest_gembase.fasta
+# output directed to file:         /home/shaoting/project/mge_nestle/macsyfinder-1.0.4/macsyfinder-20180119_15-19-31/hmmer_results/cas5b_TypeIB.search_hmm.out
+# sequence reporting threshold:    E-value <= 1
+# number of worker threads:        0
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+Query:       TIGR01895  [M=217]
+Accession:   TIGR01895
+Description: cas_Cas5t: CRISPR-associated protein Cas5, subtype I-B/TNEAP
+Scores for complete sequences (score includes all domains):
+   --- full sequence ---   --- best 1 domain ---    -#dom-
+    E-value  score  bias    E-value  score  bias    exp  N  Sequence           Description
+    ------- ------ -----    ------- ------ -----   ---- --  --------           -----------
+  ------ inclusion threshold ------
+      0.086   11.0   0.0       0.14   10.4   0.0    1.5  1  ESCO001c01a_027800  C ATG TAA 2878396 2879070 Valid casD 675 
+
+
+Domain annotation for each sequence (and alignments):
+>> ESCO001c01a_027800  C ATG TAA 2878396 2879070 Valid casD 675 _b2757_NP_417237.2_ b2757 1 2878396 2879070 | CRISP RNA 
+   #    score  bias  c-Evalue  i-Evalue hmmfrom  hmm to    alifrom  ali to    envfrom  env to     acc
+ ---   ------ ----- --------- --------- ------- -------    ------- -------    ------- -------    ----
+   1 ?   10.4   0.0   1.9e-05      0.14      80     128 ..      99     150 ..       6     155 .. 0.75
+
+  Alignments for each domain:
+  == domain 1  score: 10.4 bits;  conditional E-value: 1.9e-05
+           TIGR01895  80 kalekspikvellynik..lnlylkae.EnlLeefeksfrkprsrpllgrse 128
+                         k+ e+  + +e l ++   + l+l      ++ e ek++ kpr+ p+lgr +
+  ESCO001c01a_027800  99 KSHETIQTWREYLCDASftVALWLTPHaTMVISELEKAVLKPRYTPYLGRRS 150
+                         556677777777777651145666544156789*****************76 PP
+
+
+
+Internal pipeline statistics summary:
+-------------------------------------
+Query model(s):                              1  (217 nodes)
+Target sequences:                         7219  (2337224 residues searched)
+Passed MSV filter:                       141  (0.0195318); expected 144.4 (0.02)
+Passed bias filter:                      103  (0.0142679); expected 144.4 (0.02)
+Passed Vit filter:                        11  (0.00152376); expected 7.2 (0.001)
+Passed Fwd filter:                         1  (0.000138523); expected 0.1 (1e-05)
+Initial search space (Z):               7219  [actual number of targets]
+Domain search space  (domZ):               1  [number of targets reported over threshold]
+# CPU time: 0.08u 0.00s 00:00:00.08 Elapsed: 00:00:00.07
+# Mc/sec: 7245.39
+//
+[ok]

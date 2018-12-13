@@ -1,0 +1,504 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>macsypy.system_parser &#8212; MacSyFinder 1.0.4 documentation</title>
+    <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.0.4',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+  </head>
+  <body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">MacSyFinder documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for macsypy.system_parser</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+
+<span class="c1">################################################################################</span>
+<span class="c1"># MacSyFinder - Detection of macromolecular systems in protein datasets        #</span>
+<span class="c1">#               using systems modelling and similarity search.                 #</span>
+<span class="c1"># Authors: Sophie Abby, Bertrand Néron                                         #</span>
+<span class="c1"># Copyright © 2014  Institut Pasteur (Paris) and CNRS.                         #</span>
+<span class="c1"># See the COPYRIGHT file for details                                           #</span>
+<span class="c1">#                                                                              #</span>
+<span class="c1"># MacsyFinder is distributed under the terms of the GNU General Public License #</span>
+<span class="c1"># (GPLv3). See the COPYING file for details.                                   #</span>
+<span class="c1">################################################################################</span>
+
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">xml.etree.ElementTree</span> <span class="k">as</span> <span class="nn">Et</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="n">_log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s1">&#39;macsyfinder&#39;</span><span class="p">)</span>
+
+<span class="kn">from</span> <span class="nn">.system</span> <span class="k">import</span> <span class="n">System</span>
+<span class="kn">from</span> <span class="nn">.gene</span> <span class="k">import</span> <span class="n">Gene</span>
+<span class="kn">from</span> <span class="nn">.gene</span> <span class="k">import</span> <span class="n">Homolog</span><span class="p">,</span> <span class="n">Analog</span>
+<span class="kn">from</span> <span class="nn">.registries</span> <span class="k">import</span> <span class="n">ProfilesRegistry</span><span class="p">,</span> <span class="n">DefinitionsRegistry</span>
+<span class="kn">from</span> <span class="nn">.macsypy_error</span> <span class="k">import</span> <span class="n">MacsypyError</span><span class="p">,</span> <span class="n">SystemInconsistencyError</span>
+
+
+<div class="viewcode-block" id="SystemParser"><a class="viewcode-back" href="../../system_parser.html#macsypy.system_parser.SystemParser">[docs]</a><span class="k">class</span> <span class="nc">SystemParser</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Build a System instance from the corresponding System definition described in the XML file</span>
+<span class="sd">    (named after the system&#39;s name) found at the dedicated location (&quot;-d&quot; command-line option).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="SystemParser.__init__"><a class="viewcode-back" href="../../system_parser.html#macsypy.system_parser.SystemParser.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cfg</span><span class="p">,</span> <span class="n">system_bank</span><span class="p">,</span> <span class="n">gene_bank</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Constructor</span>
+
+<span class="sd">        :param cfg: the configuration object of this run</span>
+<span class="sd">        :type cfg: :class:`macsypy.config.Config` object</span>
+<span class="sd">        :param system_bank: the system factory</span>
+<span class="sd">        :type system_bank: :class:`macsypy.system.SystemBank` object</span>
+<span class="sd">        :param gene_bank: the gene factory</span>
+<span class="sd">        :type gene_bank: :class:`macsypy.gene.GeneBank` object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cfg</span> <span class="o">=</span> <span class="n">cfg</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">system_bank</span> <span class="o">=</span> <span class="n">system_bank</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gene_bank</span> <span class="o">=</span> <span class="n">gene_bank</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">profiles_registry</span> <span class="o">=</span> <span class="n">ProfilesRegistry</span><span class="p">(</span><span class="n">cfg</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">definitions_registry</span> <span class="o">=</span> <span class="n">DefinitionsRegistry</span><span class="p">(</span><span class="n">cfg</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="SystemParser.system_to_parse"><a class="viewcode-back" href="../../system_parser.html#macsypy.system_parser.SystemParser.system_to_parse">[docs]</a>    <span class="k">def</span> <span class="nf">system_to_parse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sys_2_parse</span><span class="p">,</span> <span class="n">parsed_systems</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param sys_2_parse: a dict of systems to parse</span>
+<span class="sd">        :type sys_2_parse: [string, ...]</span>
+<span class="sd">        :return: the list of systems&#39; names to parse. Scan the whole chain of &#39;system_ref&#39; in a recursive way.</span>
+<span class="sd">        :rtype: [string, ...]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1">#the list of system which must be parsed</span>
+        <span class="n">diff_sys</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">parsed_systems</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="n">sys_2_parse</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
+        <span class="n">diff_sys_2</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">sys_2_parse</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="n">parsed_systems</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
+        <span class="n">diff_sys</span> <span class="o">+=</span> <span class="n">diff_sys_2</span>
+        <span class="k">if</span> <span class="n">diff_sys</span> <span class="o">==</span> <span class="p">[]:</span>
+            <span class="k">return</span> <span class="n">sys_2_parse</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>            
+            <span class="k">for</span> <span class="n">system_name</span> <span class="ow">in</span> <span class="n">diff_sys</span><span class="p">:</span>
+                <span class="n">parsed_systems</span><span class="p">[</span><span class="n">system_name</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">def_dir</span><span class="p">,</span> <span class="n">system_name</span> <span class="o">+</span> <span class="s2">&quot;.xml&quot;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+                    <span class="k">raise</span> <span class="n">MacsypyError</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2">: No such system definitions&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">path</span><span class="p">))</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">tree</span> <span class="o">=</span> <span class="n">Et</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+                    <span class="n">root</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">getroot</span><span class="p">()</span>
+                    <span class="n">sys_ref</span> <span class="o">=</span> <span class="n">root</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s2">&quot;.//gene[@system_ref]&quot;</span><span class="p">)</span>
+                    <span class="k">for</span> <span class="n">gene_node</span> <span class="ow">in</span> <span class="n">sys_ref</span><span class="p">:</span>
+                        <span class="n">sys_2_parse</span><span class="p">[</span><span class="n">gene_node</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;system_ref&quot;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
+                    <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;unable to parse system definition </span><span class="se">\&quot;</span><span class="si">{0}</span><span class="se">\&quot;</span><span class="s2"> : </span><span class="si">{1}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">system_name</span><span class="p">,</span> <span class="n">err</span><span class="p">)</span>
+                    <span class="n">_log</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+                    <span class="k">raise</span> <span class="n">MacsypyError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+                 
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">system_to_parse</span><span class="p">(</span><span class="n">sys_2_parse</span><span class="p">,</span> <span class="n">parsed_systems</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SystemParser._create_system"><a class="viewcode-back" href="../../system_parser.html#macsypy.system_parser.SystemParser._create_system">[docs]</a>    <span class="k">def</span> <span class="nf">_create_system</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">system_name</span><span class="p">,</span> <span class="n">system_node</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param system_name: the name of the system to create.\</span>
+<span class="sd">          This name must match a XML file in the definition directory (&quot;-d&quot; option in the command-line)</span>
+<span class="sd">        :type system_name: string</span>
+<span class="sd">        :param system_node: the node corresponding to the system.</span>
+<span class="sd">        :type system_node: :class&quot;`Et.ElementTree` object.</span>
+<span class="sd">        :return: the system corresponding to the name.</span>
+<span class="sd">        :rtype: :class:`macsypy.system.System` object.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">def_dir</span><span class="p">,</span> <span class="n">system_name</span> <span class="o">+</span> <span class="s2">&quot;.xml&quot;</span><span class="p">)</span>
+        <span class="n">inter_gene_max_space</span> <span class="o">=</span> <span class="n">system_node</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;inter_gene_max_space&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">inter_gene_max_space</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Invalid system definition (</span><span class="si">{0}</span><span class="s2">): inter_gene_max_space must be defined&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+            <span class="n">_log</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">SyntaxError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">inter_gene_max_space</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">inter_gene_max_space</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Invalid system definition (</span><span class="si">{0}</span><span class="s2">): </span><span class="se">\</span>
+<span class="s2"> inter_gene_max_space must be an integer: </span><span class="si">{1}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">inter_gene_max_space</span><span class="p">)</span>
+            <span class="n">_log</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">SyntaxError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="n">min_mandatory_genes_required</span> <span class="o">=</span> <span class="n">system_node</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;min_mandatory_genes_required&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">min_mandatory_genes_required</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">min_mandatory_genes_required</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">min_mandatory_genes_required</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Invalid system definition (</span><span class="si">{0}</span><span class="s2">):</span><span class="se">\</span>
+<span class="s2"> min_mandatory_genes_required must be an integer:</span><span class="si">{1}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">min_mandatory_genes_required</span><span class="p">)</span>
+                <span class="n">_log</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">SyntaxError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+        <span class="n">min_genes_required</span> <span class="o">=</span> <span class="n">system_node</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;min_genes_required&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">min_genes_required</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">min_genes_required</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">min_genes_required</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Invalid system definition (</span><span class="si">{0}</span><span class="s2">):</span><span class="se">\</span>
+<span class="s2"> min_genes_required must be an integer: </span><span class="si">{1}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">min_genes_required</span><span class="p">)</span>
+                <span class="n">_log</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">SyntaxError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+        <span class="n">max_nb_genes</span> <span class="o">=</span> <span class="n">system_node</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;max_nb_genes&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">max_nb_genes</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">max_nb_genes</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">max_nb_genes</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Invalid system definition (</span><span class="si">{0}</span><span class="s2">): max_nb_genes must be an integer: </span><span class="si">{1}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">max_nb_genes</span><span class="p">)</span>
+                <span class="n">_log</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">SyntaxError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+        <span class="n">multi_loci</span> <span class="o">=</span> <span class="n">system_node</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;multi_loci&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">multi_loci</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">multi_loci</span> <span class="o">=</span> <span class="n">multi_loci</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;1&quot;</span><span class="p">,</span> <span class="s2">&quot;true&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">multi_loci</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">system</span> <span class="o">=</span> <span class="n">System</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="p">,</span>
+                        <span class="n">system_name</span><span class="p">,</span>
+                        <span class="n">inter_gene_max_space</span><span class="p">,</span>
+                        <span class="n">min_mandatory_genes_required</span><span class="p">,</span>
+                        <span class="n">min_genes_required</span><span class="p">,</span>
+                        <span class="n">max_nb_genes</span><span class="p">,</span>
+                        <span class="n">multi_loci</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">system</span></div>
+
+<div class="viewcode-block" id="SystemParser._create_genes"><a class="viewcode-back" href="../../system_parser.html#macsypy.system_parser.SystemParser._create_genes">[docs]</a>    <span class="k">def</span> <span class="nf">_create_genes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">system</span><span class="p">,</span> <span class="n">system_node</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create genes belonging to the systems. Be careful, the returned genes have not their homologs/analogs set yet.</span>
+
+<span class="sd">        :param system: the System currently parsing</span>
+<span class="sd">        :type system: :class:`macsypy.system.System` object</span>
+<span class="sd">        :param system_node: the element gene</span>
+<span class="sd">        :type system_node: :class&quot;`Et.ElementTree` object</span>
+<span class="sd">        :return: a list of the genes belonging to the system.</span>
+<span class="sd">        :rtype: [:class:`macsypy.gene.Gene`, ...]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">genes</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">gene_nodes</span> <span class="o">=</span> <span class="n">system_node</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s2">&quot;.//gene&quot;</span><span class="p">)</span>
+        <span class="n">gene_nodes</span> <span class="o">=</span> <span class="p">[</span><span class="n">gene_node</span> <span class="k">for</span> <span class="n">gene_node</span> <span class="ow">in</span> <span class="n">gene_nodes</span> <span class="k">if</span> <span class="n">gene_node</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;system_ref&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">gene_nodes</span><span class="p">:</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">name</span><span class="p">:</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Invalid system definition &#39;</span><span class="si">{0}</span><span class="s2">&#39;: gene without a name&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">system</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+                <span class="n">_log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">SyntaxError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+            <span class="n">attrs</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;loner&#39;</span><span class="p">,</span> <span class="s1">&#39;exchangeable&#39;</span><span class="p">,</span> <span class="s1">&#39;multi_system&#39;</span><span class="p">):</span>
+                <span class="n">val</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">attr</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">val</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;1&quot;</span><span class="p">,</span> <span class="s2">&quot;true&quot;</span><span class="p">,</span> <span class="s2">&quot;True&quot;</span><span class="p">):</span>
+                    <span class="n">val</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="k">elif</span> <span class="n">val</span> <span class="ow">in</span> <span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;0&quot;</span><span class="p">,</span> <span class="s2">&quot;false&quot;</span><span class="p">,</span> <span class="s2">&quot;False&quot;</span><span class="p">):</span>
+                    <span class="n">val</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="n">attrs</span><span class="p">[</span><span class="n">attr</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span>
+            <span class="n">inter_gene_max_space</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;inter_gene_max_space&quot;</span><span class="p">)</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">inter_gene_max_space</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">inter_gene_max_space</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Invalid system definition &#39;</span><span class="si">{0}</span><span class="s2">&#39;:</span><span class="se">\</span>
+<span class="s2">                 inter_gene_max_space must be an integer: </span><span class="si">{1}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">system</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">inter_gene_max_space</span><span class="p">)</span>
+                <span class="n">_log</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">SyntaxError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
+                <span class="k">pass</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;inter_gene_max_space&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">inter_gene_max_space</span>
+            <span class="n">genes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Gene</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">system</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">profiles_registry</span><span class="p">,</span> <span class="o">**</span><span class="n">attrs</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">genes</span></div>
+
+<div class="viewcode-block" id="SystemParser._fill"><a class="viewcode-back" href="../../system_parser.html#macsypy.system_parser.SystemParser._fill">[docs]</a>    <span class="k">def</span> <span class="nf">_fill</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">system</span><span class="p">,</span> <span class="n">system_node</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Fill the system with genes found in this system definition. Add homologs to the genes if necessary.</span>
+<span class="sd">        </span>
+<span class="sd">        :param system: the system to fill</span>
+<span class="sd">        :type system: :class:`macsypy.system.System` object</span>
+<span class="sd">        :param system_node: the &quot;node&quot; in the XML hierarchy corresponding to the system</span>
+<span class="sd">        :type system_node: :class&quot;`Et.ElementTree` object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">genes_nodes</span> <span class="o">=</span> <span class="n">system_node</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s2">&quot;gene&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">gene_node</span> <span class="ow">in</span> <span class="n">genes_nodes</span><span class="p">:</span>
+            <span class="n">presence</span> <span class="o">=</span> <span class="n">gene_node</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;presence&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">presence</span><span class="p">:</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Invalid system definition &#39;</span><span class="si">{0}</span><span class="s2">&#39;: gene without presence&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">system</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+                <span class="n">_log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">SyntaxError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+            <span class="n">gene_name</span> <span class="o">=</span> <span class="n">gene_node</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">)</span>
+            <span class="n">gene</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gene_bank</span><span class="p">[</span><span class="n">gene_name</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">homolog_node</span> <span class="ow">in</span> <span class="n">gene_node</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s2">&quot;homologs/gene&quot;</span><span class="p">):</span>
+                <span class="n">gene</span><span class="o">.</span><span class="n">add_homolog</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_parse_homolog</span><span class="p">(</span><span class="n">homolog_node</span><span class="p">,</span> <span class="n">gene</span><span class="p">,</span> <span class="n">system</span><span class="p">))</span>
+            <span class="k">for</span> <span class="n">analog_node</span> <span class="ow">in</span> <span class="n">gene_node</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s2">&quot;analogs/gene&quot;</span><span class="p">):</span>
+                <span class="n">gene</span><span class="o">.</span><span class="n">add_analog</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_parse_analog</span><span class="p">(</span><span class="n">analog_node</span><span class="p">,</span> <span class="n">gene</span><span class="p">,</span> <span class="n">system</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">presence</span> <span class="o">==</span> <span class="s1">&#39;mandatory&#39;</span><span class="p">:</span>
+                <span class="n">system</span><span class="o">.</span><span class="n">add_mandatory_gene</span><span class="p">(</span><span class="n">gene</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">presence</span> <span class="o">==</span> <span class="s1">&#39;accessory&#39;</span><span class="p">:</span>
+                <span class="n">system</span><span class="o">.</span><span class="n">add_accessory_gene</span><span class="p">(</span><span class="n">gene</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">presence</span> <span class="o">==</span> <span class="s1">&#39;forbidden&#39;</span><span class="p">:</span>
+                <span class="n">system</span><span class="o">.</span><span class="n">add_forbidden_gene</span><span class="p">(</span><span class="n">gene</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Invalid system &#39;</span><span class="si">{0}</span><span class="s2">&#39; definition: presence value must be either</span><span class="se">\</span>
+<span class="s2"> [mandatory, accessory, forbidden] not </span><span class="si">{1}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">system</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">presence</span><span class="p">)</span>
+                <span class="n">_log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">SyntaxError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="SystemParser._parse_homolog"><a class="viewcode-back" href="../../system_parser.html#macsypy.system_parser.SystemParser._parse_homolog">[docs]</a>    <span class="k">def</span> <span class="nf">_parse_homolog</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">gene_ref</span><span class="p">,</span> <span class="n">curr_system</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Parse a xml element gene and build the corresponding object</span>
+
+<span class="sd">        :param node: a &quot;node&quot; corresponding to the gene element in the XML hierarchy</span>
+<span class="sd">        :type node: :class:`xml.etree.ElementTree.Element` object.</span>
+<span class="sd">        :param gene_ref: the gene which this gene is homolog to</span>
+<span class="sd">        :type gene_ref: class:`macsypy.gene.Gene` object</span>
+<span class="sd">        :return: the gene object corresponding to the node</span>
+<span class="sd">        :rtype: :class:`macsypy.gene.Homolog` object </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">name</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Invalid system definition: gene without name&quot;</span>
+            <span class="n">_log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">SyntaxError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="n">aligned</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;aligned&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">aligned</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;1&quot;</span><span class="p">,</span> <span class="s2">&quot;true&quot;</span><span class="p">,</span> <span class="s2">&quot;True&quot;</span><span class="p">):</span>
+            <span class="n">aligned</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">elif</span> <span class="n">aligned</span> <span class="ow">in</span> <span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;0&quot;</span><span class="p">,</span> <span class="s2">&quot;false&quot;</span><span class="p">,</span> <span class="s2">&quot;False&quot;</span><span class="p">):</span>
+            <span class="n">aligned</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s1">&#39;Invalid system definition </span><span class="se">\&#39;</span><span class="si">{0}</span><span class="se">\&#39;</span><span class="s1">: invalid value for an attribute of gene</span><span class="se">\</span>
+<span class="s1"> </span><span class="se">\&#39;</span><span class="si">{1}</span><span class="se">\&#39;</span><span class="s1">: </span><span class="se">\&#39;</span><span class="si">{2}</span><span class="se">\&#39;</span><span class="s1"> allowed values are &quot;1&quot;, &quot;true&quot;, &quot;True&quot;, &quot;0&quot;, &quot;false&quot;, &quot;False&quot;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">curr_system</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">aligned</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+            <span class="n">_log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">SyntaxError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">gene</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gene_bank</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Invalid system definition &#39;</span><span class="si">{0}</span><span class="s2">&#39;: The gene &#39;</span><span class="si">{1}</span><span class="s2">&#39; described as homolog of</span><span class="se">\</span>
+<span class="s2"> &#39;</span><span class="si">{2}</span><span class="s2">&#39; in system &#39;</span><span class="si">{3}</span><span class="s2">&#39; is not in the </span><span class="se">\&quot;</span><span class="s2">GeneBank</span><span class="se">\&quot;</span><span class="s2"> gene factory&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">curr_system</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span>
+                                                                       <span class="n">gene_ref</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">curr_system</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+            <span class="n">_log</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">SystemInconsistencyError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="n">system_ref</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;system_ref&quot;</span><span class="p">)</span>       
+        <span class="c1"># if system_ref != gene.system.name:</span>
+        <span class="k">if</span> <span class="n">system_ref</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">system_ref</span> <span class="o">!=</span> <span class="n">gene</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">name</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Inconsistency in systems definitions: the gene &#39;</span><span class="si">{0}</span><span class="s2">&#39; described as homolog of &#39;</span><span class="si">{1}</span><span class="s2">&#39;</span><span class="se">\</span>
+<span class="s2"> with system_ref &#39;</span><span class="si">{2}</span><span class="s2">&#39; has an other system in bank (</span><span class="si">{3}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">gene_ref</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">system_ref</span><span class="p">,</span> <span class="n">gene</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+            <span class="n">_log</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">SystemInconsistencyError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="n">homolog</span> <span class="o">=</span> <span class="n">Homolog</span><span class="p">(</span><span class="n">gene</span><span class="p">,</span> <span class="n">gene_ref</span><span class="p">,</span> <span class="n">aligned</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">homolog_node</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s2">&quot;homologs/gene&quot;</span><span class="p">):</span>
+            <span class="n">h2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parse_homolog</span><span class="p">(</span><span class="n">homolog_node</span><span class="p">,</span> <span class="n">gene</span><span class="p">,</span> <span class="n">curr_system</span><span class="p">)</span>
+            <span class="n">homolog</span><span class="o">.</span><span class="n">add_homolog</span><span class="p">(</span><span class="n">h2</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">homolog</span></div>
+
+<div class="viewcode-block" id="SystemParser._parse_analog"><a class="viewcode-back" href="../../system_parser.html#macsypy.system_parser.SystemParser._parse_analog">[docs]</a>    <span class="k">def</span> <span class="nf">_parse_analog</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">gene_ref</span><span class="p">,</span> <span class="n">curr_system</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Parse a xml element gene and build the corresponding object</span>
+
+<span class="sd">        :param node: a &quot;node&quot; corresponding to the gene element in the XML hierarchy</span>
+<span class="sd">        :type node: :class:`xml.etree.ElementTree.Element` object.</span>
+<span class="sd">        :param gene_ref: the gene which this gene is homolog to</span>
+<span class="sd">        :type gene_ref: class:`macsypy.gene.Gene` object.</span>
+<span class="sd">        :return: the gene object corresponding to the node</span>
+<span class="sd">        :rtype: :class:`macsypy.gene.Analog` object </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">name</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Invalid system definition &#39;</span><span class="si">{0}</span><span class="s2">&#39;: gene without name&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">curr_system</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+            <span class="n">_log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">SyntaxError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">gene</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gene_bank</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;The gene &#39;</span><span class="si">{0}</span><span class="s2">&#39; described as analog of &#39;</span><span class="si">{1}</span><span class="s2">&#39; in system &#39;</span><span class="si">{2}</span><span class="s2">&#39;</span><span class="se">\</span>
+<span class="s2"> is not in the </span><span class="se">\&quot;</span><span class="s2">GeneBank</span><span class="se">\&quot;</span><span class="s2"> gene factory&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">gene_ref</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">curr_system</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+            <span class="n">_log</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">SystemInconsistencyError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="n">system_ref</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;system_ref&quot;</span><span class="p">)</span>       
+        <span class="k">if</span> <span class="n">system_ref</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">system_ref</span> <span class="o">!=</span> <span class="n">gene</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">name</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Inconsistency in systems definitions: the gene &#39;</span><span class="si">{0}</span><span class="s2">&#39; described as analog of</span><span class="se">\</span>
+<span class="s2"> &#39;</span><span class="si">{1}</span><span class="s2">&#39; with system_ref &#39;</span><span class="si">{2}</span><span class="s2">&#39; has an other system in bank (</span><span class="si">{3}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">gene_ref</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+                                                                       <span class="n">system_ref</span><span class="p">,</span> <span class="n">gene</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+            <span class="n">_log</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">SystemInconsistencyError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="n">analog</span> <span class="o">=</span> <span class="n">Analog</span><span class="p">(</span><span class="n">gene</span><span class="p">,</span> <span class="n">gene_ref</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">analog_node</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s2">&quot;analogs/gene&quot;</span><span class="p">):</span>
+            <span class="n">h2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parse_analog</span><span class="p">(</span><span class="n">analog_node</span><span class="p">,</span> <span class="n">gene</span><span class="p">,</span> <span class="n">curr_system</span><span class="p">)</span>
+            <span class="n">analog</span><span class="o">.</span><span class="n">add_analog</span><span class="p">(</span><span class="n">h2</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">analog</span></div>
+
+<div class="viewcode-block" id="SystemParser.check_consistency"><a class="viewcode-back" href="../../system_parser.html#macsypy.system_parser.SystemParser.check_consistency">[docs]</a>    <span class="k">def</span> <span class="nf">check_consistency</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">systems</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Check the consistency of the co-localization features between the different values given as an input: </span>
+<span class="sd">        between XML definitions, configuration file, and command-line options.</span>
+<span class="sd">        </span>
+<span class="sd">        :param systems: the list of systems to check</span>
+<span class="sd">        :type systems: list of `class:macsypy.system.System` object</span>
+<span class="sd">        :raise: :class:`macsypy.macsypy_error.SystemInconsistencyError` if one test fails</span>
+
+<span class="sd">        (see `feature &lt;https://projets.pasteur.fr/issues/1850&gt;`_)</span>
+<span class="sd">          </span>
+<span class="sd">        In the different possible situations, different requirements need to be fulfilled</span>
+<span class="sd">        (&quot;mandatory_genes&quot; and &quot;accessory_genes&quot; consist of lists of genes defined as such in the system definition):</span>
+<span class="sd">          </span>
+<span class="sd">          - **If:** min_mandatory_genes_required = None  ; min_genes_required = None</span>
+<span class="sd">          - **Then:** min_mandatory_genes_required = min_genes_required = len(mandatory_genes)</span>
+<span class="sd">          </span>
+<span class="sd">          *always True by Systems design*</span>
+
+<span class="sd">          - **If:** min_mandatory_genes_required = value  ; min_genes_required = None</span>
+<span class="sd">          - **Then:** min_mandatory_genes_required &lt;= len(mandatory_genes) </span>
+<span class="sd">          - AND min_genes_required = min_mandatory_genes_required</span>
+<span class="sd">          </span>
+<span class="sd">          *always True by design*</span>
+
+<span class="sd">          - **If:** min_mandatory_genes_required =  None ; min_genes_required = Value</span>
+<span class="sd">          - **Then:** min_mandatory_genes_required = len(mandatory_genes)</span>
+<span class="sd">          - AND min_genes_required &gt;= min_mandatory_genes_required </span>
+<span class="sd">          - AND min_genes_required &lt;= len(mandatory_genes+accessory_genes)</span>
+<span class="sd">          </span>
+<span class="sd">          *to be checked*</span>
+
+<span class="sd">          - **If:** min_mandatory_genes_required =  Value ; min_genes_required = Value</span>
+<span class="sd">          - **Then:** min_genes_required &lt;= len(accessory_genes+mandatory_genes)</span>
+<span class="sd">          - AND min_genes_required &gt;= min_mandatory_genes_required</span>
+<span class="sd">          - AND min_mandatory_genes_required &lt;= len(mandatory_genes)</span>
+<span class="sd">           </span>
+<span class="sd">          *to be checked*   </span>
+<span class="sd">                 </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">system</span> <span class="ow">in</span> <span class="n">systems</span><span class="p">:</span>
+            <span class="n">len_accessory_genes</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">system</span><span class="o">.</span><span class="n">accessory_genes</span><span class="p">)</span>
+            <span class="n">len_mandatory_genes</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">system</span><span class="o">.</span><span class="n">mandatory_genes</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">system</span><span class="o">.</span><span class="n">min_genes_required</span> <span class="o">&lt;=</span> <span class="p">(</span><span class="n">len_accessory_genes</span> <span class="o">+</span> <span class="n">len_mandatory_genes</span><span class="p">)):</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;system &#39;</span><span class="si">{0}</span><span class="s2">&#39; is not consistent: min_genes_required </span><span class="si">{1:d}</span><span class="s2"> must be</span><span class="se">\</span>
+<span class="s2"> lesser or equal than the number of </span><span class="se">\&quot;</span><span class="s2">accessory</span><span class="se">\&quot;</span><span class="s2"> and </span><span class="se">\&quot;</span><span class="s2">mandatory</span><span class="se">\&quot;</span><span class="s2"> components</span><span class="se">\</span>
+<span class="s2"> in the system: </span><span class="si">{2:d}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">system</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">system</span><span class="o">.</span><span class="n">min_genes_required</span><span class="p">,</span> <span class="n">len_accessory_genes</span> <span class="o">+</span> <span class="n">len_mandatory_genes</span><span class="p">)</span>
+                <span class="n">_log</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="n">SystemInconsistencyError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">system</span><span class="o">.</span><span class="n">min_mandatory_genes_required</span> <span class="o">&lt;=</span> <span class="n">len_mandatory_genes</span><span class="p">):</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;system &#39;</span><span class="si">{0}</span><span class="s2">&#39; is not consistent: min_mandatory_genes_required </span><span class="si">{1:d}</span><span class="se">\</span>
+<span class="s2"> must be lesser or equal than the number of </span><span class="se">\&quot;</span><span class="s2">mandatory</span><span class="se">\&quot;</span><span class="s2"> components</span><span class="se">\</span>
+<span class="s2"> in the system: </span><span class="si">{2:d}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">system</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">len_mandatory_genes</span><span class="p">)</span>
+                <span class="n">_log</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="n">SystemInconsistencyError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span><span class="p">(</span><span class="n">system</span><span class="o">.</span><span class="n">min_mandatory_genes_required</span> <span class="o">&lt;=</span> <span class="n">system</span><span class="o">.</span><span class="n">min_genes_required</span><span class="p">):</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;system &#39;</span><span class="si">{0}</span><span class="s2">&#39; is not consistent: min_mandatory_genes_required </span><span class="si">{1:d}</span><span class="se">\</span>
+<span class="s2"> must be lesser or equal than min_genes_required </span><span class="si">{2:d}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">system</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">system</span><span class="o">.</span><span class="n">min_mandatory_genes_required</span><span class="p">,</span>
+                                                               <span class="n">system</span><span class="o">.</span><span class="n">min_genes_required</span><span class="p">)</span>
+                <span class="n">_log</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="n">SystemInconsistencyError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="SystemParser.parse"><a class="viewcode-back" href="../../system_parser.html#macsypy.system_parser.SystemParser.parse">[docs]</a>    <span class="k">def</span> <span class="nf">parse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">systems_2_detect</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Parse systems definition in XML format to build the corresponding system objects,</span>
+<span class="sd">         and add them to the system factory after checking its consistency.</span>
+<span class="sd">        To get the system ask it to system_bank</span>
+<span class="sd">        :param systems_2_detect: a list with the names of the systems to parse (eg &#39;T2SS&#39;)</span>
+<span class="sd">        :type systems_2_detect: list of string</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># one opening/closing file / system</span>
+        <span class="n">parsed_systems</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">systems_2_detect_dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">systems_2_detect</span><span class="p">:</span>
+            <span class="n">systems_2_detect_dict</span><span class="p">[</span><span class="n">s</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        
+        <span class="c1"># one opening /closing file /system</span>
+        <span class="n">systems_2_parse</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">system_to_parse</span><span class="p">(</span><span class="n">systems_2_detect_dict</span><span class="p">,</span> <span class="n">parsed_systems</span><span class="p">)</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">System(s) to parse (recursive inclusion of &#39;system_ref&#39;):&quot;</span>
+        
+        <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">systems_2_parse</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\n\t</span><span class="s2">-</span><span class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+        <span class="n">_log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        
+        <span class="k">for</span> <span class="n">system_name</span> <span class="ow">in</span> <span class="n">systems_2_parse</span><span class="p">:</span>
+            <span class="n">path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">definitions_registry</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">system_name</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">path</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">MacsypyError</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{0}</span><span class="s2">: No such system definitions&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">path</span><span class="p">))</span>
+            <span class="n">tree</span> <span class="o">=</span> <span class="n">Et</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+            <span class="n">system_node</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">getroot</span><span class="p">()</span>
+            <span class="n">sys</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_system</span><span class="p">(</span><span class="n">system_name</span><span class="p">,</span> <span class="n">system_node</span><span class="p">)</span>  <span class="c1"># une ouverture par fichier</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">system_bank</span><span class="o">.</span><span class="n">add_system</span><span class="p">(</span><span class="n">sys</span><span class="p">)</span>
+            <span class="n">genes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_genes</span><span class="p">(</span><span class="n">sys</span><span class="p">,</span> <span class="n">system_node</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">g</span> <span class="ow">in</span> <span class="n">genes</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">gene_bank</span><span class="o">.</span><span class="n">add_gene</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
+        <span class="c1"># Now, all systems related (e.g. via system_ref) to the one to detect are filled appropriately.</span>
+        <span class="k">for</span> <span class="n">system_name</span> <span class="ow">in</span> <span class="n">systems_2_parse</span><span class="p">:</span>   
+            <span class="n">system</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">system_bank</span><span class="p">[</span><span class="n">system_name</span><span class="p">]</span>
+            <span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">def_dir</span><span class="p">,</span> <span class="n">system_name</span> <span class="o">+</span> <span class="s2">&quot;.xml&quot;</span><span class="p">)</span>
+            <span class="n">tree</span> <span class="o">=</span> <span class="n">Et</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+            <span class="n">system_node</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">getroot</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_fill</span><span class="p">(</span><span class="n">system</span><span class="p">,</span> <span class="n">system_node</span><span class="p">)</span>
+        <span class="n">system_2_check</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">system_bank</span><span class="p">[</span><span class="n">s</span><span class="p">]</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">systems_2_detect</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">check_consistency</span><span class="p">(</span><span class="n">system_2_check</span><span class="p">)</span></div></div>
+
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">MacSyFinder documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2014, Sophie Abby, Bertrand Néron.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.3.
+    </div>
+  </body>
+</html>

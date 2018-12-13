@@ -1,0 +1,76 @@
+# hmmsearch :: search profile(s) against a sequence database
+# HMMER 3.1b1 (May 2013); http://hmmer.org/
+# Copyright (C) 2013 Howard Hughes Medical Institute.
+# Freely distributed under the GNU General Public License (GPLv3).
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# query HMM file:                  /usr/local/share/macsyfinder/profiles/cse1_TypeIE.hmm
+# target sequence database:        /home/shaoting/project/mge_nestle/macsyfinder-1.0.4/data/sequence_data/datatest_gembase.fasta
+# output directed to file:         /home/shaoting/project/mge_nestle/macsyfinder-1.0.4/macsyfinder-20180119_15-19-31/hmmer_results/cse1_TypeIE.search_hmm.out
+# sequence reporting threshold:    E-value <= 1
+# number of worker threads:        0
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+Query:       TIGR02547  [M=504]
+Accession:   TIGR02547
+Description: casA_cse1: CRISPR type I-E/ECOLI-associated protein CasA/Cse1
+Scores for complete sequences (score includes all domains):
+   --- full sequence ---   --- best 1 domain ---    -#dom-
+    E-value  score  bias    E-value  score  bias    exp  N  Sequence           Description
+    ------- ------ -----    ------- ------ -----   ---- --  --------           -----------
+   6.3e-163  541.9   0.0     7e-163  541.8   0.0    1.0  1  ESCO001c01a_027830  C ATG TGA 2880652 2882160 Valid casA 1509
+
+
+Domain annotation for each sequence (and alignments):
+>> ESCO001c01a_027830  C ATG TGA 2880652 2882160 Valid casA 1509 _b2760_NP_417240.1_ b2760 1 2880652 2882160 | CRISP RNA
+   #    score  bias  c-Evalue  i-Evalue hmmfrom  hmm to    alifrom  ali to    envfrom  env to     acc
+ ---   ------ ----- --------- --------- ------- -------    ------- -------    ------- -------    ----
+   1 !  541.8   0.0  9.8e-167    7e-163       1     504 []       2     496 ..       2     496 .. 0.99
+
+  Alignments for each domain:
+  == domain 1  score: 541.8 bits;  conditional E-value: 9.8e-167
+           TIGR02547   1 NLldepWiPVrdkdggaeevllledllredevadlagprpdqelAllrlLlallqrvlaPkdtedweeiwrdglpadklrkylnkwrdrFq 91 
+                         NLl ++WiPVr+++gg++++++l++l++++++++l++pr+d+elA+l lL++++q+++++kd+ +++++++++l++d++++ +++w+d+F+
+  ESCO001c01a_027830   2 NLLIDNWIPVRPRNGGKVQIINLQSLYCSRDQWRLSLPRDDMELAALALLVCIGQIIAPAKDDVEFRHRIMNPLTEDEFQQLIAPWIDMFY 92 
+                         9****************************************************************************************** PP
+
+           TIGR02547  92 LfhptpPFmQdadllakdktpvakLlaevpgannialnkdhfikrglpeatsaecaalaLfslqlnapsfgggarnvglrGggpvttlvll 182
+                         L+h+++PFmQ++ ++a+d tp++kLla+v+ga+n+a+++    ++g++ea++++c+a+aLf+++++ap+fggg++ +glrGg+pvtt+v++
+  ESCO001c01a_027830  93 LNHAEHPFMQTKGVKANDVTPMEKLLAGVSGATNCAFVN----QPGQGEALCGGCTAIALFNQANQAPGFGGGFK-SGLRGGTPVTTFVRG 178
+                         ***************************************....********************************.*************** PP
+
+           TIGR02547 183 qesygeggtLwetLllNlvp.....qeipdpdptdeqgfdwlppertseqegeraksspvgplrgltwqprrirLlvedgea......... 259
+                          +       L++t+llN+++     +++p++++t++q ++w++p+++    +e++++s++g++rgl+wqp++i+L+++ g           
+  ESCO001c01a_027830 179 ID-------LRSTVLLNVLTlprlqKQFPNESHTENQ-PTWIKPIKS----NESIPASSIGFVRGLFWQPAHIELCDPIGIGkcsccgqes 257
+                         **.......****************9**********9.*********....*****************************99********* PP
+
+           TIGR02547 260 .vllsgvrvknygltydglwehpldPyrvsvkkqekeeksvklqperslWrdldsllltedsktaaeqralvsavfkqaelvsnkvrlrll 349
+                          ++++g+ ++++++t++glw+hp++P++v+vkk+e eek++++++++++W++++++++++  ++  e++++v+av++q+++++ +  l+l+
+  ESCO001c01a_027830 258 nLRYTGFLKEKFTFTVNGLWPHPHSPCLVTVKKGEVEEKFLAFTTSAPSWTQISRVVVDKIIQN--ENGNRVAAVVNQFRNIAPQSPLELI 346
+                         ****************************************************************..77777779***************** PP
+
+           TIGR02547 350 gldydnqkariwysardpllfrsvdeqlaprlkeavgaavqileilrnaLknavfelaeaakgkdfkaagvsfwleaeerfwslaeaefvd 440
+                         +++y+n++a+i+++++d+l+f+++    ++++ ++++++v+++ ++++aL++a++++ae++k+kdfk+agvs++++ae++f++++e++++d
+  ESCO001c01a_027830 347 MGGYRNNQASILERRHDVLMFNQG----WQQYGNVINEIVTVGLGYKTALRKALYTFAEGFKNKDFKGAGVSVHETAERHFYRQSELLIPD 433
+                         ************************....*************************************************************** PP
+
+           TIGR02547 441 llralqaedadealaawgtallllatdvfdeavarytkeqidaiaerakarkdLykslrelkaq 504
+                          l+++++++ade +a+++++l++l++++f+++va+y++++ ++i+++a ar++Lyk+lrelk+q
+  ESCO001c01a_027830 434 VLANVNFSQADEVIADLRDKLHQLCEMLFNQSVAPYAHHP-KLISTLALARATLYKHLRELKPQ 496
+                         ****************************************.*********************97 PP
+
+
+
+Internal pipeline statistics summary:
+-------------------------------------
+Query model(s):                              1  (504 nodes)
+Target sequences:                         7219  (2337224 residues searched)
+Passed MSV filter:                       212  (0.0293669); expected 144.4 (0.02)
+Passed bias filter:                      130  (0.018008); expected 144.4 (0.02)
+Passed Vit filter:                         9  (0.00124671); expected 7.2 (0.001)
+Passed Fwd filter:                         1  (0.000138523); expected 0.1 (1e-05)
+Initial search space (Z):               7219  [actual number of targets]
+Domain search space  (domZ):               1  [number of targets reported over threshold]
+# CPU time: 0.10u 0.00s 00:00:00.10 Elapsed: 00:00:00.10
+# Mc/sec: 11779.61
+//
+[ok]

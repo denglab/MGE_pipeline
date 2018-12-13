@@ -1,0 +1,188 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>MacSyView: visualizing MacSyFinder’s results! &#8212; MacSyFinder 1.0.4 documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0.4',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Macromolecular systems definition" href="system_definition.html" />
+    <link rel="prev" title="Output format" href="outputs.html" /> 
+  </head>
+  <body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="system_definition.html" title="Macromolecular systems definition"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="outputs.html" title="Output format"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">MacSyFinder documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="macsyview-visualizing-macsyfinder-s-results">
+<span id="macsyview"></span><h1>MacSyView: visualizing MacSyFinder’s results!<a class="headerlink" href="#macsyview-visualizing-macsyfinder-s-results" title="Permalink to this headline">¶</a></h1>
+<p>MacSyView is a standalone web-browser application to visualize MacSyFinder’s detected systems. MacSyView relies on JSON files outputted by MacSyFinder to display the list of detected systems, and a detailed view of each system. It allows visualizing the content of systems, their genomic context, and generates SVG files that can be exported for drawing purpose.</p>
+<div class="section" id="macsyview-how-to">
+<h2>MacSyView How To<a class="headerlink" href="#macsyview-how-to" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic simple">
+<li>Run MacSyFinder to detect your favorite system!</li>
+<li>Launch MacSyView:</li>
+</ol>
+<blockquote>
+<div><ul class="simple">
+<li>Either, <strong>run the wrapper `macsyview`</strong> installed with MacSyFinder’s binaries (<em>i.e.</em>, <cite>macsyfinder</cite> - for Linux).</li>
+<li>Or <strong>open with your web-browser the html page</strong>: /usr/share/macsyview/index.html or /share/macsyview/index.html</li>
+</ul>
+<p>(or in the path specified during installation for data associated with MacSyFinder).</p>
+</div></blockquote>
+<ol class="arabic simple" start="3">
+<li>Select the .json output file in the output directory of the run</li>
+<li>Choose the system you want to visualize in the list…</li>
+<li>…and here it is!</li>
+</ol>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The MacSyView application runs everything on the user’s computer, even if it uses the technologies of Web browsers.
+No data are sent out of the user’s device.</p>
+</div>
+</div>
+<div class="section" id="graphical-output-description">
+<h2>Graphical output description<a class="headerlink" href="#graphical-output-description" title="Permalink to this headline">¶</a></h2>
+<p>The content of the system view depends on the type of the input dataset.</p>
+<blockquote>
+<div><ul class="simple">
+<li>upper panel: an overview of the effectives of detected components is displayed <strong>for all types</strong> of datasets,
+per type of components in the system definition. It is a direct representation of how the definition was fulfilled during detection.</li>
+<li>middle panel: only for <strong>ordered datasets</strong>, the detected system is shown in its genomic context,
+including nearby proteins that were not annotated as system’s components.</li>
+<li>lower panel: for <strong>all datasets</strong>, a table containing information on detected components
+(and eventually nearby proteins for ordered datasets) is displayed. It includes sequence information,
+and in the case of system’s components, Hmmer hit information, and function assigned in the system.</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="technology-used">
+<h2>Technology used<a class="headerlink" href="#technology-used" title="Permalink to this headline">¶</a></h2>
+<p>MacSyView was coded in Javascript and uses third-party libraries that are all accredited in the COPYRIGHT file
+distributed with the MacSyFinder/MacSyView package.</p>
+<p>It includes among others:</p>
+<blockquote>
+<div><ul class="simple">
+<li>the <a class="reference external" href="http://raphaeljs.com/">Raphael library</a> for systems drawing,</li>
+<li>the <a class="reference external" href="http://getbootstrap.com/">Bootstrap library</a> for HTML design and</li>
+<li>the <a class="reference external" href="http://github.com/janl/mustache.js">Mustache library</a> for HTML templating in Javascript.</li>
+</ul>
+<p>The <a class="reference external" href="http://jquery.com/">JQuery</a>, <a class="reference external" href="https://github.com/brandonaaron/jquery-mousewheel">JQuery-mousewheel</a> and <a class="reference external" href="http://github.com/ElbertF/Raphael.Export">Raphael.Export</a> libraries were also used.</p>
+</div></blockquote>
+<p>It was tested on Chromium and Firefox for Linux, and on Chrome, Firefox and Safari for Mac OS X.</p>
+</div>
+<div class="section" id="screenshot">
+<span id="id1"></span><h2>Screenshot<a class="headerlink" href="#screenshot" title="Permalink to this headline">¶</a></h2>
+<p>Here is a view of one of the three systems detected with the example dataset <a class="reference internal" href="quickstart.html#datatest"><span class="std std-ref">presented here</span></a>:</p>
+<blockquote>
+<div><a class="reference internal image-reference" href="_images/fig_capture.svg"><div align="left" class="align-left"><img alt="_images/fig_capture.svg" height="600px" src="_images/fig_capture.svg" width="700px" /></div>
+</a>
+</div></blockquote>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">MacSyView: visualizing MacSyFinder’s results!</a><ul>
+<li><a class="reference internal" href="#macsyview-how-to">MacSyView How To</a></li>
+<li><a class="reference internal" href="#graphical-output-description">Graphical output description</a></li>
+<li><a class="reference internal" href="#technology-used">Technology used</a></li>
+<li><a class="reference internal" href="#screenshot">Screenshot</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="outputs.html"
+                        title="previous chapter">Output format</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="system_definition.html"
+                        title="next chapter">Macromolecular systems definition</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/macsyview.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="system_definition.html" title="Macromolecular systems definition"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="outputs.html" title="Output format"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">MacSyFinder documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2014, Sophie Abby, Bertrand Néron.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.3.
+    </div>
+  </body>
+</html>

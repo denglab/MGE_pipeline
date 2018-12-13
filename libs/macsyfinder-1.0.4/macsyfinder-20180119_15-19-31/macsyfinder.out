@@ -1,0 +1,168 @@
+MacSyFinder's results will be stored in /home/shaoting/project/mge_nestle/macsyfinder-1.0.4/macsyfinder-20180119_15-19-31
+Analysis launched on /home/shaoting/project/mge_nestle/macsyfinder-1.0.4/data/sequence_data/datatest_gembase.fasta for system(s):
+	- CAS-TypeIF
+	- CAS-TypeIIIB
+	- CAS-TypeU
+	- CAS-TypeIC
+	- CAS
+	- CAS-TypeIA
+	- CAS-TypeIIIU
+	- CAS-TypeIIU
+	- CAS-TypeIE
+	- CAS-TypeIIIA
+	- CAS-TypeID
+	- CAS-TypeIU
+	- CAS-TypeIB
+	- CAS-TypeIIB
+	- CAS-TypeIIA
+
+************************************
+ Analyzing clusters for ESCO001c01a 
+************************************
+
+--- Cluster CAS-TypeIE  ---
+['ESCO001c01a_027770', 'ESCO001c01a_027780', 'ESCO001c01a_027790', 'ESCO001c01a_027800', 'ESCO001c01a_027810', 'ESCO001c01a_027820', 'ESCO001c01a_027830', 'ESCO001c01a_027840']
+['cas2_TypeIE', 'cas1_TypeIE', 'cas6_TypeIE', 'cas5_TypeIE', 'cas7_TypeIE', 'cse2_TypeIE', 'cse1_TypeIE', 'cas3_TypeI']
+[2597, 2598, 2599, 2600, 2601, 2602, 2603, 2604]
+Considering CAS-TypeIE: 
+-> single_locus
+====> Decision rule for putative system CAS-TypeIE:
+Mandatory genes: 
+cas1_TypeIE	1
+cse2_TypeIE	1
+cas5_TypeIE	1
+cas2_TypeIE	1
+cas6_TypeIE	1
+cas7_TypeIE	1
+cse1_TypeIE	1
+Accessory genes: 
+cas3_TypeI	1
+cas5_TypeI	0
+cas3a_TypeI	0
+Forbidden genes: 
+cas4_TypeI-II	0
+cas1_TypeI-II-III	0
+cas2_TypeI-II-III	0
+
+nb_forbid : 0
+nb_mandat : 7
+nb_accessory : 1
+Complete "single_locus" system.
+******************************************
+
+
+    
+****************************************************
+******* Report scattered/uncompleted systems *******
+****************************************************
+
+******************************************
+
+******************************************
+Building reports for ESCO001c01a: 
+
+Counter({'CAS-TypeIE_single_locus': 1})
+******************************************
+
+************************************
+ Analyzing clusters for HAMA001p04a 
+************************************
+
+--- Cluster CAS-TypeIB  ---
+['HAMA001p04a_000440', 'HAMA001p04a_000450', 'HAMA001p04a_000460', 'HAMA001p04a_000470', 'HAMA001p04a_000480', 'HAMA001p04a_000490', 'HAMA001p04a_000500', 'HAMA001p04a_000510']
+['cas6_TypeI-III', 'cas8b_TypeIB', 'cas7b2_TypeIB', 'cas5b2_TypeIB', 'cas3a_TypeI', 'cas4_TypeI-II', 'cas1_TypeIB', 'cas2_TypeI-II-III']
+[4185, 4186, 4187, 4188, 4189, 4190, 4191, 4192]
+Considering CAS-TypeIB: 
+-> single_locus
+====> Decision rule for putative system CAS-TypeIB:
+Mandatory genes: 
+cas8a1b_TypeIB	0
+cas8b_TypeIB	1
+cas1_TypeIB	1
+cas7b3_TypeIB	0
+cas8a1b2_TypeIB	0
+cas7b2_TypeIB	1
+cas5b2_TypeIB	1
+cas5b_TypeIB	0
+cas8a1b3_TypeIB	0
+cas7b_TypeIB	0
+Accessory genes: 
+cas3_TypeI	0
+casRa_TypeIA	0
+cas5_TypeI	0
+csm3_TypeIIIA	0
+cas7_TypeI	0
+cas3a_TypeI	1
+cas4_TypeI-II	1
+cas2_TypeI-II-III	1
+csx10_TypeIIIU	0
+cas6_TypeI-III	1
+cas1_TypeI-II-III	0
+Forbidden genes: 
+cas8c_TypeIC	0
+
+nb_forbid : 0
+nb_mandat : 4
+nb_accessory : 4
+Complete "single_locus" system.
+******************************************
+
+
+    
+****************************************************
+******* Report scattered/uncompleted systems *******
+****************************************************
+
+******************************************
+
+******************************************
+Building reports for HAMA001p04a: 
+
+Counter({'CAS-TypeIB_single_locus': 1})
+******************************************
+
+************************************
+ Analyzing clusters for LEPN003c01a 
+************************************
+
+--- Cluster CAS-TypeIIB  ---
+['LEPN003c01a_001560', 'LEPN003c01a_001570', 'LEPN003c01a_001580', 'LEPN003c01a_001590']
+['cas9_TypeIIB', 'cas1_TypeI-II-III', 'cas2_TypeI-II-III', 'cas4_TypeI-II']
+[4347, 4348, 4349, 4350]
+Considering CAS-TypeIIB: 
+-> single_locus
+====> Decision rule for putative system CAS-TypeIIB:
+Mandatory genes: 
+cas9_TypeIIB	1
+cas4_TypeI-II	1
+Accessory genes: 
+cas1_TypeII	0
+cas1_TypeI-II-III	1
+cas2_TypeI-II-III	1
+Forbidden genes: 
+cas3_TypeI	0
+csn2_TypeIIA	0
+cas3a_TypeI	0
+cas9_TypeII	0
+
+nb_forbid : 0
+nb_mandat : 2
+nb_accessory : 2
+Complete "single_locus" system.
+******************************************
+
+
+    
+****************************************************
+******* Report scattered/uncompleted systems *******
+****************************************************
+
+******************************************
+
+******************************************
+Building reports for LEPN003c01a: 
+
+Counter({'CAS-TypeIIB_single_locus': 1})
+******************************************
+
+--- Replicons with no hits: ---

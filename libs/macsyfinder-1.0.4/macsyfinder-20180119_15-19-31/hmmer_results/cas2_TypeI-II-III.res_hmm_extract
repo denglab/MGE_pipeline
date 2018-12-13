@@ -1,0 +1,7 @@
+# gene: cas2_TypeI-II-III extract from /home/shaoting/project/mge_nestle/macsyfinder-1.0.4/macsyfinder-20180119_15-19-31/hmmer_results/cas2_TypeI-II-III.search_hmm.out hmm output
+# profile length= 96
+# i_evalue threshold= 0.001
+# coverage threshold= 0.500
+# hit_id replicon_name position_hit hit_sequence_length gene_name gene_system i_eval score profile_coverage sequence_coverage begin end
+HAMA001p04a_000510	HAMA001p04a	4192	87	cas2_TypeI-II-III	CAS	4.500e-13	47.900	0.896	0.920	3	82
+LEPN003c01a_001580	LEPN003c01a	4349	99	cas2_TypeI-II-III	CAS	5.900e-08	31.500	0.771	0.727	9	80

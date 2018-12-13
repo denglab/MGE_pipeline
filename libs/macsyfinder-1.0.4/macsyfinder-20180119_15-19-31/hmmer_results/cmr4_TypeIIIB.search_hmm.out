@@ -1,0 +1,57 @@
+# hmmsearch :: search profile(s) against a sequence database
+# HMMER 3.1b1 (May 2013); http://hmmer.org/
+# Copyright (C) 2013 Howard Hughes Medical Institute.
+# Freely distributed under the GNU General Public License (GPLv3).
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# query HMM file:                  /usr/local/share/macsyfinder/profiles/cmr4_TypeIIIB.hmm
+# target sequence database:        /home/shaoting/project/mge_nestle/macsyfinder-1.0.4/data/sequence_data/datatest_gembase.fasta
+# output directed to file:         /home/shaoting/project/mge_nestle/macsyfinder-1.0.4/macsyfinder-20180119_15-19-31/hmmer_results/cmr4_TypeIIIB.search_hmm.out
+# sequence reporting threshold:    E-value <= 1
+# number of worker threads:        0
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+Query:       TIGR02580  [M=283]
+Accession:   TIGR02580
+Description: cas_RAMP_Cmr4: CRISPR type III-B/RAMP module RAMP protein Cmr4
+Scores for complete sequences (score includes all domains):
+   --- full sequence ---   --- best 1 domain ---    -#dom-
+    E-value  score  bias    E-value  score  bias    exp  N  Sequence           Description
+    ------- ------ -----    ------- ------ -----   ---- --  --------           -----------
+  ------ inclusion threshold ------
+        0.1   11.1   5.0       0.13   10.7   5.0    1.1  1  ESCO001c01a_037630  C GTG TAA 3918441 3918911 Valid atpF 471 
+
+
+Domain annotation for each sequence (and alignments):
+>> ESCO001c01a_037630  C GTG TAA 3918441 3918911 Valid atpF 471 _b3736_NP_418192.1_ b3736 1 3918441 3918911 | enzyme; AT
+   #    score  bias  c-Evalue  i-Evalue hmmfrom  hmm to    alifrom  ali to    envfrom  env to     acc
+ ---   ------ ----- --------- --------- ------- -------    ------- -------    ------- -------    ----
+   1 ?   10.7   5.0   1.8e-05      0.13     112     203 ..      49     141 ..      46     151 .. 0.81
+
+  Alignments for each domain:
+  == domain 1  score: 10.7 bits;  conditional E-value: 1.8e-05
+           TIGR02580 112 rlkedlea..vgeledlkeleeeedallasgekeekvlldeikleaeleeavgelekvlaikklkpdelkelleerlvvvsDelfrdlvns 200
+                         r+++dl++  ++  ++lk+++ e ++++ + +k    +lde k eae e ++++ +   +i+    +  +e l+++++++     ++++++
+  ESCO001c01a_037630  49 RAHKDLDLakASATDQLKKAKAEAQVIIEQANKRRSQILDEAKAEAEQERTKIVAQAQAEIEAER-KRAREELRKQVAILAVAGAEKIIER 138
+                         5666655511556666666666668999999999*****************99999999999777.7999**********99889999998 PP
+
+           TIGR02580 201 ale 203
+                         ++ 
+  ESCO001c01a_037630 139 SVD 141
+                         875 PP
+
+
+
+Internal pipeline statistics summary:
+-------------------------------------
+Query model(s):                              1  (283 nodes)
+Target sequences:                         7219  (2337224 residues searched)
+Passed MSV filter:                       167  (0.0231334); expected 144.4 (0.02)
+Passed bias filter:                      126  (0.0174539); expected 144.4 (0.02)
+Passed Vit filter:                        11  (0.00152376); expected 7.2 (0.001)
+Passed Fwd filter:                         1  (0.000138523); expected 0.1 (1e-05)
+Initial search space (Z):               7219  [actual number of targets]
+Domain search space  (domZ):               1  [number of targets reported over threshold]
+# CPU time: 0.10u 0.00s 00:00:00.10 Elapsed: 00:00:00.09
+# Mc/sec: 7349.27
+//
+[ok]

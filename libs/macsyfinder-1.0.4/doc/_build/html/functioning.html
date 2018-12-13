@@ -1,0 +1,185 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>MacSyFinder functioning &#8212; MacSyFinder 1.0.4 documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0.4',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Configuration API" href="config.html" />
+    <link rel="prev" title="MacSyFinder implementation overview" href="implementation.html" /> 
+  </head>
+  <body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="config.html" title="Configuration API"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="implementation.html" title="MacSyFinder implementation overview"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">MacSyFinder documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="macsyfinder-functioning">
+<span id="functioning"></span><h1>MacSyFinder functioning<a class="headerlink" href="#macsyfinder-functioning" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="functioning-overview">
+<h2>Functioning overview<a class="headerlink" href="#functioning-overview" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><a class="reference internal image-reference" href="_images/FigureS2_figure_TXSScan_last-new.svg"><div align="left" class="align-left"><img alt="_images/FigureS2_figure_TXSScan_last-new.svg" height="500px" src="_images/FigureS2_figure_TXSScan_last-new.svg" /></div>
+</a>
+</div></blockquote>
+</div>
+<div class="section" id="a-searching-for-systems-components">
+<h2>A. Searching for systems’ components<a class="headerlink" href="#a-searching-for-systems-components" title="Permalink to this headline">¶</a></h2>
+<p>MacSyFinder is run from the command-line using a variety of input files and options. See <a class="reference internal" href="input.html#input-dataset-label"><span class="std std-ref">Input dataset</span></a> for more details.</p>
+<p>Initially, MacSyFinder <strong>searches for the components</strong> of a system by sequence similarity search.</p>
+<p>From the list of systems to detect, a non-redundant list of components to search is built. For each system, the list includes:</p>
+<blockquote>
+<div><ul class="simple">
+<li>mandatory components</li>
+<li>accessory components</li>
+<li>forbidden components</li>
+<li>homologs and/or analogs of these three types of components in the case they are <em>“exchangeable”</em></li>
+</ul>
+</div></blockquote>
+<p>Hmmer is run on the corresponding set of HMM profiles, and the hits are filtered according to criteria defined by the user (see <a class="reference internal" href="input.html#hmmer-options"><span class="std std-ref">Hmmer options</span></a> and <a class="reference internal" href="HMMReport.html#hmmreport"><span class="std std-ref">HMMReport API</span></a>). This step, and the extraction of significant hits can be performed in parallel (<cite>-w</cite> command-line option). See the <a class="reference internal" href="input.html#command-line-label"><span class="std std-ref">Command-line options</span></a>, and the <a class="reference internal" href="search_genes.html#search-genes"><span class="std std-ref">search_genes API</span></a> for more details.</p>
+</div>
+<div class="section" id="b-assessing-systems-presence">
+<span id="system-assessment"></span><h2>B. Assessing systems presence<a class="headerlink" href="#b-assessing-systems-presence" title="Permalink to this headline">¶</a></h2>
+<p>The following steps depend on whether the input dataset is <em>ordered</em> (complete or nearly complete genome(s)), or <em>unordered</em>  (metagenomes, or unassembled genome) (see <a class="reference internal" href="input.html#input-dataset-label"><span class="std std-ref">Input dataset</span></a>).
+In the case of <strong>ordered datasets</strong>, the hits of the previous analysis are used to build <em>clusters of co-localized genes</em> as defined in the XML files. These clusters are then scanned to check for the model specifications like minimal quorum of “Mandatory” or “Accessory” genes or the absence of “Forbidden” components.
+When the gene order is unknown the power of the analysis is more limited. In this case, and depending on the type of dataset, the presence of systems can be suggested only on the basis of the quorum of genes. The results are outputted in a tabular and graphical form (see <a class="reference internal" href="outputs.html#outputs"><span class="std std-ref">Output format</span></a>).</p>
+<div class="section" id="for-ordered-datasets">
+<h3>For <em>ordered</em> datasets:<a class="headerlink" href="#for-ordered-datasets" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic simple">
+<li>The search starts first with the formation of clusters of contiguous hits <strong>(co-localization criterion)</strong> for each replicon. Two hits are said contiguous if their genomic location is separated by less than D protein-encoding gene, D being the maximum of the parameter “inter_gene_max_space” from the two genes with hits (system-specific, of gene-specific parameter).</li>
+<li>Clusters are then scanned, and those containing only genes from a single system are kept for further analyses (step 4.), wether those with multiple systems represented are analysed with a disambiguation step (step 3.).</li>
+<li>The disambiguation step consists in splitting clusters that contains genes from different systems into sub-clusters that contain genes from a single system. Valid sub-clusters are then analysed like other clusters (step 2.). In the complex cases where genes from a same system are scattered into the cluster, then corresponding sub-clusters will not be further analysed for system detection.</li>
+<li>Valid clusters are used to fill system occurrences (<a class="reference internal" href="search_systems.html#macsypy.search_systems.SystemOccurence" title="macsypy.search_systems.SystemOccurence"><code class="xref py py-class docutils literal"><span class="pre">macsypy.search_systems.SystemOccurence</span></code></a>). In this step, the <strong>quorum</strong> criteria for the system assessment are checked according to the system’s definition. In the case a single locus fills a complete system occurrence, it is stored and reported in the output files (<strong>“single-locus”</strong> occurrence). Otherwise, if the cluster corresponds to a valid but incomplete system, it is stored for inclusion in a scattered system occurrence (<strong>“multi-loci”</strong> occurrence).</li>
+<li>When all clusters, “loner” genes and “multi_system” genes were scanned for inclusion in system occurrences, a decision is made for every system occurrence regarding the <strong>quorum rules</strong> defined for the corresponding system.</li>
+</ol>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">When the “multi_loci” option is turned on, a single “multi-loci” system is assessed per replicon, even if it could correspond to multiple scattered systems. Thus, the “single-locus” systems correspond to a more powerful mode of detection.</p>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Cases where systems are consecutive will be treated, and separate systems will be detected, but complex cases of detection, <em>i.e.</em> when systems’ components are intermingled will not be considered.</p>
+</div>
+</div>
+<div class="section" id="for-unordered-datasets">
+<h3>For <em>unordered</em> datasets:<a class="headerlink" href="#for-unordered-datasets" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic simple">
+<li>The Hits are grouped by system.</li>
+<li>They are used to fill a single system occurrence (<a class="reference internal" href="search_systems.html#macsypy.search_systems.SystemOccurence" title="macsypy.search_systems.SystemOccurence"><code class="xref py py-class docutils literal"><span class="pre">macsypy.search_systems.SystemOccurence</span></code></a>) per system type.</li>
+</ol>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The “unordered” mode of detection is less powerful, as a single occurrence of a given system is filled for an entire dataset with hits that origin is unknown. Please consider “systems assessments” with caution in this mode.</p>
+</div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">MacSyFinder functioning</a><ul>
+<li><a class="reference internal" href="#functioning-overview">Functioning overview</a></li>
+<li><a class="reference internal" href="#a-searching-for-systems-components">A. Searching for systems’ components</a></li>
+<li><a class="reference internal" href="#b-assessing-systems-presence">B. Assessing systems presence</a><ul>
+<li><a class="reference internal" href="#for-ordered-datasets">For <em>ordered</em> datasets:</a></li>
+<li><a class="reference internal" href="#for-unordered-datasets">For <em>unordered</em> datasets:</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="implementation.html"
+                        title="previous chapter">MacSyFinder implementation overview</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="config.html"
+                        title="next chapter">Configuration API</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/functioning.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="config.html" title="Configuration API"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="implementation.html" title="MacSyFinder implementation overview"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">MacSyFinder documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2014, Sophie Abby, Bertrand Néron.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.3.
+    </div>
+  </body>
+</html>

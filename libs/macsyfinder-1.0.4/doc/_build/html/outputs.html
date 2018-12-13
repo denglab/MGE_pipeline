@@ -1,0 +1,247 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Output format &#8212; MacSyFinder 1.0.4 documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0.4',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="MacSyView: visualizing MacSyFinder’s results!" href="macsyview.html" />
+    <link rel="prev" title="Gembase format" href="gembase_convention.html" /> 
+  </head>
+  <body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="macsyview.html" title="MacSyView: visualizing MacSyFinder’s results!"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="gembase_convention.html" title="Gembase format"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">MacSyFinder documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="output-format">
+<span id="outputs"></span><h1>Output format<a class="headerlink" href="#output-format" title="Permalink to this headline">¶</a></h1>
+<p>MacSyFinder provides different types of outputs. At each run, MacSyFinder creates a new folder, whose name is based on a fixed prefix and a random suffix, for instance “macsyfinder-20130128_08-57-46”. MacSyFinder outputs are stored in this run-specific folder.</p>
+<div class="section" id="hmmer-results-outputs">
+<span id="hmmer-outputs-label"></span><h2>Hmmer results outputs<a class="headerlink" href="#hmmer-results-outputs" title="Permalink to this headline">¶</a></h2>
+<p>Raw Hmmer outputs are provided, as long with processed tabular outputs that includes hits filtered as specified by the user. For instance, the Hmmer search for SctC homologs with the corresponding profile will produce as a result two files: “sctC.search_hmm.out” and “sctC.res_hmm_extract”.</p>
+<p>The processed output “sctC.res_hmm_extract” recalls on the first lines the parameters used for hits filtering and relevant information on the matches, as
+for instance:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># gene: sctC extract from /Users/bob/macsyfinder_results/</span>
+      <span class="n">macsyfinder</span><span class="o">-</span><span class="mi">20130128</span><span class="n">_08</span><span class="o">-</span><span class="mi">57</span><span class="o">-</span><span class="mi">46</span><span class="o">/</span><span class="n">sctC</span><span class="o">.</span><span class="n">search_hmm</span><span class="o">.</span><span class="n">out</span> <span class="n">hmm</span> <span class="n">output</span>
+<span class="c1"># profile length= 544</span>
+<span class="c1"># i_evalue threshold= 0.001000</span>
+<span class="c1"># coverage threshold= 0.500000</span>
+<span class="c1"># hit_id replicon_name position_hit hit_sequence_length gene_name gene_system i_eval score</span>
+      <span class="n">profile_coverage</span> <span class="n">sequence_coverage</span> <span class="n">begin</span> <span class="n">end</span>
+<span class="n">PSAE001c01_006940</span>       <span class="n">PSAE001c01</span>      <span class="mi">3450</span>    <span class="mi">803</span>     <span class="n">sctC</span>    <span class="n">T3SS</span>    <span class="mf">1.1e-41</span> <span class="mf">141.6</span>
+      <span class="mf">0.588235</span>  <span class="mf">0.419676</span>        <span class="mi">395</span>     <span class="mi">731</span>
+<span class="n">PSAE001c01_018920</span>       <span class="n">PSAE001c01</span>      <span class="mi">4634</span>    <span class="mi">776</span>     <span class="n">sctC</span>    <span class="n">T3SS</span>    <span class="mf">9.2e-48</span> <span class="mf">161.7</span>
+      <span class="mf">0.976103</span>  <span class="mf">0.724227</span>        <span class="mi">35</span>      <span class="mi">596</span>
+<span class="n">PSAE001c01_031420</span>       <span class="n">PSAE001c01</span>      <span class="mi">5870</span>    <span class="mi">658</span>     <span class="n">sctC</span>    <span class="n">T3SS</span>    <span class="mf">2.7e-52</span> <span class="mf">176.7</span>
+      <span class="mf">0.963235</span>  <span class="mf">0.844985</span>        <span class="mi">49</span>      <span class="mi">604</span>
+<span class="n">PSAE001c01_051090</span>       <span class="n">PSAE001c01</span>      <span class="mi">7801</span>    <span class="mi">714</span>     <span class="n">sctC</span>    <span class="n">T3SS</span>    <span class="mf">1.9e-46</span> <span class="mf">157.4</span>
+      <span class="mf">0.571691</span>  <span class="mf">0.463585</span>        <span class="mi">374</span>     <span class="mi">704</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Each tabular output file contains a header line describing each column in the output.</p>
+</div>
+</div>
+<div class="section" id="systems-detection-results">
+<h2>Systems detection results<a class="headerlink" href="#systems-detection-results" title="Permalink to this headline">¶</a></h2>
+<p>Different types of tabular outputs are provided. Headers are provided with the content of the lines in the file.</p>
+<blockquote>
+<div><ul class="simple">
+<li>macsyfinder.tab - for <strong>“ordered” datasets only</strong> (db_type is “ordered_replicon” or “gembase”). It provides a summary of the number of each type of systems that have been detected.</li>
+<li>macsyfinder.report - contains all the sequence identifiers of proteins detected as being part of a system, along with statistics on the Hmmer hit, and the status of the component in the system.</li>
+<li>macsyfinder.summary - contains a line of information for each detected system.</li>
+</ul>
+</div></blockquote>
+<div class="section" id="macsyfinder-tab">
+<h3>macsyfinder.tab<a class="headerlink" href="#macsyfinder-tab" title="Permalink to this headline">¶</a></h3>
+<p>For each replicon, a line gives the occurrences of systems that were asked for detection. For example, if the detection was run for the Flagellum and the T6SS, the output will look like:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1">#Replicon Flagellum_single_locus Flagellum_multi_loci T6SS_single_locus T6SS_multi_loci</span>
+<span class="n">escherichia06</span> <span class="mi">1</span>   <span class="mi">1</span>   <span class="mi">1</span>   <span class="mi">0</span>
+</pre></div>
+</div>
+<p>which means that this “escherichia06” genome harbors 1 flagellum in a single locus, 1 flagellum scattered on multiple loci, and 1 T6SS in a single locus.</p>
+</div>
+<div class="section" id="macsyfinder-report">
+<h3>macsyfinder.report<a class="headerlink" href="#macsyfinder-report" title="Permalink to this headline">¶</a></h3>
+<dl class="docutils">
+<dt>Each line corresponds to a “hit” that has been assigned to a detected system. It includes:</dt>
+<dd><ul class="first last simple">
+<li>Hit_Id - the sequence identifier of the hit</li>
+<li>Replicon_name     - the name of the replicon it belongs to</li>
+<li>Position - the position of the sequence in the replicon</li>
+<li>Sequence_length - the length of the sequence</li>
+<li>Gene - the name of the components matched with the profile</li>
+<li>Reference_system - the system that includes the component matched</li>
+<li>Predicted_system - the system assigned</li>
+<li>System_Id - the unique identifier attributed to the detected system</li>
+<li>System_status     - the status of the detected system</li>
+<li>Gene_status - the status of the component in the assigned system’s definition</li>
+<li>i-evalue - Hmmer statistics, the indepent-evalue</li>
+<li>Score     - Hmmer score</li>
+<li>Profile_coverage - the percentage of the profile covered by the alignment with the sequence</li>
+<li>Sequence_coverage - the percentage of the sequence covered by the alignment with the profile</li>
+<li>Begin_match - the position in the sequence where the profile match begins</li>
+<li>End_match - the position in the sequence where the profile match ends</li>
+</ul>
+</dd>
+</dl>
+</div>
+<div class="section" id="macsyfinder-summary">
+<h3>macsyfinder.summary<a class="headerlink" href="#macsyfinder-summary" title="Permalink to this headline">¶</a></h3>
+<dl class="docutils">
+<dt>Each line corresponds to a system that has been detected. It includes:</dt>
+<dd><ul class="first last simple">
+<li>Replicon_name     - the name of the replicon</li>
+<li>System_Id - the unique identifier attributed to the detected system</li>
+<li>Reference_system - the type of system detected</li>
+<li>System_status     - the status of the system</li>
+<li>Nb_loci - the number of loci that constitutes the system</li>
+<li>Nb_Ref_mandatory - the number of mandatory genes in the system definition</li>
+<li>Nb_Ref_accessory - the number of accessory genes in the system definition</li>
+<li>Nb_Ref_Genes_detected_NR - the number of different components (accessory+mandatory) in the system</li>
+<li>Nb_Genes_with_match - the number of components detected with the profiles in the system</li>
+<li>System_length     - the full number of components (with match or not) in the locus (or loci) that constitutes the system</li>
+<li>Nb_Mandatory_NR - the number of different mandatory components matched</li>
+<li>Nb_Accessory_NR - the number of different accessory components matched</li>
+<li>Nb_missing_mandatory - the number of mandatory components from the system definition with no match in this system occurrence</li>
+<li>Nb_missing_accessory - the number of accessory components from the system definition with no match in this system occurrence</li>
+<li>List_missing_mandatory - the list of the missing mandatory components</li>
+<li>List_missing_accessory - the list of the missing accessory components</li>
+<li>Loci_positions - the sequence position (rank of the fasta sequence in the input sequence file) of the different loci encoding the system</li>
+<li>Occur_Mandatory - counts of the mandatory components</li>
+<li>Occur_Accessory - counts of the accessory components</li>
+<li>Occur_Forbidden - counts of the forbidden components</li>
+</ul>
+</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="logs-and-configuration-files">
+<h2>Logs and configuration files<a class="headerlink" href="#logs-and-configuration-files" title="Permalink to this headline">¶</a></h2>
+<p>Three specific output files are built to store information on the MacSyFinder execution:</p>
+<blockquote>
+<div><ul class="simple">
+<li>macsyfinder.out - contains information on the procedure during systems detection: clusters found, decisions made for system inference… The same information is also displayed on the standard output.</li>
+<li>macsyfinder.conf - contains the configuration information of the run. It is useful to recover the parameters used for the run.</li>
+<li>macsyfinder.log - the log file, contains raw information on the run. Please send it to us with any bug report.</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="file-for-macsyview-results-macsyfinder-json">
+<h2>File for MacSyview: results.macsyfinder.json<a class="headerlink" href="#file-for-macsyview-results-macsyfinder-json" title="Permalink to this headline">¶</a></h2>
+<p>This file in JSON format is used by MacSyView, for graphical output purpose. It must be loaded through MacSyView to graphically visualize detected systems. For more details, see <a class="reference internal" href="macsyview.html#macsyview"><span class="std std-ref">MacSyView’s description</span></a>.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Output format</a><ul>
+<li><a class="reference internal" href="#hmmer-results-outputs">Hmmer results outputs</a></li>
+<li><a class="reference internal" href="#systems-detection-results">Systems detection results</a><ul>
+<li><a class="reference internal" href="#macsyfinder-tab">macsyfinder.tab</a></li>
+<li><a class="reference internal" href="#macsyfinder-report">macsyfinder.report</a></li>
+<li><a class="reference internal" href="#macsyfinder-summary">macsyfinder.summary</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#logs-and-configuration-files">Logs and configuration files</a></li>
+<li><a class="reference internal" href="#file-for-macsyview-results-macsyfinder-json">File for MacSyview: results.macsyfinder.json</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="gembase_convention.html"
+                        title="previous chapter">Gembase format</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="macsyview.html"
+                        title="next chapter">MacSyView: visualizing MacSyFinder’s results!</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/outputs.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="macsyview.html" title="MacSyView: visualizing MacSyFinder’s results!"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="gembase_convention.html" title="Gembase format"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">MacSyFinder documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2014, Sophie Abby, Bertrand Néron.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.3.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,218 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Macromolecular systems definition &#8212; MacSyFinder 1.0.4 documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0.4',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="MacSyFinder implementation overview" href="implementation.html" />
+    <link rel="prev" title="MacSyView: visualizing MacSyFinder’s results!" href="macsyview.html" /> 
+  </head>
+  <body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="implementation.html" title="MacSyFinder implementation overview"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="macsyview.html" title="MacSyView: visualizing MacSyFinder’s results!"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">MacSyFinder documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="macromolecular-systems-definition">
+<span id="system-definition"></span><h1>Macromolecular systems definition<a class="headerlink" href="#macromolecular-systems-definition" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="principles">
+<h2>Principles<a class="headerlink" href="#principles" title="Permalink to this headline">¶</a></h2>
+<p>MacSyFinder relies on the definition of models of macromolecular systems with an <strong>XML grammar</strong> that is described <a class="reference internal" href="#system-definition-grammar-label"><span class="std std-ref">below</span></a>.</p>
+<p>A system is defined in a dedicated file named after the system (<em>e.g.</em>, ‘T1SS.xml’ for T1SS, the Type 1 Secretion System) by a set of <strong>components</strong> (<em>i.e.</em> proteins, or protein-coding genes given the context) with different attributes and that are used for <strong>content description</strong>. Some components are specific to the system, and some are possibly from other systems. In the latter case, the full description of the gene with its attributes must be defined in the XML file of the original system.
+Features regarding <strong>co-localization</strong> parameters for system detection are also defined in this system-specific file.</p>
+<p>Three distinct types of components can be used to model a given system content, and which corresponds to Gene objects, and the corresponding HMM protein profiles.</p>
+<ul>
+<li><p class="first"><strong>Mandatory</strong> components represent essential components to be found to infer the System presence.</p>
+</li>
+<li><p class="first"><strong>Accessory</strong> components correspond to components that can be found in some systems occurrence, or fastly evolving components that are hard to detect with a single profile.</p>
+</li>
+<li><p class="first"><strong>Forbidden</strong> components are components which presence is eliminatory for the System assessment.</p>
+<blockquote>
+<div><a class="reference internal image-reference" href="_images/Figure1_figure_system_no_mb-new3_2col.svg"><div align="left" class="align-left"><img alt="_images/Figure1_figure_system_no_mb-new3_2col.svg" height="500px" src="_images/Figure1_figure_system_no_mb-new3_2col.svg" /></div>
+</a>
+</div></blockquote>
+</li>
+</ul>
+</div>
+<div class="section" id="the-xml-hierarchy">
+<span id="system-definition-grammar-label"></span><h2>The XML hierarchy<a class="headerlink" href="#the-xml-hierarchy" title="Permalink to this headline">¶</a></h2>
+<ul>
+<li><p class="first">The element root is “system”.</p>
+<ul>
+<li><p class="first">It has a mandatory attribute: “inter_gene_max_space”, an integer representing the maximal number of components without a match between two components with a match for a component profile.</p>
+</li>
+<li><p class="first">The element “system” may have attributes:</p>
+<blockquote>
+<div><ul class="simple">
+<li>“min_mandatory_genes_required”: an integer representing the minimal number of mandatory genes required to infer the system presence.</li>
+<li>“min_genes_required”: an integer representing the minimal number of mandatory or accessory genes (whose corresponding proteins match a profile of the system) required to infer the system presence.</li>
+<li>“max_nb_genes”: an integer representing the maximal number of mandatory or accessory genes in the system.</li>
+<li>“multi_loci”: a boolean set to True (“1”, “true” or “True”) to allow the definition of “scattered” systems (systems encoded by different loci). If not specified, <em>default value is false</em>.</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first">The system contains one or more element “gene”.</p>
+</li>
+</ul>
+</li>
+<li><p class="first">The element “gene” has several mandatory attributes:</p>
+<blockquote>
+<div><ul class="simple">
+<li>“name”: which must match to a profile in the profile directory.</li>
+<li>“presence”: which can take three values “mandatory”, “accessory”, “forbidden”.</li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+<blockquote>
+<div><p>The element “gene” may have other attributes:</p>
+<blockquote>
+<div><ul class="simple">
+<li>“system_ref”: which is a reference to the macromolecular system from where the gene comes from (this attribute is used for forbidden gene and homologs gene). If system_ref is not specified, it means the gene is from the current system.</li>
+<li>“loner”: which is a boolean. If a gene is loner that means this gene can be isolated on the genome ( <em>default false</em> ).</li>
+<li>“exchangeable”: which is a boolean. If a gene is exchangeable (value set to “1”, “true” or “True”) that means this gene or one of its homologs or analogs can be interchanged for the assessment of the presence of the macromolecular system ( <em>default false</em> ).</li>
+<li>“multi_system”: which is a boolean. If a gene is “multi_system” (value set to “1”, “true” or “True”), it means that it can be used to fill by multiple systems occurrences. ( <em>default false</em> ).</li>
+<li>“aligned”: which is a boolean (this attribute is used only for homologs).</li>
+<li>“inter_gene_max_space”: an integer that defines gene-wise value of system’s “inter_gene_max_space” parameter (see above).</li>
+<li>an element “homologs” that contains a list of homologous genes that can potentially match the same sequences. They can potentially be functionally equivalent to the reference gene if it was declared “exchangeable”</li>
+<li>an element “analogs” that contains a list of analogous genes that can potentially be functionally equivalent, if the parent gene was declared “exchangeable”.</li>
+</ul>
+</div></blockquote>
+</div></blockquote>
+<ul class="simple">
+<li>The elements “homologs” and “analogs” can contain one or more element “gene”.</li>
+</ul>
+<p>Example of a system definition in XML:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">system</span> <span class="n">inter_gene_max_space</span><span class="o">=</span><span class="s2">&quot;5&quot;</span><span class="o">&gt;</span>
+  <span class="o">&lt;</span><span class="n">gene</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;gspD&quot;</span> <span class="n">presence</span><span class="o">=</span><span class="s2">&quot;mandatory&quot;</span><span class="o">&gt;</span>
+     <span class="o">&lt;</span><span class="n">homologs</span><span class="o">&gt;</span>
+         <span class="o">&lt;</span><span class="n">gene</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;sctC&quot;</span> <span class="n">system_ref</span><span class="o">=</span><span class="s2">&quot;T3SS&quot;</span><span class="o">/&gt;</span>
+     <span class="o">&lt;/</span><span class="n">homologs</span><span class="o">&gt;</span>
+  <span class="o">&lt;/</span><span class="n">gene</span><span class="o">&gt;</span>
+  <span class="o">&lt;</span><span class="n">gene</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;sctN_FLG&quot;</span> <span class="n">presence</span><span class="o">=</span><span class="s2">&quot;mandatory&quot;</span> <span class="n">loner</span><span class="o">=</span><span class="s2">&quot;1&quot;</span> <span class="n">exchangeable</span><span class="o">=</span><span class="s2">&quot;1&quot;</span><span class="o">/&gt;</span>
+     <span class="o">&lt;</span><span class="n">analogs</span><span class="o">&gt;</span>
+         <span class="o">&lt;</span><span class="n">gene</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;gspE&quot;</span> <span class="n">system_ref</span><span class="o">=</span><span class="s2">&quot;T2SS&quot;</span><span class="o">/&gt;</span>
+         <span class="o">&lt;</span><span class="n">gene</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;pilT&quot;</span> <span class="n">system_ref</span><span class="o">=</span><span class="s2">&quot;T4P&quot;</span><span class="o">/&gt;</span>
+     <span class="o">&lt;/</span><span class="n">analogs</span><span class="o">&gt;</span>
+  <span class="o">&lt;</span><span class="n">gene</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;sctV_FLG&quot;</span> <span class="n">presence</span><span class="o">=</span><span class="s2">&quot;mandatory&quot;</span><span class="o">/&gt;</span>
+  <span class="o">&lt;</span><span class="n">gene</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;flp&quot;</span> <span class="n">presence</span><span class="o">=</span><span class="s2">&quot;accessory&quot;</span><span class="o">/&gt;</span>
+<span class="o">&lt;/</span><span class="n">system</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<ul class="last simple">
+<li>a gene is identified by its name.</li>
+<li>a gene can be defined only <strong>once</strong> in all systems.</li>
+<li>other occurrences of this gene must be specified as references (using the “system_ref” attribute to specify what is the native system).</li>
+<li>if a gene is specified with the attribute “system_ref”, it means it has been (or has to be) defined in the system specified by “system_ref”.</li>
+<li>if a gene is not specified with the attribute “system_ref”, it means it belongs to the current system, where it has to be defined with all its features.</li>
+</ul>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Macromolecular systems definition</a><ul>
+<li><a class="reference internal" href="#principles">Principles</a></li>
+<li><a class="reference internal" href="#the-xml-hierarchy">The XML hierarchy</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="macsyview.html"
+                        title="previous chapter">MacSyView: visualizing MacSyFinder’s results!</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="implementation.html"
+                        title="next chapter">MacSyFinder implementation overview</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/system_definition.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="implementation.html" title="MacSyFinder implementation overview"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="macsyview.html" title="MacSyView: visualizing MacSyFinder’s results!"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">MacSyFinder documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2014, Sophie Abby, Bertrand Néron.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.3.
+    </div>
+  </body>
+</html>

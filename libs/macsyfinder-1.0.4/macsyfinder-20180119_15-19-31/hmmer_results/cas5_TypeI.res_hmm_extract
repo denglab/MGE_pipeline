@@ -1,0 +1,7 @@
+# gene: cas5_TypeI extract from /home/shaoting/project/mge_nestle/macsyfinder-1.0.4/macsyfinder-20180119_15-19-31/hmmer_results/cas5_TypeI.search_hmm.out hmm output
+# profile length= 43
+# i_evalue threshold= 0.001
+# coverage threshold= 0.500
+# hit_id replicon_name position_hit hit_sequence_length gene_name gene_system i_eval score profile_coverage sequence_coverage begin end
+ESCO001c01a_027800	ESCO001c01a	2600	224	cas5_TypeI	CAS	5.800e-15	53.500	1.000	0.192	4	46
+HAMA001p04a_000470	HAMA001p04a	4188	265	cas5_TypeI	CAS	8.800e-13	46.500	1.000	0.162	21	63

@@ -1,0 +1,71 @@
+# hmmsearch :: search profile(s) against a sequence database
+# HMMER 3.1b1 (May 2013); http://hmmer.org/
+# Copyright (C) 2013 Howard Hughes Medical Institute.
+# Freely distributed under the GNU General Public License (GPLv3).
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# query HMM file:                  /usr/local/share/macsyfinder/profiles/cas8b_TypeIB.hmm
+# target sequence database:        /home/shaoting/project/mge_nestle/macsyfinder-1.0.4/data/sequence_data/datatest_gembase.fasta
+# output directed to file:         /home/shaoting/project/mge_nestle/macsyfinder-1.0.4/macsyfinder-20180119_15-19-31/hmmer_results/cas8b_TypeIB.search_hmm.out
+# sequence reporting threshold:    E-value <= 1
+# number of worker threads:        0
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+Query:       TIGR02591  [M=395]
+Accession:   TIGR02591
+Description: cas_Csh1: CRISPR-associated protein Cas8b/Csh1, subtype I-B/HMARI
+Scores for complete sequences (score includes all domains):
+   --- full sequence ---   --- best 1 domain ---    -#dom-
+    E-value  score  bias    E-value  score  bias    exp  N  Sequence           Description
+    ------- ------ -----    ------- ------ -----   ---- --  --------           -----------
+   4.6e-150  498.9   0.0   5.6e-150  498.6   0.0    1.1  1  HAMA001p04a_000450  D ATG TGA 38101 40233 Valid pNG4047 2133 
+
+
+Domain annotation for each sequence (and alignments):
+>> HAMA001p04a_000450  D ATG TGA 38101 40233 Valid pNG4047 2133 _YP_134127.1_ pNG4047 1 38101 40233 | hypothetical prote
+   #    score  bias  c-Evalue  i-Evalue hmmfrom  hmm to    alifrom  ali to    envfrom  env to     acc
+ ---   ------ ----- --------- --------- ------- -------    ------- -------    ------- -------    ----
+   1 !  498.6   0.0  7.7e-154  5.6e-150       1     395 []     251     690 ..     251     690 .. 1.00
+
+  Alignments for each domain:
+  == domain 1  score: 498.6 bits;  conditional E-value: 7.7e-154
+           TIGR02591   1 vgttedpikfyttdkpgyspglekkeawknypicedcavkvlkgrkfveeklsrrfGnntyalyiipgtlknkkakelykel......... 82 
+                         vgt+edp+++y++++++++pgl+++eaw+++pi+ed+av+v+++++fve++++r+fG+++y+l++++gt+++++a++lyk l         
+  HAMA001p04a_000450 251 VGTSEDPQNYYLGKQLEKFPGLDIEEAWRTHPISEDAAVTVMNAGTFVEACTYRTFGTKVYCLPYVWGTISTSDAFDLYKLLydatteddg 341
+                         79***************************************************************************************** PP
+
+           TIGR02591  83 ...ikkiyEfrksd..dlkekfyteeegyeieldedleeekiaerllvdflfyskekqavkivalikdvepsrvekilelekkllelskee 168
+                            i+++yE+r++   d++++fy++++++++++++d+++e++++rll+++++++k++q+v+++a+++++++++++++++++++ll++s+e+
+  HAMA001p04a_000450 342 mtpIERQYENRNTLfgDAQLRFYVSAVMPHQMSRYDVFGETLNGRLLYPKELATKHNQLVQQSAAFHSGAEWTPPMPTHPNWDLLAGSDEQ 432
+                         ******************************************************************************************* PP
+
+           TIGR02591 169 fgelkknlnfalvlaylednaadeddeflelldsifsgdkldkstLldefvkkikdesfegdsesfnslivasqevqllllaleallllls 259
+                         +++++++++fa+++a+++d++ad+dd+++e+l+s++sgd+++++tLl+e+v++i++e++++d+e+f+s++vasq++ql++la+++l+ll+s
+  HAMA001p04a_000450 433 LHAVSTGWYFAQTFAQRDDDDADADDPRIEALVSVLSGDAISVETLLEEYVARIITEQTDDDVEGFPSFRVASQFAQLCALATDKLDLLTS 523
+                         ******************************************************************************************* PP
+
+           TIGR02591 260 ldkelelltseaeve...............eevkdtkledifekvke......lfdspqrraaFLlGvLvgelislqeserdkskplvnkl 329
+                         +d+++e++t+e++++               ++++++kle+++e++++      +++++qrr+aFLlG+Lvge++s+qe+++d+s++lv+++
+  HAMA001p04a_000450 524 DDAAKEPITREPTYDtqtmepptdilaadgGHPAAAKLESFIEDTPAlapdedAPHNDQRRGAFLLGALVGEIGSYQEYDQDRSTTLVDQF 614
+                         ******************************************************************************************* PP
+
+           TIGR02591 330 kgkkltkkriekllnevleKlkqYkrqskgaskry..tetkelldrliet........wklsedelkfyfvsGvay 395
+                         ++k++tk+ri+k+++e+++K+++Y+rq+k+a+++y  t+++++++rl+et        w+l++d+l+fy+++Gv+y
+  HAMA001p04a_000450 615 PVKSITKSRIKKVTQETIGKTLTYTRQEKKAGQSYpgTKAEHVVERLRETilkpdpdeWDLDTDDLRFYYALGVTY 690
+                         **************************************************************************97 PP
+
+
+
+Internal pipeline statistics summary:
+-------------------------------------
+Query model(s):                              1  (395 nodes)
+Target sequences:                         7219  (2337224 residues searched)
+Passed MSV filter:                       295  (0.0408644); expected 144.4 (0.02)
+Passed bias filter:                      148  (0.0205015); expected 144.4 (0.02)
+Passed Vit filter:                        10  (0.00138523); expected 7.2 (0.001)
+Passed Fwd filter:                         1  (0.000138523); expected 0.1 (1e-05)
+Initial search space (Z):               7219  [actual number of targets]
+Domain search space  (domZ):               1  [number of targets reported over threshold]
+# CPU time: 0.12u 0.00s 00:00:00.12 Elapsed: 00:00:00.12
+# Mc/sec: 7693.36
+//
+[ok]

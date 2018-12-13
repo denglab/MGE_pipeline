@@ -1,0 +1,73 @@
+# hmmsearch :: search profile(s) against a sequence database
+# HMMER 3.1b1 (May 2013); http://hmmer.org/
+# Copyright (C) 2013 Howard Hughes Medical Institute.
+# Freely distributed under the GNU General Public License (GPLv3).
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# query HMM file:                  /usr/local/share/macsyfinder/profiles/cas8a1a2_TypeIA.hmm
+# target sequence database:        /home/shaoting/project/mge_nestle/macsyfinder-1.0.4/data/sequence_data/datatest_gembase.fasta
+# output directed to file:         /home/shaoting/project/mge_nestle/macsyfinder-1.0.4/macsyfinder-20180119_15-19-31/hmmer_results/cas8a1a2_TypeIA.search_hmm.out
+# sequence reporting threshold:    E-value <= 1
+# number of worker threads:        0
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+Query:       TIGR03486  [M=152]
+Accession:   TIGR03486
+Description: cas_csx13_C: CRISPR-associated protein Cas8a1/Csx13, MYXAN subtype, C-terminal region
+Scores for complete sequences (score includes all domains):
+   --- full sequence ---   --- best 1 domain ---    -#dom-
+    E-value  score  bias    E-value  score  bias    exp  N  Sequence           Description
+    ------- ------ -----    ------- ------ -----   ---- --  --------           -----------
+  ------ inclusion threshold ------
+        0.4    9.7  17.1      0.047   12.7   4.9    4.0  4  LEPN003c01a_021660  C ATG TAA 2482851 2484623 Valid lpp2167 1
+
+
+Domain annotation for each sequence (and alignments):
+>> LEPN003c01a_021660  C ATG TAA 2482851 2484623 Valid lpp2167 1773 _YP_124479.1_ lpp2167 1 2482851 2484623 | hypothetic
+   #    score  bias  c-Evalue  i-Evalue hmmfrom  hmm to    alifrom  ali to    envfrom  env to     acc
+ ---   ------ ----- --------- --------- ------- -------    ------- -------    ------- -------    ----
+   1 ?    3.3   0.2    0.0052        38      31      76 ..      71     115 ..       6     143 .. 0.78
+   2 ?   -0.4   0.1     0.071   5.2e+02     118     151 ..     259     293 ..     162     294 .. 0.64
+   3 ?   -0.2   0.1     0.059   4.3e+02      30      83 ..     392     442 ..     369     459 .. 0.62
+   4 ?   12.7   4.9   6.5e-06     0.047      18     105 ..     446     533 ..     425     542 .. 0.78
+
+  Alignments for each domain:
+  == domain 1  score: 3.3 bits;  conditional E-value: 0.0052
+           TIGR03486  31 erdelnkllenseiwdleaeklfvqsvHeaLrrlyakiaaktkkra 76 
+                          + +l +++e+    d++++ l+v+ + ++L++ y +  +++kkr 
+  LEPN003c01a_021660  71 AKLKLDEVIEKISDSDSQEKDLLVE-LNNTLSKAYDNPKSDAKKRV 115
+                         4445666666666566777778776.899**************986 PP
+
+  == domain 2  score: -0.4 bits;  conditional E-value: 0.071
+           TIGR03486 118 ipeLqEHwrellkllekenweaA.RdLalvAlAsY 151
+                         i+e     ++llk++e++  ++A R+  l  lAsY
+  LEPN003c01a_021660 259 ISEKIKKIEALLKIVEENDKKVAgRQYFLDLLASY 293
+                         33333344566666666655544355555556666 PP
+
+  == domain 3  score: -0.2 bits;  conditional E-value: 0.059
+           TIGR03486  30 rerdelnkllenseiwdleaeklfvqsvHeaLrrlyakiaaktkkrasetesdr 83 
+                          +rdel +   +     +e ekl++++  + L ++ a      k     + +d+
+  LEPN003c01a_021660 392 LKRDELVQRYSQLSSGSSELEKLIINATSDHLEQIAAATTETSK---VLDGYDQ 442
+                         36777776666666678899999999998888877554443333...2333333 PP
+
+  == domain 4  score: 12.7 bits;  conditional E-value: 6.5e-06
+           TIGR03486  18 alkek.kdflerkrerdelnkllenseiwdleaeklfvqsvHeaLrrlyakiaaktkkrasetesdrlkre.neriysslaraktseqir 105
+                          lk k ++++ ++  r++l  ++e+++ w ++  +++ + +He  ++  a++  k++k a+++    ++r+ ++ i s+ a++++ +++ 
+  LEPN003c01a_021660 446 KLKDKlEKLKGNQFTRKQLFDFIEKNDTWIVKLSNWLAENIHEIFKSDTARMIDKARK-AQQK-LGEFERQyQTEIESEKAKIENNDSLS 533
+                         444441344556669*************************************999997.5555.55566651568999999999998876 PP
+
+
+
+Internal pipeline statistics summary:
+-------------------------------------
+Query model(s):                              1  (152 nodes)
+Target sequences:                         7219  (2337224 residues searched)
+Passed MSV filter:                       287  (0.0397562); expected 144.4 (0.02)
+Passed bias filter:                      189  (0.0261809); expected 144.4 (0.02)
+Passed Vit filter:                        14  (0.00193933); expected 7.2 (0.001)
+Passed Fwd filter:                         1  (0.000138523); expected 0.1 (1e-05)
+Initial search space (Z):               7219  [actual number of targets]
+Domain search space  (domZ):               1  [number of targets reported over threshold]
+# CPU time: 0.08u 0.00s 00:00:00.08 Elapsed: 00:00:00.08
+# Mc/sec: 4440.73
+//
+[ok]

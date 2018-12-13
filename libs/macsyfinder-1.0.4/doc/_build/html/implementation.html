@@ -1,0 +1,186 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>MacSyFinder implementation overview &#8212; MacSyFinder 1.0.4 documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0.4',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="MacSyFinder functioning" href="functioning.html" />
+    <link rel="prev" title="Macromolecular systems definition" href="system_definition.html" /> 
+  </head>
+  <body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="functioning.html" title="MacSyFinder functioning"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="system_definition.html" title="Macromolecular systems definition"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">MacSyFinder documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="macsyfinder-implementation-overview">
+<span id="implementation"></span><h1>MacSyFinder implementation overview<a class="headerlink" href="#macsyfinder-implementation-overview" title="Permalink to this headline">¶</a></h1>
+<p>MacSyFinder is implemented with an object-oriented architecture. The objects are described in the current <a class="reference internal" href="config.html#config"><span class="std std-ref">API documentation</span></a>. An overview of the main classes used to model the systems to be detected is provided below.</p>
+<img src="_images/graphviz-376edbfab4341f66eb110fe7f2529b708ff6bb79.png" alt="digraph system_overview {
+&quot;System&quot; -&gt; &quot;Gene&quot; -&gt; &quot;Homolog&quot;;
+&quot;Gene&quot; -&gt; &quot;System&quot;;
+&quot;Homolog&quot; -&gt; &quot;Gene&quot;;
+&quot;Gene&quot; -&gt; &quot;Analog&quot;;
+&quot;Analog&quot; -&gt; &quot;Gene&quot;;
+&quot;Gene&quot; -&gt; &quot;Profile&quot;;
+&quot;Gene&quot; -&gt; &quot;HMMReport&quot; -&gt; &quot;Hit&quot;;
+&quot;Hit&quot; -&gt; &quot;Gene&quot;;
+&quot;Hit&quot; -&gt; &quot;System&quot;;
+&quot;Profile&quot; -&gt; &quot;HMMReport&quot;;
+}" />
+<p>The <em>“System”</em> class models the systems to detect and contains a list of instances of the <em>“Gene”</em> class, which models each component of a given System. The <em>“Homolog”</em> and <em>“Analog”</em> classes encapsulate a “Gene” and model respectively relationships of homology and analogy between components.</p>
+<p>A <em>“Gene”</em> represents a component from the System and refers to an instance of the <em>“Profile”</em> object that corresponds to an hidden Markov model protein profile (used for sequence similarity search with the Hmmer program).</p>
+<p>The <em>“Config”</em> class (see the <a class="reference internal" href="config.html#config"><span class="std std-ref">Configuration API</span></a>) handles the program parameters, including Hmmer search parameters, and the set of sequences to query (represented by the “Database” object).</p>
+<p>The <em>“Database”</em> stores information on the dataset, including necessary information to detect systems in both linear and circular chromosomes (see the <a class="reference internal" href="database.html#database"><span class="std std-ref">Database API</span></a>).</p>
+<p>A set of parsers and object factories are used to fill the objects from command-line and input files (<em>i.e.</em> the optional configuration file and the XML files describing the systems), and to ensure their uniqueness and integrity.</p>
+<p>Once these objects are initialized and the detection is launched, Hmmer is executed on the sequences of the database (optionally in parallel) with a unique list of profiles corresponding to the systems to detect. Subsequently, Hmmer output files are parsed, and selected hits (given the search parameters provided) are used to fill <em>“Hits”</em> objects, which contain information for the detection of the systems.</p>
+<p>During the treatment of the <em>“Hits”</em> for <em>“Systems”</em> detection, the occurrences of the systems (<em>“SystemOccurence”</em> objects) are filled, and the <strong>decision rules</strong> associated with the systems (quorum and co-localization in the case of an “ordered” dataset) are applied. See the following sections for more details on above objects.</p>
+<div class="section" id="the-system-object">
+<span id="system-implementation"></span><h2>The System object<a class="headerlink" href="#the-system-object" title="Permalink to this headline">¶</a></h2>
+<p>The <a class="reference internal" href="system.html#system"><span class="std std-ref">System object</span></a> represents a macromolecular system to detect.
+It is defined <em>via</em> a definition file in XML stored in a dedicated location that can be specified <em>via</em> the configuration file, or the command-line (<cite>-d</cite> parameter). See <a class="reference internal" href="system_definition.html#system-definition-grammar-label"><span class="std std-ref">The XML hierarchy</span></a> for more details on the XML grammar.</p>
+<p>An object <a class="reference internal" href="system_parser.html#system-parser"><span class="std std-ref">SystemParser</span></a> is used to build a system object from its XML definition file.</p>
+<p>A system is named after the file name of its XML definition.
+A system has an attribute <cite>inter_gene_max_space</cite> which is an integer,
+and three kind of components are listed in function of their presence in the system:</p>
+<ul class="simple">
+<li>The genes that must be present in the genome to define this system (“mandatory”).</li>
+<li>The genes that can be present, but do not have to be found in every case (“accessory”).</li>
+<li>The genes that must not be present in the system (“forbidden”).</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">a complete description of macromolecular systems modelling is available in the section <a class="reference internal" href="system_definition.html#system-definition"><span class="std std-ref">Macromolecular systems definition</span></a></p>
+</div>
+</div>
+<div class="section" id="the-gene-object">
+<span id="gene-implementation"></span><h2>The Gene object<a class="headerlink" href="#the-gene-object" title="Permalink to this headline">¶</a></h2>
+<p>The <a class="reference internal" href="gene.html#gene"><span class="std std-ref">Gene object</span></a> represents genes encoding the protein components of a System.
+Each Gene points out its System of origin (<a class="reference internal" href="system.html#macsypy.system.System" title="macsypy.system.System"><code class="xref py py-class docutils literal"><span class="pre">macsypy.system.System</span></code></a>). A Gene must have a correponding HMM protein profile. These profiles are represented by Profile objects (<a class="reference internal" href="profile.html#macsypy.gene.Profile" title="macsypy.gene.Profile"><code class="xref py py-class docutils literal"><span class="pre">macsypy.gene.Profile</span></code></a>), and must be named after the gene name. For instance, the gene <em>gspD</em> will correspond to the “gspD.hmm” profile file. See <a class="reference internal" href="#profile-implementation"><span class="std std-ref">The Profile object</span></a>). A Gene has several properties described in the <a class="reference internal" href="gene.html#gene"><span class="std std-ref">Gene API</span></a>.</p>
+<p>A Gene may have Homologs or Analogs. An <em>“Homolog”</em> (resp. <em>“Analog”</em>) object encapsulates a Gene and has a reference to the Gene it is homolog (resp. <em>“analog”</em>) to. See the <a class="reference internal" href="gene.html#homolog-api"><span class="std std-ref">Homolog API</span></a> and <a class="reference internal" href="gene.html#analog-api"><span class="std std-ref">Analog API</span></a> for more details.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">To optimize computation and to avoid concurrency problems when we search several systems, each gene must be instanciated only once, and stored in a <em>“gene_bank”</em>.
+gene_bank is a <a class="reference internal" href="gene.html#macsypy.gene.GeneBank" title="macsypy.gene.GeneBank"><code class="xref py py-class docutils literal"><span class="pre">macsypy.gene.GeneBank</span></code></a> object.
+The gene_bank and system_bank are filled by the system_parser (<a class="reference internal" href="system_parser.html#macsypy.system_parser.SystemParser" title="macsypy.system_parser.SystemParser"><code class="xref py py-class docutils literal"><span class="pre">macsypy.system_parser.SystemParser</span></code></a>)</p>
+</div>
+</div>
+<div class="section" id="the-profile-object">
+<span id="profile-implementation"></span><h2>The Profile object<a class="headerlink" href="#the-profile-object" title="Permalink to this headline">¶</a></h2>
+<p>Each <em>“Gene”</em> component corresponds to a <em>“Profile”</em>. The <em>“Profile”</em> object is used for the search of the gene with Hmmer. Thus, a <em>“Profile”</em> must match a HMM file, which name is based on the profile name. For instance, the <em>gspG</em> gene has the corresponding “gspG.hmm” profile file provided at a dedicated location.</p>
+</div>
+<div class="section" id="reporting-hmmer-search-results">
+<span id="report-implementation"></span><h2>Reporting Hmmer search results<a class="headerlink" href="#reporting-hmmer-search-results" title="Permalink to this headline">¶</a></h2>
+<p>A <em>“HMMReport”</em> (<a class="reference internal" href="HMMReport.html#macsypy.report.HMMReport" title="macsypy.report.HMMReport"><code class="xref py py-class docutils literal"><span class="pre">macsypy.report.HMMReport</span></code></a>) object represents the results of a Hmmer program search on the input dataset with a hidden Markov model protein profile.
+This object has methods to extract and build <em>“Hits”</em> that are then analyzed for systems assessment.</p>
+<p>It analyses Hmmer raw outputs, and applies filters on the matches (according to <a class="reference internal" href="input.html#hmmer-options"><span class="std std-ref">Hmmer options</span></a>). See <a class="reference internal" href="outputs.html#hmmer-outputs-label"><span class="std std-ref">Hmmer results outputs</span></a> for details on the resulting output files.
+For profile matches selected with the filtering parameters, <em>“Hit”</em> objects are built (see <a class="reference internal" href="HMMReport.html#hit-label"><span class="std std-ref">the Hit API</span></a>).</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">MacSyFinder implementation overview</a><ul>
+<li><a class="reference internal" href="#the-system-object">The System object</a></li>
+<li><a class="reference internal" href="#the-gene-object">The Gene object</a></li>
+<li><a class="reference internal" href="#the-profile-object">The Profile object</a></li>
+<li><a class="reference internal" href="#reporting-hmmer-search-results">Reporting Hmmer search results</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="system_definition.html"
+                        title="previous chapter">Macromolecular systems definition</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="functioning.html"
+                        title="next chapter">MacSyFinder functioning</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/implementation.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="functioning.html" title="MacSyFinder functioning"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="system_definition.html" title="Macromolecular systems definition"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">MacSyFinder documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2014, Sophie Abby, Bertrand Néron.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.3.
+    </div>
+  </body>
+</html>

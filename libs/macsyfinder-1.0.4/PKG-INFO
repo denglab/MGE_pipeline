@@ -1,0 +1,14 @@
+Metadata-Version: 1.1
+Name: macsyfinder
+Version: 1.0.4
+Summary: MacSyFinder: Detection of macromolecular systems 
+in protein datasets using systems modelling and similarity search
+Home-page: UNKNOWN
+Author: Sophie Abby, Bertrand Néron
+Author-email: sabby@pasteur.fr, bneron@pasteur.fr
+License: UNKNOWN
+Description: UNKNOWN
+Platform: UNKNOWN
+Classifier: Operating System :: POSIX
+Classifier: Programming Language :: Python :: 2.7 :: Only
+Classifier: Topic :: Bioinformatics

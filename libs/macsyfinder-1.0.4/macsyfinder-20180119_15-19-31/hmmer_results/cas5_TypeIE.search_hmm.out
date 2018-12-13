@@ -1,0 +1,61 @@
+# hmmsearch :: search profile(s) against a sequence database
+# HMMER 3.1b1 (May 2013); http://hmmer.org/
+# Copyright (C) 2013 Howard Hughes Medical Institute.
+# Freely distributed under the GNU General Public License (GPLv3).
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# query HMM file:                  /usr/local/share/macsyfinder/profiles/cas5_TypeIE.hmm
+# target sequence database:        /home/shaoting/project/mge_nestle/macsyfinder-1.0.4/data/sequence_data/datatest_gembase.fasta
+# output directed to file:         /home/shaoting/project/mge_nestle/macsyfinder-1.0.4/macsyfinder-20180119_15-19-31/hmmer_results/cas5_TypeIE.search_hmm.out
+# sequence reporting threshold:    E-value <= 1
+# number of worker threads:        0
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+Query:       TIGR01868  [M=230]
+Accession:   TIGR01868
+Description: casD_Cas5e: CRISPR-associated protein Cas5/CasD, subtype I-E/ECOLI
+Scores for complete sequences (score includes all domains):
+   --- full sequence ---   --- best 1 domain ---    -#dom-
+    E-value  score  bias    E-value  score  bias    exp  N  Sequence           Description
+    ------- ------ -----    ------- ------ -----   ---- --  --------           -----------
+    1.3e-86  288.6   0.0    1.5e-86  288.4   0.0    1.0  1  ESCO001c01a_027800  C ATG TAA 2878396 2879070 Valid casD 675 
+
+
+Domain annotation for each sequence (and alignments):
+>> ESCO001c01a_027800  C ATG TAA 2878396 2879070 Valid casD 675 _b2757_NP_417237.2_ b2757 1 2878396 2879070 | CRISP RNA 
+   #    score  bias  c-Evalue  i-Evalue hmmfrom  hmm to    alifrom  ali to    envfrom  env to     acc
+ ---   ------ ----- --------- --------- ------- -------    ------- -------    ------- -------    ----
+   1 !  288.4   0.0   2.1e-90   1.5e-86       1     230 []       3     216 ..       3     216 .. 0.99
+
+  Alignments for each domain:
+  == domain 1  score: 288.4 bits;  conditional E-value: 2.1e-90
+           TIGR01868   1 sylllrLegPlqawGtvsvfgerdTldfPtrSgllGllaaalGirreeeerlqelaeelrfavrvdregklllDfqtvklsgkrkkrtvli 91 
+                         syl+lrL+gP+qawG+++++g+r+T +fPtrSgllGll+a+lGi+r+++++lq+l+e+++favr+d   +l+lD+++v+++g+r+++tvl 
+  ESCO001c01a_027800   3 SYLILRLAGPMQAWGQPTFEGTRPTGRFPTRSGLLGLLGACLGIQRDDTSSLQALSESVQFAVRCD---ELILDDRRVSVTGLRDYHTVLG 90 
+                         69****************************************************************...********************** PP
+
+           TIGR01868  92 akeedrGakekativtrReYladAvftvaLelaaaetpaleelaeALkrPvwtlylGRkscvptrplflkevvaadvqealaaypldkekr 182
+                         a+e++rG+k+++ti+t+ReYl+dA+ftvaL+l++++t++++el++A+ +P++t+ylGR+sc++t+plfl++++a+d+q+al +y++++ ++
+  ESCO001c01a_027800  91 AREDYRGLKSHETIQTWREYLCDASFTVALWLTPHATMVISELEKAVLKPRYTPYLGRRSCPLTHPLFLGTCQASDPQKALLNYEPVGGDI 181
+                         ******************************************************************************************* PP
+
+           TIGR01868 183 eraaevlrravyaegeeegeatltelndvdvrldskkrkfaeRrvrvi 230
+                         ++             ee+++ ++ +++++d+++++ +r+fa+R+++vi
+  ESCO001c01a_027800 182 YS-------------EESVTGHHLKFTARDEPMITLPRQFASREWYVI 216
+                         **.............89****************************986 PP
+
+
+
+Internal pipeline statistics summary:
+-------------------------------------
+Query model(s):                              1  (230 nodes)
+Target sequences:                         7219  (2337224 residues searched)
+Passed MSV filter:                       165  (0.0228564); expected 144.4 (0.02)
+Passed bias filter:                      131  (0.0181466); expected 144.4 (0.02)
+Passed Vit filter:                        12  (0.00166228); expected 7.2 (0.001)
+Passed Fwd filter:                         1  (0.000138523); expected 0.1 (1e-05)
+Initial search space (Z):               7219  [actual number of targets]
+Domain search space  (domZ):               1  [number of targets reported over threshold]
+# CPU time: 0.06u 0.00s 00:00:00.06 Elapsed: 00:00:00.06
+# Mc/sec: 8959.36
+//
+[ok]

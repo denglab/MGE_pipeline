@@ -1,0 +1,958 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>macsypy.config &#8212; MacSyFinder 1.0.4 documentation</title>
+    <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.0.4',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+  </head>
+  <body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">MacSyFinder documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for macsypy.config</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+
+<span class="c1">################################################################################</span>
+<span class="c1"># MacSyFinder - Detection of macromolecular systems in protein datasets        #</span>
+<span class="c1">#               using systems modelling and similarity search.                 #</span>
+<span class="c1"># Authors: Sophie Abby, Bertrand Néron                                         #</span>
+<span class="c1"># Copyright © 2014  Institut Pasteur (Paris) and CNRS.                         #</span>
+<span class="c1"># See the COPYRIGHT file for details                                           #</span>
+<span class="c1">#                                                                              #</span>
+<span class="c1"># MacsyFinder is distributed under the terms of the GNU General Public License #</span>
+<span class="c1"># (GPLv3). See the COPYING file for details.                                   #</span>
+<span class="c1">################################################################################</span>
+
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">inspect</span>
+<span class="kn">from</span> <span class="nn">time</span> <span class="k">import</span> <span class="n">strftime</span>
+<span class="kn">from</span> <span class="nn">ConfigParser</span> <span class="k">import</span> <span class="n">SafeConfigParser</span><span class="p">,</span> <span class="n">NoSectionError</span><span class="p">,</span> <span class="n">NoOptionError</span>
+
+<span class="n">_prefix_path</span> <span class="o">=</span> <span class="s1">&#39;$PREFIX&#39;</span>
+<span class="n">_prefix_conf</span> <span class="o">=</span> <span class="s1">&#39;$PREFIXCONF&#39;</span>
+<span class="n">_prefix_data</span> <span class="o">=</span> <span class="s1">&#39;$PREFIXDATA&#39;</span>
+<span class="k">if</span> <span class="s1">&#39;MACSY_HOME&#39;</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span> <span class="ow">and</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;MACSY_HOME&#39;</span><span class="p">]:</span>
+    <span class="n">_prefix_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;MACSY_HOME&#39;</span><span class="p">]</span>
+    <span class="n">_prefix_conf</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;MACSY_HOME&#39;</span><span class="p">],</span> <span class="s1">&#39;etc&#39;</span><span class="p">)</span>
+    <span class="n">_prefix_data</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;MACSY_HOME&#39;</span><span class="p">],</span> <span class="s1">&#39;data&#39;</span><span class="p">)</span>
+
+<span class="kn">import</span> <span class="nn">logging</span>
+
+
+<div class="viewcode-block" id="Config"><a class="viewcode-back" href="../../config.html#macsypy.config.Config">[docs]</a><span class="k">class</span> <span class="nc">Config</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Parse configuration files and handle the configuration according to the following file location precedence:</span>
+<span class="sd">    /etc/macsyfinder/macsyfinder.conf &lt; ~/.macsyfinder/macsyfinder.conf &lt; .macsyfinder.conf</span>
+<span class="sd">    </span>
+<span class="sd">    If a configuration file is given on the command-line, this file will be used.</span>
+<span class="sd">    *In fine* the arguments passed on the command-line have the highest priority.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="c1"># if a new option is added think to add it also (if needed) in save</span>
+    <span class="n">options</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;cfg_file&#39;</span><span class="p">,</span> <span class="s1">&#39;previous_run&#39;</span><span class="p">,</span> <span class="s1">&#39;sequence_db&#39;</span><span class="p">,</span> <span class="s1">&#39;db_type&#39;</span><span class="p">,</span> <span class="s1">&#39;replicon_topology&#39;</span><span class="p">,</span> <span class="s1">&#39;topology_file&#39;</span><span class="p">,</span>
+               <span class="s1">&#39;inter_gene_max_space&#39;</span><span class="p">,</span> <span class="s1">&#39;min_mandatory_genes_required&#39;</span><span class="p">,</span> <span class="s1">&#39;min_genes_required&#39;</span><span class="p">,</span> <span class="s1">&#39;max_nb_genes&#39;</span><span class="p">,</span> <span class="s1">&#39;multi_loci&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;hmmer_exe&#39;</span><span class="p">,</span> <span class="s1">&#39;index_db_exe&#39;</span><span class="p">,</span> <span class="s1">&#39;e_value_res&#39;</span><span class="p">,</span> <span class="s1">&#39;i_evalue_sel&#39;</span><span class="p">,</span> <span class="s1">&#39;coverage_profile&#39;</span><span class="p">,</span> 
+                <span class="s1">&#39;def_dir&#39;</span><span class="p">,</span> <span class="s1">&#39;res_search_dir&#39;</span><span class="p">,</span> <span class="s1">&#39;res_search_suffix&#39;</span><span class="p">,</span> <span class="s1">&#39;profile_dir&#39;</span><span class="p">,</span> <span class="s1">&#39;profile_suffix&#39;</span><span class="p">,</span> <span class="s1">&#39;res_extract_suffix&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;out_dir&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;log_level&#39;</span><span class="p">,</span> <span class="s1">&#39;log_file&#39;</span><span class="p">,</span> <span class="s1">&#39;worker_nb&#39;</span><span class="p">,</span> <span class="s1">&#39;config_file&#39;</span><span class="p">,</span> <span class="s1">&#39;build_indexes&#39;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Config.__init__"><a class="viewcode-back" href="../../config.html#macsypy.config.Config.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cfg_file</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+                <span class="n">sequence_db</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                <span class="n">db_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                <span class="n">replicon_topology</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                <span class="n">topology_file</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                <span class="n">inter_gene_max_space</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                <span class="n">min_mandatory_genes_required</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                <span class="n">min_genes_required</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                <span class="n">max_nb_genes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                <span class="n">multi_loci</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                <span class="n">hmmer_exe</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                <span class="n">index_db_exe</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                <span class="n">e_value_res</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                <span class="n">i_evalue_sel</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                <span class="n">coverage_profile</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                <span class="n">def_dir</span><span class="o">=</span><span class="kc">None</span> <span class="p">,</span>
+                <span class="n">res_search_dir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                <span class="n">res_search_suffix</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                <span class="n">profile_dir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                <span class="n">profile_suffix</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                <span class="n">res_extract_suffix</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                <span class="n">out_dir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                <span class="n">log_level</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                <span class="n">log_file</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                <span class="n">worker_nb</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                <span class="n">config_file</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                <span class="n">previous_run</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                <span class="n">build_indexes</span><span class="o">=</span><span class="kc">None</span>
+                <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param cfg_file: the path to the MacSyFinder configuration file to use </span>
+<span class="sd">        :type cfg_file: string</span>
+<span class="sd">        :param previous_run: the path to the results directory of a previous run</span>
+<span class="sd">        :type previous_run: string </span>
+<span class="sd">        :param sequence_db: the path to the sequence input dataset (fasta format)</span>
+<span class="sd">        :type sequence_db: string</span>
+<span class="sd">        :param db_type: the type of dataset to deal with. </span>
+<span class="sd">                        \&quot;unordered_replicon\&quot; corresponds to a non-assembled genome,</span>
+<span class="sd">                        \&quot;unordered\&quot; to a metagenomic dataset,</span>
+<span class="sd">                        \&quot;ordered_replicon\&quot; to an assembled genome, and</span>
+<span class="sd">                        \&quot;gembase\&quot; to a set of replicons where sequence identifiers follow this convention \&quot;&gt;RepliconName_SequenceID\&quot;.&quot;</span>
+<span class="sd">        :type db_type: string</span>
+<span class="sd">        :param replicon_topology: the topology (&#39;linear&#39; or &#39;circular&#39;) of the replicons. This option is meaningful</span>
+<span class="sd">                                  only if the db_type is &#39;ordered_replicon&#39; or &#39;gembase&#39;</span>
+<span class="sd">        :type replicon_topology: string</span>
+<span class="sd">        :param topology_file: a tabular file of mapping between replicon names and the corresponding topology</span>
+<span class="sd">                             (e.g. \&quot;RepliconA linear\&quot;)</span>
+<span class="sd">        :type topology_file: string</span>
+<span class="sd">        :param inter_gene_max_space:</span>
+<span class="sd">        :type inter_gene_max_space: list of list of 2 elements [[ string system, integer space] , ...]</span>
+<span class="sd">        :param min_mandatory_genes_required:</span>
+<span class="sd">        :type min_mandatory_genes_required: list of list of 2 elements [[ string system, integer ] , ...]</span>
+<span class="sd">        :param min_genes_required:</span>
+<span class="sd">        :type min_genes_required: list of list of 2 elements [[ string system, integer ] , ...]</span>
+<span class="sd">        :param max_nb_genes: </span>
+<span class="sd">        :type max_nb_genes: list of list of 2 elements [[ string system, integer ] , ...]</span>
+<span class="sd">        :param multi_loci: </span>
+<span class="sd">        :type multi_loci: string</span>
+<span class="sd">        :param hmmer_exe: the Hmmer \&quot;hmmsearch\&quot; executable</span>
+<span class="sd">        :type hmmer_exe: string</span>
+<span class="sd">        :param index_db_exe: the indexer executable (\&quot;makeblastdb\&quot; or \&quot;formatdb\&quot;)</span>
+<span class="sd">        :type index_db_exe: string</span>
+<span class="sd">        :param e_value_res: maximal e-value for hits to be reported during Hmmer search</span>
+<span class="sd">        :type  e_value_res: float</span>
+<span class="sd">        :param i_evalue_sel: maximal independent e-value for Hmmer hits to be selected for system detection</span>
+<span class="sd">        :type  i_evalue_sel: float</span>
+<span class="sd">        :param coverage_profile: minimal profile coverage required in the hit alignment to allow the hit selection</span>
+<span class="sd">                                for system detection</span>
+<span class="sd">        :type coverage_profile: float</span>
+<span class="sd">        :param def_dir: the path to the directory containing systems definition files (.xml)</span>
+<span class="sd">        :type def_dir: string</span>
+<span class="sd">        :param res_search_dir: the path to the directory where to store MacSyFinder search results directories.</span>
+<span class="sd">        :type  res_search_dir: string</span>
+<span class="sd">        :param out_dir: The results are written in a directory. By default the directory is named macsyfinder-{date},</span>
+<span class="sd">                        but this option allow to override this behavior. If out-dir option is set out-dir will be created</span>
+<span class="sd">                        if outdir already exists it must be empty.</span>
+<span class="sd">                        If out-dir and res-search-dir are sets res-search-dir will be ignore.</span>
+<span class="sd">        :type out_dir: string</span>
+<span class="sd">        :param res_search_suffix: the suffix to give to Hmmer raw output files</span>
+<span class="sd">        :type  res_search_suffix: string</span>
+<span class="sd">        :param res_extract_suffix: the suffix to give to filtered hits output files</span>
+<span class="sd">        :type  res_extract_suffix: string</span>
+<span class="sd">        :param profile_dir: path to the profiles directory</span>
+<span class="sd">        :type  profile_dir: string</span>
+<span class="sd">        :param profile_suffix: the suffix of profile files. For each &#39;Gene&#39; element,</span>
+<span class="sd">                               the corresponding profile is searched in the &#39;profile_dir&#39;,</span>
+<span class="sd">                               in a file which name is based on the Gene name + the profile suffix.</span>
+<span class="sd">        :type  profile_suffix: string</span>
+<span class="sd">        :param log_level: the level of log output</span>
+<span class="sd">        :type log_level: int</span>
+<span class="sd">        :param log_file: the path to the directory to write MacSyFinder log files</span>
+<span class="sd">        :type log_file: string</span>
+<span class="sd">        :param worker_nb: maximal number of processes to be used in parallel (multi-thread run, 0 use all cores available)</span>
+<span class="sd">        :type worker_nb: int</span>
+<span class="sd">        :param build_indexes: build the indexes from the sequence dataset in fasta format</span>
+<span class="sd">        :type build_indexes: boolean</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_new_cfg_name</span> <span class="o">=</span> <span class="s2">&quot;macsyfinder.conf&quot;</span>
+        <span class="k">if</span> <span class="n">previous_run</span><span class="p">:</span>
+            <span class="n">prev_config</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">previous_run</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_new_cfg_name</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">prev_config</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;No config file found in dir </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">previous_run</span><span class="p">))</span>
+            <span class="n">config_files</span> <span class="o">=</span> <span class="p">[</span><span class="n">prev_config</span><span class="p">]</span>
+        <span class="k">elif</span> <span class="n">cfg_file</span><span class="p">:</span>
+            <span class="n">config_files</span> <span class="o">=</span> <span class="p">[</span><span class="n">cfg_file</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">config_files</span> <span class="o">=</span> <span class="p">[</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">_prefix_conf</span><span class="p">,</span> <span class="s1">&#39;macsyfinder.conf&#39;</span><span class="p">),</span>
+                            <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="s1">&#39;~/.macsyfinder/macsyfinder.conf&#39;</span><span class="p">),</span>
+                            <span class="s1">&#39;macsyfinder.conf&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_defaults</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;replicon_topology&#39;</span><span class="p">:</span> <span class="s1">&#39;circular&#39;</span><span class="p">,</span>
+                          <span class="s1">&#39;hmmer_exe&#39;</span><span class="p">:</span> <span class="s1">&#39;hmmsearch&#39;</span><span class="p">,</span>
+                          <span class="s1">&#39;index_db_exe&#39;</span><span class="p">:</span> <span class="s1">&#39;makeblastdb&#39;</span><span class="p">,</span>
+                          <span class="s1">&#39;e_value_res&#39;</span><span class="p">:</span> <span class="s2">&quot;1&quot;</span><span class="p">,</span>
+                          <span class="s1">&#39;i_evalue_sel&#39;</span><span class="p">:</span> <span class="s2">&quot;0.001&quot;</span><span class="p">,</span>
+                          <span class="s1">&#39;coverage_profile&#39;</span><span class="p">:</span> <span class="s2">&quot;0.5&quot;</span><span class="p">,</span>
+                          <span class="s1">&#39;def_dir&#39;</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">_prefix_data</span><span class="p">,</span> <span class="s1">&#39;DEF&#39;</span><span class="p">),</span>
+                          <span class="s1">&#39;res_search_dir&#39;</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">(),</span>
+                          <span class="s1">&#39;res_search_suffix&#39;</span><span class="p">:</span> <span class="s1">&#39;.search_hmm.out&#39;</span><span class="p">,</span>
+                          <span class="s1">&#39;res_extract_suffix&#39;</span><span class="p">:</span> <span class="s1">&#39;.res_hmm_extract&#39;</span><span class="p">,</span>
+                          <span class="s1">&#39;profile_dir&#39;</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">_prefix_data</span><span class="p">,</span> <span class="s1">&#39;profiles&#39;</span><span class="p">),</span>
+                          <span class="s1">&#39;profile_suffix&#39;</span><span class="p">:</span> <span class="s1">&#39;.hmm&#39;</span><span class="p">,</span>
+                          <span class="s1">&#39;log_level&#39;</span><span class="p">:</span> <span class="n">logging</span><span class="o">.</span><span class="n">WARNING</span><span class="p">,</span>
+                          <span class="s1">&#39;worker_nb&#39;</span><span class="p">:</span> <span class="s1">&#39;1&#39;</span>
+                          <span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parser</span> <span class="o">=</span> <span class="n">SafeConfigParser</span><span class="p">(</span><span class="n">defaults</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_defaults</span><span class="p">)</span>
+        <span class="n">used_files</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">config_files</span><span class="p">)</span>
+
+        <span class="n">frame</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()</span>
+        <span class="n">args</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">values</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">getargvalues</span><span class="p">(</span><span class="n">frame</span><span class="p">)</span>
+
+        <span class="n">cmde_line_opt</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">arg</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">arg</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span> <span class="ow">and</span> <span class="n">values</span><span class="p">[</span><span class="n">arg</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="c1"># the option in ConfigParser are store as string</span>
+                <span class="c1"># so in save method I dump some options only if</span>
+                <span class="c1"># they are != than the default values in ConfigParser</span>
+                <span class="n">cmde_line_opt</span><span class="p">[</span><span class="n">arg</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="n">arg</span><span class="p">])</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">options</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_validate</span><span class="p">(</span><span class="n">cmde_line_opt</span><span class="p">,</span> <span class="n">values</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Config._validate"><a class="viewcode-back" href="../../config.html#macsypy.config.Config._validate">[docs]</a>    <span class="k">def</span> <span class="nf">_validate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cmde_line_opt</span><span class="p">,</span> <span class="n">cmde_line_values</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get all configuration values and check the validity of their values.</span>
+<span class="sd">        Create the working directory</span>
+
+<span class="sd">        :param cmde_line_opt: the options from the command line</span>
+<span class="sd">        :type cmde_line_opt: dict, all values are cast in string</span>
+<span class="sd">        :param cmde_line_values: the options from the command line</span>
+<span class="sd">        :type cmde_line_values: dict, values are not cast</span>
+<span class="sd">        :return: all the options for this execution</span>
+<span class="sd">        :rtype: dictionary</span>
+<span class="sd">        &quot;&quot;&quot;</span>  
+        <span class="n">options</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">if</span> <span class="s1">&#39;sequence_db&#39;</span> <span class="ow">in</span> <span class="n">cmde_line_opt</span><span class="p">:</span>
+            <span class="n">cmde_line_opt</span><span class="p">[</span><span class="s1">&#39;file&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cmde_line_opt</span><span class="p">[</span><span class="s1">&#39;sequence_db&#39;</span><span class="p">]</span>
+
+        <span class="c1"># All results and intermediate files are stored in a directory</span>
+        <span class="c1"># this directory is specify by out_dir option</span>
+        <span class="c1"># for compliance if out_dir option is not specified</span>
+        <span class="c1"># the output_dir will be the concatenation of research_dir and &quot;macsyfinder-&quot; + strftime(&quot;%Y%m%d_%H-%M-%S&quot;)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">options</span><span class="p">[</span><span class="s1">&#39;out_dir&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;directories&#39;</span><span class="p">,</span> <span class="s1">&#39;out_dir&#39;</span><span class="p">,</span> <span class="nb">vars</span><span class="o">=</span><span class="n">cmde_line_opt</span><span class="p">)</span>
+            <span class="n">working_dir</span> <span class="o">=</span> <span class="n">options</span><span class="p">[</span><span class="s1">&#39;out_dir&#39;</span><span class="p">]</span>
+        <span class="k">except</span> <span class="p">(</span><span class="n">NoSectionError</span><span class="p">,</span> <span class="n">NoOptionError</span><span class="p">):</span>
+            <span class="k">if</span> <span class="s1">&#39;out_dir&#39;</span> <span class="ow">in</span> <span class="n">cmde_line_opt</span><span class="p">:</span>
+                <span class="n">options</span><span class="p">[</span><span class="s1">&#39;out_dir&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cmde_line_opt</span><span class="p">[</span><span class="s1">&#39;out_dir&#39;</span><span class="p">]</span>
+                <span class="n">working_dir</span> <span class="o">=</span> <span class="n">options</span><span class="p">[</span><span class="s1">&#39;out_dir&#39;</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">options</span><span class="p">[</span><span class="s1">&#39;res_search_dir&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;directories&#39;</span><span class="p">,</span> <span class="s1">&#39;res_search_dir&#39;</span><span class="p">,</span> <span class="nb">vars</span><span class="o">=</span><span class="n">cmde_line_opt</span><span class="p">)</span>
+                <span class="k">except</span> <span class="p">(</span><span class="n">NoSectionError</span><span class="p">,</span> <span class="n">NoOptionError</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="s1">&#39;res_search_dir&#39;</span> <span class="ow">in</span> <span class="n">cmde_line_opt</span><span class="p">:</span>
+                        <span class="n">options</span><span class="p">[</span><span class="s1">&#39;res_search_dir&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cmde_line_opt</span><span class="p">[</span><span class="s1">&#39;res_search_dir&#39;</span><span class="p">]</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">options</span><span class="p">[</span><span class="s1">&#39;res_search_dir&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_defaults</span><span class="p">[</span><span class="s1">&#39;res_search_dir&#39;</span><span class="p">]</span>
+                <span class="n">working_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">options</span><span class="p">[</span><span class="s1">&#39;res_search_dir&#39;</span><span class="p">],</span> <span class="s2">&quot;macsyfinder-&quot;</span> <span class="o">+</span> <span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y%m</span><span class="si">%d</span><span class="s2">_%H-%M-%S&quot;</span><span class="p">))</span>  
+        
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">working_dir</span><span class="p">)</span> <span class="ow">and</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">working_dir</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{0}</span><span class="s2">: This results directory already exists and is not empty&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">working_dir</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">working_dir</span><span class="p">):</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">working_dir</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">OSError</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;cannot create MacSyFinder working directory </span><span class="si">{0}</span><span class="s2"> : </span><span class="si">{1}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">working_dir</span><span class="p">,</span> <span class="n">err</span><span class="p">))</span>
+        <span class="n">options</span><span class="p">[</span><span class="s1">&#39;working_dir&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">working_dir</span>
+
+        <span class="n">hmmer_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">working_dir</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">hmmer_dir</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">hmmer_path</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">OSError</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;cannot create MacSyFinder hmmer directory </span><span class="si">{0}</span><span class="s2"> : </span><span class="si">{1}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">hmmer_path</span><span class="p">,</span> <span class="n">err</span><span class="p">))</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">log_level</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;general&#39;</span><span class="p">,</span> <span class="s1">&#39;log_level&#39;</span><span class="p">,</span> <span class="nb">vars</span><span class="o">=</span><span class="n">cmde_line_opt</span><span class="p">)</span>
+        <span class="k">except</span> <span class="p">(</span><span class="ne">AttributeError</span><span class="p">,</span> <span class="n">NoSectionError</span><span class="p">):</span>
+            <span class="n">log_level</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_defaults</span><span class="p">[</span><span class="s1">&#39;log_level&#39;</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">log_level</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">log_level</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">log_level</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">logging</span><span class="p">,</span> <span class="n">log_level</span><span class="o">.</span><span class="n">upper</span><span class="p">())</span>
+                <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+                    <span class="n">log_level</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">ERROR</span>
+        <span class="n">options</span><span class="p">[</span><span class="s1">&#39;log_level&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">log_level</span>
+
+        <span class="n">log_error</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">log_file</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;general&#39;</span><span class="p">,</span> <span class="s1">&#39;log_file&#39;</span><span class="p">,</span> <span class="nb">vars</span><span class="o">=</span><span class="n">cmde_line_opt</span><span class="p">)</span>
+            <span class="n">log_handler</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">FileHandler</span><span class="p">(</span><span class="n">log_file</span><span class="p">)</span>
+            <span class="n">options</span><span class="p">[</span><span class="s1">&#39;log_file&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">log_file</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">err</span><span class="p">,</span> <span class="p">(</span><span class="n">NoOptionError</span><span class="p">,</span> <span class="n">NoSectionError</span><span class="p">)):</span>
+                <span class="n">log_error</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">err</span><span class="p">)</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">log_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">options</span><span class="p">[</span><span class="s1">&#39;working_dir&#39;</span><span class="p">],</span> <span class="s1">&#39;macsyfinder.log&#39;</span><span class="p">)</span>
+                <span class="n">log_handler</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">FileHandler</span><span class="p">(</span><span class="n">log_file</span><span class="p">)</span>
+                <span class="n">options</span><span class="p">[</span><span class="s1">&#39;log_file&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">log_file</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
+                <span class="n">log_error</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">err</span><span class="p">)</span>
+                <span class="n">log_handler</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">StreamHandler</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+                <span class="n">options</span><span class="p">[</span><span class="s1">&#39;log_file&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+        <span class="n">handler_formatter</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">Formatter</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%(levelname)-8s</span><span class="s2"> : </span><span class="si">%(filename)-10s</span><span class="s2"> : L </span><span class="si">%(lineno)d</span><span class="s2"> : </span><span class="si">%(asctime)s</span><span class="s2"> : </span><span class="si">%(message)s</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">log_handler</span><span class="o">.</span><span class="n">setFormatter</span><span class="p">(</span><span class="n">handler_formatter</span><span class="p">)</span>
+        <span class="n">log_handler</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">log_level</span><span class="p">)</span>
+
+        <span class="n">root</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">()</span>
+        <span class="n">root</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">NOTSET</span><span class="p">)</span>
+
+        <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s1">&#39;macsyfinder&#39;</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">log_level</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">addHandler</span><span class="p">(</span><span class="n">log_handler</span><span class="p">)</span>
+        
+        <span class="n">f_out_log_handler</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">FileHandler</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">working_dir</span><span class="p">,</span> <span class="s1">&#39;macsyfinder.out&#39;</span><span class="p">))</span>
+        <span class="n">f_out_handler_formatter</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">Formatter</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%(message)s</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">f_out_log_handler</span><span class="o">.</span><span class="n">setFormatter</span><span class="p">(</span><span class="n">f_out_handler_formatter</span><span class="p">)</span>
+        <span class="n">f_out_log_handler</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+
+        <span class="n">c_out_log_handler</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">StreamHandler</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">)</span>
+        <span class="n">c_out_handler_formatter</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">Formatter</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%(message)s</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">c_out_log_handler</span><span class="o">.</span><span class="n">setFormatter</span><span class="p">(</span><span class="n">c_out_handler_formatter</span><span class="p">)</span>
+        <span class="n">c_out_log_handler</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+
+        <span class="n">out_logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s1">&#39;macsyfinder.out&#39;</span><span class="p">)</span>
+        <span class="n">out_logger</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+        <span class="n">out_logger</span><span class="o">.</span><span class="n">addHandler</span><span class="p">(</span><span class="n">f_out_log_handler</span><span class="p">)</span>
+        <span class="n">out_logger</span><span class="o">.</span><span class="n">addHandler</span><span class="p">(</span><span class="n">c_out_log_handler</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s1">&#39;macsyfinder.config&#39;</span><span class="p">)</span>
+        
+        <span class="k">for</span> <span class="n">error</span> <span class="ow">in</span> <span class="n">log_error</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_log</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="n">error</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">cmde_line_opt</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;previous_run&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">cmde_line_opt</span><span class="p">[</span><span class="s1">&#39;previous_run&#39;</span><span class="p">]):</span>
+                    <span class="n">options</span><span class="p">[</span><span class="s1">&#39;previous_run&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cmde_line_opt</span><span class="p">[</span><span class="s1">&#39;previous_run&#39;</span><span class="p">]</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;previous run directory &#39;</span><span class="si">{0}</span><span class="s2">&#39; was not found&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">cmde_line_opt</span><span class="p">[</span><span class="s1">&#39;previous_run&#39;</span><span class="p">]))</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">options</span><span class="p">[</span><span class="s1">&#39;sequence_db&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;base&#39;</span><span class="p">,</span> <span class="s1">&#39;file&#39;</span><span class="p">,</span> <span class="nb">vars</span><span class="o">=</span><span class="n">cmde_line_opt</span><span class="p">)</span>
+            <span class="k">except</span> <span class="n">NoSectionError</span><span class="p">:</span>
+                <span class="n">sequence_db</span> <span class="o">=</span> <span class="n">cmde_line_opt</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;sequence_db&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">sequence_db</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;No input sequence file specified&quot;</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">options</span><span class="p">[</span><span class="s1">&#39;sequence_db&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">sequence_db</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">options</span><span class="p">[</span><span class="s1">&#39;sequence_db&#39;</span><span class="p">]):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{0}</span><span class="s2">: The input sequence file does not exist &quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">options</span><span class="p">[</span><span class="s1">&#39;sequence_db&#39;</span><span class="p">]))</span>
+
+            <span class="n">options</span><span class="p">[</span><span class="s1">&#39;sequence_db&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">options</span><span class="p">[</span><span class="s1">&#39;sequence_db&#39;</span><span class="p">])</span>
+            <span class="n">val_4_db_type</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;unordered_replicon&#39;</span><span class="p">,</span> <span class="s1">&#39;ordered_replicon&#39;</span><span class="p">,</span> <span class="s1">&#39;gembase&#39;</span><span class="p">,</span> <span class="s1">&#39;unordered&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="s1">&#39;db_type&#39;</span> <span class="ow">in</span> <span class="n">cmde_line_opt</span><span class="p">:</span>
+                <span class="n">options</span><span class="p">[</span><span class="s1">&#39;db_type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cmde_line_opt</span><span class="p">[</span><span class="s1">&#39;db_type&#39;</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">options</span><span class="p">[</span><span class="s1">&#39;db_type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;base&#39;</span><span class="p">,</span> <span class="s1">&#39;type&#39;</span><span class="p">)</span>
+                <span class="k">except</span> <span class="p">(</span><span class="n">NoSectionError</span><span class="p">,</span> <span class="n">NoOptionError</span><span class="p">):</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;You must specify the type of the input dataset (</span><span class="si">{0}</span><span class="s2">).&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">val_4_db_type</span><span class="p">)))</span>
+            <span class="k">if</span> <span class="n">options</span><span class="p">[</span><span class="s1">&#39;db_type&#39;</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">val_4_db_type</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Allowed values for the input dataset are : </span><span class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">val_4_db_type</span><span class="p">)))</span>
+            <span class="n">val_4_replicon_topology</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;linear&#39;</span><span class="p">,</span> <span class="s1">&#39;circular&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="s1">&#39;replicon_topology&#39;</span> <span class="ow">in</span> <span class="n">cmde_line_opt</span><span class="p">:</span>
+                <span class="n">options</span><span class="p">[</span><span class="s1">&#39;replicon_topology&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cmde_line_opt</span><span class="p">[</span><span class="s1">&#39;replicon_topology&#39;</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">options</span><span class="p">[</span><span class="s1">&#39;replicon_topology&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;base&#39;</span><span class="p">,</span> <span class="s1">&#39;replicon_topology&#39;</span><span class="p">)</span>
+                <span class="k">except</span> <span class="p">(</span><span class="n">NoSectionError</span><span class="p">,</span> <span class="n">NoOptionError</span><span class="p">):</span>
+                    <span class="n">options</span><span class="p">[</span><span class="s1">&#39;replicon_topology&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_defaults</span><span class="p">[</span><span class="s1">&#39;replicon_topology&#39;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">options</span><span class="p">[</span><span class="s1">&#39;replicon_topology&#39;</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">val_4_replicon_topology</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Allowed values for dataset replicon_topology are : </span><span class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">val_4_replicon_topology</span><span class="p">)))</span>
+            <span class="k">if</span> <span class="n">options</span><span class="p">[</span><span class="s1">&#39;replicon_topology&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;circular&#39;</span> <span class="ow">and</span> <span class="n">options</span><span class="p">[</span><span class="s1">&#39;db_type&#39;</span><span class="p">]</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;unordered_replicon&#39;</span><span class="p">,</span> <span class="s1">&#39;unordered&#39;</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;As the input dataset type &#39;db_type&#39; is set to </span><span class="si">{0}</span><span class="s2">,</span><span class="se">\</span>
+<span class="s2"> the replicon_topology file was ignored&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">options</span><span class="p">[</span><span class="s1">&#39;db_type&#39;</span><span class="p">]))</span>
+            
+            <span class="k">if</span> <span class="s1">&#39;topology_file&#39;</span> <span class="ow">in</span> <span class="n">cmde_line_opt</span><span class="p">:</span>
+                <span class="n">options</span><span class="p">[</span><span class="s1">&#39;topology_file&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cmde_line_opt</span><span class="p">[</span><span class="s1">&#39;topology_file&#39;</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">options</span><span class="p">[</span><span class="s1">&#39;topology_file&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;base&#39;</span><span class="p">,</span> <span class="s1">&#39;topology_file&#39;</span><span class="p">)</span>
+                <span class="k">except</span> <span class="p">(</span><span class="n">NoSectionError</span><span class="p">,</span> <span class="n">NoOptionError</span><span class="p">):</span>
+                    <span class="n">options</span><span class="p">[</span><span class="s1">&#39;topology_file&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="k">if</span> <span class="n">options</span><span class="p">[</span><span class="s1">&#39;topology_file&#39;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">options</span><span class="p">[</span><span class="s1">&#39;topology_file&#39;</span><span class="p">]):</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;topology_file cannot access </span><span class="si">{}</span><span class="s1">: No such file&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">options</span><span class="p">[</span><span class="s1">&#39;topology_file&#39;</span><span class="p">]))</span>
+                <span class="k">elif</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">options</span><span class="p">[</span><span class="s1">&#39;topology_file&#39;</span><span class="p">]):</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;topology_file </span><span class="si">{}</span><span class="s1"> is not a regular file&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">options</span><span class="p">[</span><span class="s1">&#39;topology_file&#39;</span><span class="p">]))</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">has_option</span><span class="p">(</span><span class="s2">&quot;system&quot;</span><span class="p">,</span> <span class="s2">&quot;inter_gene_max_space&quot;</span><span class="p">):</span>
+                <span class="n">options</span><span class="p">[</span><span class="s1">&#39;inter_gene_max_space&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+                <span class="n">inter_gene_max_space</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;system&quot;</span><span class="p">,</span> <span class="s2">&quot;inter_gene_max_space&quot;</span><span class="p">)</span>
+                <span class="n">inter_gene_max_space</span> <span class="o">=</span> <span class="n">inter_gene_max_space</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+                <span class="n">it</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="n">inter_gene_max_space</span><span class="p">)</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="k">for</span> <span class="n">system</span> <span class="ow">in</span> <span class="n">it</span><span class="p">:</span>
+                        <span class="n">interval</span> <span class="o">=</span> <span class="n">it</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
+                        <span class="k">try</span><span class="p">:</span>
+                            <span class="n">interval</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">interval</span><span class="p">)</span>
+                            <span class="n">options</span><span class="p">[</span><span class="s1">&#39;inter_gene_max_space&#39;</span><span class="p">][</span><span class="n">system</span><span class="p">]</span> <span class="o">=</span> <span class="n">interval</span>
+                        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+                            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The &#39;inter_gene_max_space for system </span><span class="si">{0}</span><span class="s2"> must be an integer,</span><span class="se">\</span>
+<span class="s2"> but you provided </span><span class="si">{}</span><span class="s2"> in the configuration file&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">system</span><span class="p">,</span> <span class="n">interval</span><span class="p">))</span>
+                <span class="k">except</span> <span class="ne">StopIteration</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span> <span class="s2">&quot;Invalid syntax for &#39;inter_gene_max_space&#39;: you must have a list of</span><span class="se">\</span>
+<span class="s2"> systems and corresponding &#39;inter_gene_max_space&#39; separated by spaces&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="s1">&#39;inter_gene_max_space&#39;</span> <span class="ow">in</span> <span class="n">cmde_line_values</span> <span class="ow">and</span> <span class="n">cmde_line_values</span><span class="p">[</span><span class="s1">&#39;inter_gene_max_space&#39;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span> 
+                <span class="k">if</span> <span class="s1">&#39;inter_gene_max_space&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">options</span><span class="p">:</span>
+                    <span class="n">options</span><span class="p">[</span><span class="s1">&#39;inter_gene_max_space&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+                <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">cmde_line_values</span><span class="p">[</span><span class="s1">&#39;inter_gene_max_space&#39;</span><span class="p">]:</span>
+                    <span class="n">system</span><span class="p">,</span> <span class="n">interval</span> <span class="o">=</span> <span class="n">item</span>
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="n">interval</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">interval</span><span class="p">)</span>
+                        <span class="n">options</span><span class="p">[</span><span class="s1">&#39;inter_gene_max_space&#39;</span><span class="p">][</span><span class="n">system</span><span class="p">]</span> <span class="o">=</span> <span class="n">interval</span>
+                    <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+                        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The &#39;inter_gene_max_space for system </span><span class="si">{0}</span><span class="s2"> must be an integer,</span><span class="se">\</span>
+<span class="s2"> but you provided </span><span class="si">{1}</span><span class="s2"> on command line&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">system</span><span class="p">,</span> <span class="n">interval</span><span class="p">))</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">has_option</span><span class="p">(</span><span class="s2">&quot;system&quot;</span><span class="p">,</span> <span class="s2">&quot;min_mandatory_genes_required&quot;</span><span class="p">):</span>
+                <span class="n">options</span><span class="p">[</span><span class="s1">&#39;min_mandatory_genes_required&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+                <span class="n">min_mandatory_genes_required</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;system&quot;</span><span class="p">,</span> <span class="s2">&quot;min_mandatory_genes_required&quot;</span><span class="p">)</span>
+                <span class="n">min_mandatory_genes_required</span> <span class="o">=</span> <span class="n">min_mandatory_genes_required</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+                <span class="n">it</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="n">min_mandatory_genes_required</span><span class="p">)</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="k">for</span> <span class="n">system</span> <span class="ow">in</span> <span class="n">it</span><span class="p">:</span>
+                        <span class="n">quorum_mandatory_genes</span> <span class="o">=</span> <span class="n">it</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
+                        <span class="k">try</span><span class="p">:</span>
+                            <span class="n">quorum_mandatory_genes</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">quorum_mandatory_genes</span><span class="p">)</span>
+                            <span class="n">options</span><span class="p">[</span><span class="s1">&#39;min_mandatory_genes_required&#39;</span><span class="p">][</span><span class="n">system</span><span class="p">]</span> <span class="o">=</span> <span class="n">quorum_mandatory_genes</span>
+                        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+                            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The value for &#39;min_mandatory_genes_required&#39; option for system </span><span class="si">{0}</span><span class="se">\</span>
+<span class="s2"> must be an integer, but you provided </span><span class="si">{1}</span><span class="s2"> in the configuration file&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">system</span><span class="p">,</span> <span class="n">quorum_mandatory_genes</span><span class="p">))</span>
+                <span class="k">except</span> <span class="ne">StopIteration</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Invalid syntax for &#39;min_mandatory_genes_required&#39;: you must have a list of</span><span class="se">\</span>
+<span class="s2"> systems and corresponding &#39;min_mandatory_genes_required&#39; separated by spaces&quot;</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="s1">&#39;min_mandatory_genes_required&#39;</span> <span class="ow">in</span> <span class="n">cmde_line_values</span> <span class="ow">and</span> \
+                            <span class="n">cmde_line_values</span><span class="p">[</span><span class="s1">&#39;min_mandatory_genes_required&#39;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">if</span> <span class="s1">&#39;min_mandatory_genes_required&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">options</span><span class="p">:</span>
+                    <span class="n">options</span><span class="p">[</span><span class="s1">&#39;min_mandatory_genes_required&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+                <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">cmde_line_values</span><span class="p">[</span><span class="s1">&#39;min_mandatory_genes_required&#39;</span><span class="p">]:</span>
+                    <span class="n">system</span><span class="p">,</span> <span class="n">quorum_mandatory_genes</span> <span class="o">=</span> <span class="n">item</span>
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="n">quorum_mandatory_genes</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">quorum_mandatory_genes</span><span class="p">)</span>
+                        <span class="n">options</span><span class="p">[</span><span class="s1">&#39;min_mandatory_genes_required&#39;</span><span class="p">][</span><span class="n">system</span><span class="p">]</span> <span class="o">=</span> <span class="n">quorum_mandatory_genes</span>
+                    <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+                        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The value for &#39;min_mandatory_genes_required&#39; option for system </span><span class="si">{0}</span><span class="s2"> must be an</span><span class="se">\</span>
+<span class="s2"> integer, but you provided </span><span class="si">{1}</span><span class="s2"> on command line&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">system</span><span class="p">,</span> <span class="n">quorum_mandatory_genes</span><span class="p">))</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">has_option</span><span class="p">(</span><span class="s2">&quot;system&quot;</span><span class="p">,</span> <span class="s2">&quot;min_genes_required&quot;</span><span class="p">):</span>
+                <span class="n">options</span><span class="p">[</span><span class="s1">&#39;min_genes_required&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+                <span class="n">min_genes_required</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;system&quot;</span><span class="p">,</span> <span class="s2">&quot;min_genes_required&quot;</span><span class="p">)</span>
+                <span class="n">min_genes_required</span> <span class="o">=</span> <span class="n">min_genes_required</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+                <span class="n">it</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="n">min_genes_required</span><span class="p">)</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="k">for</span> <span class="n">system</span> <span class="ow">in</span> <span class="n">it</span><span class="p">:</span>
+                        <span class="n">quorum_genes</span> <span class="o">=</span> <span class="n">it</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
+                        <span class="k">try</span><span class="p">:</span>
+                            <span class="n">quorum_genes</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">quorum_genes</span><span class="p">)</span>
+                            <span class="n">options</span><span class="p">[</span><span class="s1">&#39;min_genes_required&#39;</span><span class="p">][</span><span class="n">system</span><span class="p">]</span> <span class="o">=</span> <span class="n">quorum_genes</span>
+                        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+                            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The value for &#39;min_genes_required&#39; option for system </span><span class="si">{0}</span><span class="s2"> must be an</span><span class="se">\</span>
+<span class="s2"> integer, but you provided </span><span class="si">{1}</span><span class="s2"> in the configuration file&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">system</span><span class="p">,</span> <span class="n">quorum_genes</span><span class="p">))</span>
+                <span class="k">except</span> <span class="ne">StopIteration</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Invalid syntax for &#39;min_genes_required&#39;: you must have a list of systems and</span><span class="se">\</span>
+<span class="s2"> corresponding &#39;min_mandatory_genes_required&#39; separated by spaces&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="s1">&#39;min_genes_required&#39;</span> <span class="ow">in</span> <span class="n">cmde_line_values</span> <span class="ow">and</span> <span class="n">cmde_line_values</span><span class="p">[</span><span class="s1">&#39;min_genes_required&#39;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span> 
+                <span class="k">if</span> <span class="s1">&#39;min_genes_required&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">options</span><span class="p">:</span>
+                    <span class="n">options</span><span class="p">[</span><span class="s1">&#39;min_genes_required&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+                <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">cmde_line_values</span><span class="p">[</span><span class="s1">&#39;min_genes_required&#39;</span><span class="p">]:</span>
+                    <span class="n">system</span><span class="p">,</span> <span class="n">quorum_genes</span> <span class="o">=</span> <span class="n">item</span>
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="n">quorum_genes</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">quorum_genes</span><span class="p">)</span>
+                        <span class="n">options</span><span class="p">[</span><span class="s1">&#39;min_genes_required&#39;</span><span class="p">][</span><span class="n">system</span><span class="p">]</span> <span class="o">=</span> <span class="n">quorum_genes</span>
+                    <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+                        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The value for &#39;min_genes_required&#39; option for system </span><span class="si">{0}</span><span class="s2"> must be an integer,</span><span class="se">\</span>
+<span class="s2"> but you provided </span><span class="si">{1}</span><span class="s2"> on command line&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">system</span><span class="p">,</span> <span class="n">quorum_genes</span><span class="p">))</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">has_option</span><span class="p">(</span><span class="s2">&quot;system&quot;</span><span class="p">,</span> <span class="s2">&quot;max_nb_genes&quot;</span><span class="p">):</span>
+                <span class="n">options</span><span class="p">[</span><span class="s1">&#39;max_nb_genes&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+                <span class="n">max_nb_genes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;system&quot;</span><span class="p">,</span> <span class="s2">&quot;max_nb_genes&quot;</span><span class="p">)</span> 
+                <span class="n">max_nb_genes</span> <span class="o">=</span> <span class="n">max_nb_genes</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+                <span class="n">it</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="n">max_nb_genes</span><span class="p">)</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="k">for</span> <span class="n">system</span> <span class="ow">in</span> <span class="n">it</span><span class="p">:</span>
+                        <span class="n">max_genes</span> <span class="o">=</span> <span class="n">it</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
+                        <span class="k">try</span><span class="p">:</span>
+                            <span class="n">max_genes</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">max_genes</span><span class="p">)</span>
+                            <span class="n">options</span><span class="p">[</span><span class="s1">&#39;max_nb_genes&#39;</span><span class="p">][</span><span class="n">system</span><span class="p">]</span> <span class="o">=</span> <span class="n">max_genes</span>
+                        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+                            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The value for &#39;max_nb_genes&#39; option for system </span><span class="si">{0}</span><span class="s2"> must be an integer,</span><span class="se">\</span>
+<span class="s2">                             but you provided </span><span class="si">{1}</span><span class="s2"> in the configuration file&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">system</span><span class="p">,</span> <span class="n">max_genes</span><span class="p">))</span>
+                <span class="k">except</span> <span class="ne">StopIteration</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Invalid syntax for &#39;max_nb_genes&#39;: you must have a list of systems and</span><span class="se">\</span>
+<span class="s2"> corresponding &#39;max_nb_genes&#39; separated by spaces&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="s1">&#39;max_nb_genes&#39;</span> <span class="ow">in</span> <span class="n">cmde_line_values</span> <span class="ow">and</span> <span class="n">cmde_line_values</span><span class="p">[</span><span class="s1">&#39;max_nb_genes&#39;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span> 
+                <span class="k">if</span> <span class="s1">&#39;max_nb_genes&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">options</span><span class="p">:</span>
+                    <span class="n">options</span><span class="p">[</span><span class="s1">&#39;max_nb_genes&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+                <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">cmde_line_values</span><span class="p">[</span><span class="s1">&#39;max_nb_genes&#39;</span><span class="p">]:</span>
+                    <span class="n">system</span><span class="p">,</span> <span class="n">max_genes</span> <span class="o">=</span> <span class="n">item</span>
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="n">max_genes</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">max_genes</span><span class="p">)</span>
+                        <span class="n">options</span><span class="p">[</span><span class="s1">&#39;max_nb_genes&#39;</span><span class="p">][</span><span class="n">system</span><span class="p">]</span> <span class="o">=</span> <span class="n">max_genes</span>
+                    <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+                        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The value for &#39;max_nb_genes&#39; option for system </span><span class="si">{0}</span><span class="s2"> must be an integer, </span><span class="se">\</span>
+<span class="s2"> but you provided </span><span class="si">{1}</span><span class="s2"> on command line&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">system</span><span class="p">,</span> <span class="n">max_genes</span><span class="p">))</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">has_option</span><span class="p">(</span><span class="s2">&quot;system&quot;</span><span class="p">,</span> <span class="s2">&quot;multi_loci&quot;</span><span class="p">):</span>
+                <span class="n">options</span><span class="p">[</span><span class="s1">&#39;multi_loci&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;system&quot;</span><span class="p">,</span> <span class="s2">&quot;multi_loci&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">options</span><span class="p">[</span><span class="s1">&#39;multi_loci&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">if</span> <span class="s1">&#39;multi_loci&#39;</span> <span class="ow">in</span> <span class="n">cmde_line_values</span> <span class="ow">and</span> <span class="n">cmde_line_values</span><span class="p">[</span><span class="s1">&#39;multi_loci&#39;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">if</span> <span class="s1">&#39;min_genes_required&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">options</span><span class="p">:</span>
+                    <span class="n">options</span><span class="p">[</span><span class="s1">&#39;multi_loci&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">cmde_line_values</span><span class="p">[</span><span class="s1">&#39;multi_loci&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">):</span>
+                    <span class="n">options</span><span class="p">[</span><span class="s1">&#39;multi_loci&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">options</span><span class="p">[</span><span class="s1">&#39;hmmer_exe&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;hmmer&#39;</span><span class="p">,</span> <span class="s1">&#39;hmmer_exe&#39;</span><span class="p">,</span> <span class="nb">vars</span><span class="o">=</span><span class="n">cmde_line_opt</span><span class="p">)</span>
+            <span class="k">except</span> <span class="n">NoSectionError</span><span class="p">:</span>
+                <span class="k">if</span> <span class="s1">&#39;hmmer_exe&#39;</span> <span class="ow">in</span> <span class="n">cmde_line_opt</span><span class="p">:</span>
+                    <span class="n">options</span><span class="p">[</span><span class="s1">&#39;hmmer_exe&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cmde_line_opt</span><span class="p">[</span><span class="s1">&#39;hmmer_exe&#39;</span><span class="p">]</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">options</span><span class="p">[</span><span class="s1">&#39;hmmer_exe&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_defaults</span><span class="p">[</span><span class="s1">&#39;hmmer_exe&#39;</span><span class="p">]</span>
+
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">options</span><span class="p">[</span><span class="s1">&#39;index_db_exe&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;base&#39;</span><span class="p">,</span> <span class="s1">&#39;index_db_exe&#39;</span><span class="p">,</span> <span class="nb">vars</span><span class="o">=</span><span class="n">cmde_line_opt</span><span class="p">)</span>
+            <span class="k">except</span> <span class="n">NoSectionError</span><span class="p">:</span>
+                <span class="k">if</span> <span class="s1">&#39;index_db_exe&#39;</span> <span class="ow">in</span> <span class="n">cmde_line_opt</span><span class="p">:</span>
+                    <span class="n">options</span><span class="p">[</span><span class="s1">&#39;index_db_exe&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cmde_line_opt</span><span class="p">[</span><span class="s1">&#39;index_db_exe&#39;</span><span class="p">]</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">options</span><span class="p">[</span><span class="s1">&#39;index_db_exe&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_defaults</span><span class="p">[</span><span class="s1">&#39;index_db_exe&#39;</span><span class="p">]</span>
+
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">e_value_res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;hmmer&#39;</span><span class="p">,</span> <span class="s1">&#39;e_value_res&#39;</span><span class="p">,</span> <span class="nb">vars</span><span class="o">=</span><span class="n">cmde_line_opt</span><span class="p">)</span>
+                <span class="n">options</span><span class="p">[</span><span class="s1">&#39;e_value_res&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">e_value_res</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Invalid value for hmmer e_value_res :</span><span class="si">{0}</span><span class="s2">: (float expected)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e_value_res</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+            <span class="k">except</span> <span class="n">NoSectionError</span><span class="p">:</span>
+                <span class="k">if</span> <span class="s1">&#39;e_value_res&#39;</span> <span class="ow">in</span> <span class="n">cmde_line_opt</span><span class="p">:</span>
+                    <span class="n">options</span><span class="p">[</span><span class="s1">&#39;e_value_res&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">cmde_line_opt</span><span class="p">[</span><span class="s1">&#39;e_value_res&#39;</span><span class="p">])</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">options</span><span class="p">[</span><span class="s1">&#39;e_value_res&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_defaults</span><span class="p">[</span><span class="s1">&#39;e_value_res&#39;</span><span class="p">])</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">i_evalue_sel</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;hmmer&#39;</span><span class="p">,</span> <span class="s1">&#39;i_evalue_sel&#39;</span><span class="p">,</span> <span class="nb">vars</span><span class="o">=</span><span class="n">cmde_line_opt</span><span class="p">)</span>
+                <span class="n">options</span><span class="p">[</span><span class="s1">&#39;i_evalue_sel&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">i_evalue_sel</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Invalid value for hmmer i_evalue_sel :</span><span class="si">{0}</span><span class="s2">: (float expected)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i_evalue_sel</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+            <span class="k">except</span> <span class="n">NoSectionError</span><span class="p">:</span>
+                <span class="k">if</span> <span class="s1">&#39;i_evalue_sel&#39;</span> <span class="ow">in</span> <span class="n">cmde_line_opt</span><span class="p">:</span>
+                    <span class="n">options</span><span class="p">[</span><span class="s1">&#39;i_evalue_sel&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">cmde_line_opt</span><span class="p">[</span><span class="s1">&#39;i_evalue_sel&#39;</span><span class="p">])</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">options</span><span class="p">[</span><span class="s1">&#39;i_evalue_sel&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_defaults</span><span class="p">[</span><span class="s1">&#39;i_evalue_sel&#39;</span><span class="p">])</span>
+
+            <span class="k">if</span> <span class="n">options</span><span class="p">[</span><span class="s1">&#39;i_evalue_sel&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">options</span><span class="p">[</span><span class="s1">&#39;e_value_res&#39;</span><span class="p">]:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;i_evalue_sel (</span><span class="si">{:f}</span><span class="s2">) must be lower or equal than e_value_res (</span><span class="si">{:f}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">options</span><span class="p">[</span><span class="s1">&#39;i_evalue_sel&#39;</span><span class="p">],</span> <span class="n">options</span><span class="p">[</span><span class="s1">&#39;e_value_res&#39;</span><span class="p">]))</span>
+
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">coverage_profile</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;hmmer&#39;</span><span class="p">,</span> <span class="s1">&#39;coverage_profile&#39;</span><span class="p">,</span> <span class="nb">vars</span><span class="o">=</span><span class="n">cmde_line_opt</span><span class="p">)</span>
+                <span class="n">options</span><span class="p">[</span><span class="s1">&#39;coverage_profile&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">coverage_profile</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Invalid value for hmmer coverage_profile :</span><span class="si">{0}</span><span class="s2">: (float expected)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">coverage_profile</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+            <span class="k">except</span> <span class="n">NoSectionError</span><span class="p">:</span>
+                <span class="k">if</span> <span class="s1">&#39;coverage_profile&#39;</span> <span class="ow">in</span> <span class="n">cmde_line_opt</span><span class="p">:</span>
+                    <span class="n">options</span><span class="p">[</span><span class="s1">&#39;coverage_profile&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">cmde_line_opt</span><span class="p">[</span><span class="s1">&#39;coverage_profile&#39;</span><span class="p">])</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">options</span><span class="p">[</span><span class="s1">&#39;coverage_profile&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_defaults</span><span class="p">[</span><span class="s1">&#39;coverage_profile&#39;</span><span class="p">])</span>
+
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">options</span><span class="p">[</span><span class="s1">&#39;def_dir&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;directories&#39;</span><span class="p">,</span> <span class="s1">&#39;def_dir&#39;</span><span class="p">,</span> <span class="nb">vars</span><span class="o">=</span><span class="n">cmde_line_opt</span><span class="p">)</span>
+            <span class="k">except</span> <span class="n">NoSectionError</span><span class="p">:</span>
+                <span class="k">if</span> <span class="s1">&#39;def_dir&#39;</span> <span class="ow">in</span> <span class="n">cmde_line_opt</span><span class="p">:</span>
+                    <span class="n">options</span><span class="p">[</span><span class="s1">&#39;def_dir&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cmde_line_opt</span><span class="p">[</span><span class="s1">&#39;def_dir&#39;</span><span class="p">]</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">options</span><span class="p">[</span><span class="s1">&#39;def_dir&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_defaults</span><span class="p">[</span><span class="s1">&#39;def_dir&#39;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">options</span><span class="p">[</span><span class="s1">&#39;def_dir&#39;</span><span class="p">]):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{0}</span><span class="s2">: No such definition directory&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">options</span><span class="p">[</span><span class="s1">&#39;def_dir&#39;</span><span class="p">]))</span>
+
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">options</span><span class="p">[</span><span class="s1">&#39;profile_dir&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;directories&#39;</span><span class="p">,</span> <span class="s1">&#39;profile_dir&#39;</span><span class="p">,</span> <span class="nb">vars</span><span class="o">=</span><span class="n">cmde_line_opt</span><span class="p">)</span>
+            <span class="k">except</span> <span class="n">NoSectionError</span><span class="p">:</span>
+                <span class="k">if</span> <span class="s1">&#39;profile_dir&#39;</span> <span class="ow">in</span> <span class="n">cmde_line_opt</span><span class="p">:</span>
+                    <span class="n">options</span><span class="p">[</span><span class="s1">&#39;profile_dir&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cmde_line_opt</span><span class="p">[</span><span class="s1">&#39;profile_dir&#39;</span><span class="p">]</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">options</span><span class="p">[</span><span class="s1">&#39;profile_dir&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_defaults</span><span class="p">[</span><span class="s1">&#39;profile_dir&#39;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">options</span><span class="p">[</span><span class="s1">&#39;profile_dir&#39;</span><span class="p">]):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{0}</span><span class="s2">: No such profile directory&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">options</span><span class="p">[</span><span class="s1">&#39;profile_dir&#39;</span><span class="p">]))</span>
+
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">options</span><span class="p">[</span><span class="s1">&#39;res_search_suffix&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;directories&#39;</span><span class="p">,</span> <span class="s1">&#39;res_search_suffix&#39;</span><span class="p">,</span> <span class="nb">vars</span><span class="o">=</span><span class="n">cmde_line_opt</span><span class="p">)</span>
+            <span class="k">except</span> <span class="n">NoSectionError</span><span class="p">:</span>
+                <span class="k">if</span> <span class="s1">&#39;res_search_suffix&#39;</span> <span class="ow">in</span> <span class="n">cmde_line_opt</span><span class="p">:</span>
+                    <span class="n">options</span><span class="p">[</span><span class="s1">&#39;res_search_suffix&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cmde_line_opt</span><span class="p">[</span><span class="s1">&#39;res_search_suffix&#39;</span><span class="p">]</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">options</span><span class="p">[</span><span class="s1">&#39;res_search_suffix&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_defaults</span><span class="p">[</span><span class="s1">&#39;res_search_suffix&#39;</span><span class="p">]</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">options</span><span class="p">[</span><span class="s1">&#39;res_extract_suffix&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;directories&#39;</span><span class="p">,</span> <span class="s1">&#39;res_extract_suffix&#39;</span><span class="p">,</span> <span class="nb">vars</span><span class="o">=</span><span class="n">cmde_line_opt</span><span class="p">)</span>
+            <span class="k">except</span> <span class="n">NoSectionError</span><span class="p">:</span>
+                <span class="k">if</span> <span class="s1">&#39;res_extract_suffix&#39;</span> <span class="ow">in</span> <span class="n">cmde_line_opt</span><span class="p">:</span>
+                    <span class="n">options</span><span class="p">[</span><span class="s1">&#39;res_extract_suffix&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cmde_line_opt</span><span class="p">[</span><span class="s1">&#39;res_extract_suffix&#39;</span><span class="p">]</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">options</span><span class="p">[</span><span class="s1">&#39;res_extract_suffix&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_defaults</span><span class="p">[</span><span class="s1">&#39;res_extract_suffix&#39;</span><span class="p">]</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">options</span><span class="p">[</span><span class="s1">&#39;profile_suffix&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;directories&#39;</span><span class="p">,</span> <span class="s1">&#39;profile_suffix&#39;</span><span class="p">,</span> <span class="nb">vars</span><span class="o">=</span><span class="n">cmde_line_opt</span><span class="p">)</span>
+            <span class="k">except</span> <span class="n">NoSectionError</span><span class="p">:</span>
+                <span class="k">if</span> <span class="s1">&#39;profile_suffix&#39;</span> <span class="ow">in</span> <span class="n">cmde_line_opt</span><span class="p">:</span>
+                    <span class="n">options</span><span class="p">[</span><span class="s1">&#39;profile_suffix&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cmde_line_opt</span><span class="p">[</span><span class="s1">&#39;profile_suffix&#39;</span><span class="p">]</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">options</span><span class="p">[</span><span class="s1">&#39;profile_suffix&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_defaults</span><span class="p">[</span><span class="s1">&#39;profile_suffix&#39;</span><span class="p">]</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">worker_nb</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;general&#39;</span><span class="p">,</span> <span class="s1">&#39;worker_nb&#39;</span><span class="p">,</span> <span class="nb">vars</span><span class="o">=</span><span class="n">cmde_line_opt</span><span class="p">)</span>
+
+            <span class="k">except</span> <span class="n">NoSectionError</span><span class="p">:</span>
+                <span class="k">if</span> <span class="s1">&#39;worker_nb&#39;</span> <span class="ow">in</span> <span class="n">cmde_line_opt</span><span class="p">:</span>
+                    <span class="n">worker_nb</span> <span class="o">=</span> <span class="n">cmde_line_opt</span><span class="p">[</span><span class="s1">&#39;worker_nb&#39;</span><span class="p">]</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">worker_nb</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_defaults</span><span class="p">[</span><span class="s1">&#39;worker_nb&#39;</span><span class="p">]</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">worker_nb</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">worker_nb</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">worker_nb</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">options</span><span class="p">[</span><span class="s1">&#39;worker_nb&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">worker_nb</span>
+            <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;the number of worker must be an integer&quot;</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+        <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">err</span><span class="p">),</span> <span class="n">exc_info</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">shutdown</span><span class="p">()</span>
+            
+            <span class="k">if</span> <span class="n">working_dir</span><span class="p">:</span>
+                <span class="kn">import</span> <span class="nn">shutil</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">working_dir</span><span class="p">)</span>
+                <span class="k">except</span><span class="p">:</span>
+                    <span class="k">pass</span>
+                
+            <span class="k">raise</span> <span class="n">err</span>
+        <span class="c1"># build_indexes is not meaningfull in configuration file</span>
+        <span class="n">options</span><span class="p">[</span><span class="s1">&#39;build_indexes&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cmde_line_values</span><span class="p">[</span><span class="s1">&#39;build_indexes&#39;</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">options</span></div>
+
+
+<div class="viewcode-block" id="Config.save"><a class="viewcode-back" href="../../config.html#macsypy.config.Config.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dir_path</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        save the configuration used for this run in the ini format file</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">parser</span> <span class="o">=</span> <span class="n">SafeConfigParser</span><span class="p">()</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_section</span><span class="p">(</span><span class="s1">&#39;base&#39;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s1">&#39;base&#39;</span><span class="p">,</span> <span class="s1">&#39;file&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s1">&#39;sequence_db&#39;</span><span class="p">]))</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s1">&#39;base&#39;</span><span class="p">,</span> <span class="s1">&#39;type&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s1">&#39;db_type&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
+        <span class="n">cfg_opts</span> <span class="o">=</span> <span class="p">[(</span><span class="s1">&#39;base&#39;</span><span class="p">,</span> <span class="p">(</span><span class="s1">&#39;replicon_topology&#39;</span><span class="p">,</span> <span class="s1">&#39;topology_file&#39;</span><span class="p">,</span> <span class="s1">&#39;index_db_exe&#39;</span><span class="p">,)),</span>
+                    <span class="p">(</span><span class="s1">&#39;system&#39;</span><span class="p">,</span> <span class="p">(</span><span class="s1">&#39;inter_gene_max_space&#39;</span><span class="p">,</span> <span class="s1">&#39;min_mandatory_genes_required&#39;</span><span class="p">,</span> <span class="s1">&#39;min_genes_required&#39;</span><span class="p">,</span> <span class="s1">&#39;max_nb_genes&#39;</span><span class="p">,</span> <span class="s1">&#39;multi_loci&#39;</span><span class="p">)),</span>
+                    <span class="p">(</span><span class="s1">&#39;hmmer&#39;</span><span class="p">,</span> <span class="p">(</span><span class="s1">&#39;hmmer_exe&#39;</span><span class="p">,</span> <span class="s1">&#39;e_value_res&#39;</span><span class="p">,</span> <span class="s1">&#39;i_evalue_sel&#39;</span><span class="p">,</span> <span class="s1">&#39;coverage_profile&#39;</span><span class="p">)),</span>
+                    <span class="p">(</span><span class="s1">&#39;directories&#39;</span><span class="p">,</span> <span class="p">(</span><span class="s1">&#39;def_dir&#39;</span><span class="p">,</span> <span class="s1">&#39;res_search_dir&#39;</span><span class="p">,</span> <span class="s1">&#39;res_search_suffix&#39;</span><span class="p">,</span> <span class="s1">&#39;profile_dir&#39;</span><span class="p">,</span> <span class="s1">&#39;profile_suffix&#39;</span><span class="p">,</span> <span class="s1">&#39;res_extract_suffix&#39;</span><span class="p">)),</span>
+                    <span class="p">(</span><span class="s1">&#39;general&#39;</span><span class="p">,</span> <span class="p">(</span><span class="s1">&#39;log_level&#39;</span><span class="p">,</span> <span class="s1">&#39;log_file&#39;</span><span class="p">,</span> <span class="s1">&#39;worker_nb&#39;</span><span class="p">))</span>
+                    <span class="p">]</span>
+
+        <span class="k">for</span> <span class="n">section</span><span class="p">,</span> <span class="n">directives</span> <span class="ow">in</span> <span class="n">cfg_opts</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">parser</span><span class="o">.</span><span class="n">has_section</span><span class="p">(</span><span class="n">section</span><span class="p">):</span>
+                <span class="n">parser</span><span class="o">.</span><span class="n">add_section</span><span class="p">(</span><span class="n">section</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">directive</span> <span class="ow">in</span> <span class="n">directives</span><span class="p">:</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="n">directive</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">directive</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;inter_gene_max_space&#39;</span><span class="p">,</span> <span class="s1">&#39;min_mandatory_genes_required&#39;</span><span class="p">,</span> <span class="s1">&#39;min_genes_required&#39;</span><span class="p">,</span> <span class="s1">&#39;max_nb_genes&#39;</span><span class="p">):</span>
+                            <span class="n">s</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+                            <span class="k">for</span> <span class="n">system</span><span class="p">,</span> <span class="n">space</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="n">directive</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                                <span class="n">s</span> <span class="o">+=</span> <span class="s2">&quot; </span><span class="si">{0}</span><span class="s2"> </span><span class="si">{1}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">system</span><span class="p">,</span> <span class="n">space</span><span class="p">)</span>
+                            <span class="n">parser</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">section</span><span class="p">,</span> <span class="n">directive</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span>
+                        <span class="k">elif</span> <span class="n">directive</span> <span class="o">!=</span> <span class="s1">&#39;log_file&#39;</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="n">directive</span><span class="p">]</span> <span class="o">!=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s1">&#39;working_dir&#39;</span><span class="p">],</span> <span class="s1">&#39;macsyfinder.log&#39;</span><span class="p">):</span>
+                            <span class="n">parser</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">section</span><span class="p">,</span> <span class="n">directive</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="n">directive</span><span class="p">]))</span>
+                <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                    <span class="k">pass</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dir_path</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_new_cfg_name</span><span class="p">),</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">new_cfg</span><span class="p">:</span>
+            <span class="n">parser</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">new_cfg</span><span class="p">)</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">sequence_db</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :return: the path to the input sequence dataset (in fasta format)</span>
+<span class="sd">        :rtype: string </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s1">&#39;sequence_db&#39;</span><span class="p">]</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">db_type</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :return: the type of the input sequence data set. The allowed values are :</span>
+<span class="sd">          * &#39;unordered_replicon&#39;,</span>
+<span class="sd">          * &#39;ordered_replicon&#39;,</span>
+<span class="sd">          * &#39;gembase&#39;,</span>
+<span class="sd">          * &#39;unordered&#39;</span>
+<span class="sd">        :rtype: string</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s1">&#39;db_type&#39;</span><span class="p">]</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">build_indexes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :return: True if the indexes must be rebuilt, False otherwise</span>
+<span class="sd">        :rtype: boolean</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s1">&#39;build_indexes&#39;</span><span class="p">]</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">replicon_topology</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :return: the topology of the replicons. Two values are supported &#39;linear&#39; (default) and circular.</span>
+<span class="sd">                 Only relevant for &#39;ordered&#39; datasets</span>
+<span class="sd">        :rtype: string</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s1">&#39;replicon_topology&#39;</span><span class="p">]</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">topology_file</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :return: the path to the file of replicons topology. </span>
+<span class="sd">        :rtype: string</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s1">&#39;topology_file&#39;</span><span class="p">]</span>
+
+<div class="viewcode-block" id="Config.inter_gene_max_space"><a class="viewcode-back" href="../../config.html#macsypy.config.Config.inter_gene_max_space">[docs]</a>    <span class="k">def</span> <span class="nf">inter_gene_max_space</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">system</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param system: the name of a system </span>
+<span class="sd">        :type system: string</span>
+<span class="sd">        :return: the maximum number of components with no match allowed between two genes</span>
+<span class="sd">                 with a match to consider them contiguous (at the system level)</span>
+<span class="sd">        :rtype: integer </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s1">&#39;inter_gene_max_space&#39;</span><span class="p">][</span><span class="n">system</span><span class="p">]</span> 
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span> </div>
+
+<div class="viewcode-block" id="Config.min_mandatory_genes_required"><a class="viewcode-back" href="../../config.html#macsypy.config.Config.min_mandatory_genes_required">[docs]</a>    <span class="k">def</span> <span class="nf">min_mandatory_genes_required</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">system</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param system: the name of a system </span>
+<span class="sd">        :type system: string</span>
+<span class="sd">        :return: the mandatory genes quorum to assess the system presence</span>
+<span class="sd">        :rtype: integer </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s1">&#39;min_mandatory_genes_required&#39;</span><span class="p">][</span><span class="n">system</span><span class="p">]</span> 
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="Config.min_genes_required"><a class="viewcode-back" href="../../config.html#macsypy.config.Config.min_genes_required">[docs]</a>    <span class="k">def</span> <span class="nf">min_genes_required</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">system</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param system: the name of a system </span>
+<span class="sd">        :type system: string</span>
+<span class="sd">        :return: the genes (mandatory+accessory) quorum to assess the system presence</span>
+<span class="sd">        :rtype: integer</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s1">&#39;min_genes_required&#39;</span><span class="p">][</span><span class="n">system</span><span class="p">]</span> 
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="Config.max_nb_genes"><a class="viewcode-back" href="../../config.html#macsypy.config.Config.max_nb_genes">[docs]</a>    <span class="k">def</span> <span class="nf">max_nb_genes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">system</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param system: the name of a system </span>
+<span class="sd">        :type system: string</span>
+<span class="sd">        :return: the maximum number of genes to assess the system presence</span>
+<span class="sd">        :rtype: integer</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s1">&#39;max_nb_genes&#39;</span><span class="p">][</span><span class="n">system</span><span class="p">]</span> 
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="Config.multi_loci"><a class="viewcode-back" href="../../config.html#macsypy.config.Config.multi_loci">[docs]</a>    <span class="k">def</span> <span class="nf">multi_loci</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">system</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param system: the name of a system </span>
+<span class="sd">        :type system: string</span>
+<span class="sd">        :return: the genes (mandatory+accessory) quorum to assess the system presence</span>
+<span class="sd">        :rtype: boolean</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">system</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s1">&#39;multi_loci&#39;</span><span class="p">]</span> 
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">hmmer_exe</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :return: the name of the binary to execute for homology search from HMM protein profiles (Hmmer)</span>
+<span class="sd">        :rtype: string </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s1">&#39;hmmer_exe&#39;</span><span class="p">]</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">index_db_exe</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :return: the name of the binary to index the input sequences dataset for Hmmer</span>
+<span class="sd">        :rtype: string </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s1">&#39;index_db_exe&#39;</span><span class="p">]</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">e_value_res</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :return: The e_value threshold used by Hmmer to report hits in the Hmmer raw output file</span>
+<span class="sd">        :rtype: float</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s1">&#39;e_value_res&#39;</span><span class="p">]</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">i_evalue_sel</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :return: the i_evalue threshold used to select a hit for systems detection and for the Hmmer report (filtered hits)</span>
+<span class="sd">        :rtype: float</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s1">&#39;i_evalue_sel&#39;</span><span class="p">]</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">coverage_profile</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :return: the coverage threshold used to select a hit for systems detection and for the Hmmer report (filtered hits)</span>
+<span class="sd">        :rtype: float</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s1">&#39;coverage_profile&#39;</span><span class="p">]</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">def_dir</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :return: the path to the directory where are stored definitions of secretion systems (.xml files)</span>
+<span class="sd">        :rtype: string</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s1">&#39;def_dir&#39;</span><span class="p">]</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">res_search_dir</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :return the path to the directory to store results of MacSyFinder runs</span>
+<span class="sd">        :rtype: string</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s1">&#39;res_search_dir&#39;</span><span class="p">]</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">working_dir</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :return: the path to the working directory to use for this run</span>
+<span class="sd">        :rtpe: string</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s1">&#39;working_dir&#39;</span><span class="p">]</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">res_search_suffix</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :return: the suffix for Hmmer raw output files</span>
+<span class="sd">        :rtype: string</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s1">&#39;res_search_suffix&#39;</span><span class="p">]</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">profile_dir</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :return: the path to the directory where are the HMM protein profiles which corresponds to Gene</span>
+<span class="sd">        :rtype: string</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s1">&#39;profile_dir&#39;</span><span class="p">]</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">profile_suffix</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :return: the suffix for profile files</span>
+<span class="sd">        :rtype: string</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s1">&#39;profile_suffix&#39;</span><span class="p">]</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">res_extract_suffix</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :return: the suffix of extract files (tabulated files after HMM output parsing and filtering of hits)</span>
+<span class="sd">        :rtype: string</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s1">&#39;res_extract_suffix&#39;</span><span class="p">]</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">worker_nb</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :return: the maximum number of parallel jobs</span>
+<span class="sd">        :rtype: int</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;worker_nb&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">previous_run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :return: the path to the previous run directory to use (to recover Hmmer raw output)</span>
+<span class="sd">        :rtype: string</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;previous_run&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">hmmer_dir</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :return: the name of the directory where the hmmer results are stored</span>
+<span class="sd">        :rtype: string</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="s2">&quot;hmmer_results&quot;</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">MacSyFinder documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2014, Sophie Abby, Bertrand Néron.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.3.
+    </div>
+  </body>
+</html>

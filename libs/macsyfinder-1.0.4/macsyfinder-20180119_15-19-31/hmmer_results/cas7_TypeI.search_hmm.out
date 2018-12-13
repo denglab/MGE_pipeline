@@ -1,0 +1,57 @@
+# hmmsearch :: search profile(s) against a sequence database
+# HMMER 3.1b1 (May 2013); http://hmmer.org/
+# Copyright (C) 2013 Howard Hughes Medical Institute.
+# Freely distributed under the GNU General Public License (GPLv3).
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# query HMM file:                  /usr/local/share/macsyfinder/profiles/cas7_TypeI.hmm
+# target sequence database:        /home/shaoting/project/mge_nestle/macsyfinder-1.0.4/data/sequence_data/datatest_gembase.fasta
+# output directed to file:         /home/shaoting/project/mge_nestle/macsyfinder-1.0.4/macsyfinder-20180119_15-19-31/hmmer_results/cas7_TypeI.search_hmm.out
+# sequence reporting threshold:    E-value <= 1
+# number of worker threads:        0
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+Query:       TIGR01875  [M=240]
+Accession:   TIGR01875
+Description: cas_MJ0381: CRISPR-associated autoregulator DevR family
+Scores for complete sequences (score includes all domains):
+   --- full sequence ---   --- best 1 domain ---    -#dom-
+    E-value  score  bias    E-value  score  bias    exp  N  Sequence           Description
+    ------- ------ -----    ------- ------ -----   ---- --  --------           -----------
+  ------ inclusion threshold ------
+      0.037   11.8   0.0      0.049   11.4   0.0    1.1  1  ESCO001c01a_041410  C ATG TAA 4338743 4339651 Valid melR 909 
+
+
+Domain annotation for each sequence (and alignments):
+>> ESCO001c01a_041410  C ATG TAA 4338743 4339651 Valid melR 909 _b4118_NP_418542.1_ b4118 1 4338743 4339651 | regulator;
+   #    score  bias  c-Evalue  i-Evalue hmmfrom  hmm to    alifrom  ali to    envfrom  env to     acc
+ ---   ------ ----- --------- --------- ------- -------    ------- -------    ------- -------    ----
+   1 ?   11.4   0.0   6.8e-06     0.049      97     179 ..     155     249 ..     120     267 .. 0.74
+
+  Alignments for each domain:
+  == domain 1  score: 11.4 bits;  conditional E-value: 6.8e-06
+           TIGR01875  97 DlfGflite.................eektvrRtSpvkvsyavsitpfineqa........dldfnansidaanikkqkeeekqmiyetEl 162
+                         D  G +  +                  +++v+R + ++vs++++   + ++qa        +             +k +++  + i+++ +
+  ESCO001c01a_041410 155 DEIGLMLKRfslsgwepilvnktsrtHKNSVSRHAQFYVSQMLGFIAENYDQAltindvaeH-------------VKLNANYAMGIFQRVM 232
+                         67777777777777777777777775666***************999888888443322222.............4555666777888888 PP
+
+           TIGR01875 163 httlyqyslvlDldriG 179
+                         + t++qy+ ++ + +++
+  ESCO001c01a_041410 233 QLTMKQYITAMRINHVR 249
+                         88888888887777765 PP
+
+
+
+Internal pipeline statistics summary:
+-------------------------------------
+Query model(s):                              1  (240 nodes)
+Target sequences:                         7219  (2337224 residues searched)
+Passed MSV filter:                       150  (0.0207785); expected 144.4 (0.02)
+Passed bias filter:                      107  (0.014822); expected 144.4 (0.02)
+Passed Vit filter:                         4  (0.000554093); expected 7.2 (0.001)
+Passed Fwd filter:                         1  (0.000138523); expected 0.1 (1e-05)
+Initial search space (Z):               7219  [actual number of targets]
+Domain search space  (domZ):               1  [number of targets reported over threshold]
+# CPU time: 0.10u 0.00s 00:00:00.10 Elapsed: 00:00:00.10
+# Mc/sec: 5609.34
+//
+[ok]

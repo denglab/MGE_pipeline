@@ -1,0 +1,178 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Gembase format &#8212; MacSyFinder 1.0.4 documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0.4',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Output format" href="outputs.html" />
+    <link rel="prev" title="Input and Options of MacSyFinder" href="input.html" /> 
+  </head>
+  <body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="outputs.html" title="Output format"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="input.html" title="Input and Options of MacSyFinder"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">MacSyFinder documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="input.html" accesskey="U">Input and Options of MacSyFinder</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="gembase-format">
+<span id="gembase-convention"></span><h1>Gembase format<a class="headerlink" href="#gembase-format" title="Permalink to this headline">¶</a></h1>
+<p>In order to allow the users running MacSyFinder on a bunch of genomes in a single run, we propose to adopt the following convention to fulfill the requirements for the “gembase db_type”. It consists in providing for each protein, both the replicon name and a protein identifier separated by a “_” in the first field of fasta headers. “_” are accepted in the replicon name, but not in the protein identifier. Hence, the last “_” is the separator between the replicon name and the protein identifier.
+For instance:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">&gt;</span><span class="n">PlasmidA_0001</span> <span class="n">YP_003225072</span><span class="o">.</span><span class="mi">1</span><span class="n">_</span> <span class="o">|</span> <span class="n">putative</span> <span class="n">stcE</span> <span class="n">protein</span>
+<span class="n">MKLKYLSCMILASLAMGAFAATAADNNSAIYFNTTQPVNDLQGGLAAEVK</span>
+<span class="n">FAQSQILSAHPKEGESQQHLTSLRKSLLLVRLVKADDKTPVQVEARDAND</span>
+<span class="n">KILGTLTLSPPSSLPDTVYHLDGVPADGIDFTPQNGTKKIINTVAEVNKL</span>
+<span class="n">SDASGSSIKSYLANNALVEIQTANGRWIRDMYLPQGAELEGKMVRFVSYA</span>
+<span class="n">GYNSTVFYGDRKVTLSVGNTLLFKYVNGQWFRSGELENNRIAYAQHTWSA</span>
+<span class="n">ELPAHWIVPGLNLVIKQGNLSGSLNDINVGAPGELLLHTIDIGMLTTPRG</span>
+<span class="n">RFDFAKDKEAHREYFQTIPVSRMIVNNYAPLHLKEVMLPTGTLLTDADPG</span>
+<span class="o">&gt;</span><span class="n">PlasmidA_0002</span> <span class="n">YP_003225073</span><span class="o">.</span><span class="mi">1</span><span class="n">_</span> <span class="o">|</span> <span class="nb">type</span> <span class="n">II</span> <span class="n">secretion</span> <span class="n">protein</span> <span class="n">EtpC</span>
+<span class="n">MLFFLSSRRDRNLFIKDIALKMLTPNWVLCVILLIAGYQLVSVIRHFWLT</span>
+<span class="n">PATSASDLSHVSVSETAVTDEHTEENFVFTLFGTASPPLSEGKVQKTTSS</span>
+<span class="n">LSDDLLSGGDLDVRGILYSSVTEHSVAIFAHNNRQFSLGIGEKVPGYDAT</span>
+<span class="n">ISAIFSDHIVINYQGKNASLPLRYDNPAKRNAQDDNNLIVGPVTTQANFR</span>
+<span class="n">VKNIFDIMSLSPVTVNNTLSGYRLSPGKASSLFYNAGLHDNDLAVLLNGS</span>
+<span class="n">ELRDTRQAKQIMKQLTELKEIKITVERDGQLYDAFIAVGEN</span>
+<span class="o">....</span>
+<span class="o">&gt;</span><span class="n">ChromosomeA_0001</span> <span class="n">_YP_003573410</span><span class="o">.</span><span class="mi">1</span><span class="n">_</span> <span class="o">|</span> <span class="n">adhesin</span><span class="o">-</span><span class="n">like</span> <span class="n">protein</span>
+<span class="n">MKKLFLFAALLMTGFAFYSCEDVVDNPAQDPAQSWNYSVSVKFADFDFNG</span>
+<span class="n">AVDENSVPYTYKAPTTLYVLNEENTLMGTITTDAAPAIGDYGTYAGTLTG</span>
+<span class="n">SIGNNLIITTKIGNDLTKQDGTLKSAIENGIVQTAEVPIKIYNANSGTLT</span>
+<span class="n">TASAKMDNTAAIAYTSLGYIKGGDKILFVEGNQTFEWTVNEEFDPYTSTD</span>
+<span class="n">LYIALPMNTDPETEYTISSDSKDGYTRGGTFKLADYPTLAAGKVSNYIGG</span>
+<span class="n">IPFIQTGVDLTKWDAYMRTDPNNTWYMNNINNGWPATFSQEVEDGKSFIV</span>
+<span class="n">TQSGPTLDSLNVVVGGVTGKEVNVTLNNIRLGKDRSINIGDKHGWVEYDG</span>
+<span class="n">THDIYGWGAKANVTLIGENECETLYIQCPATKKGEGTLNYKNLSIDSYGS</span>
+<span class="o">&gt;</span><span class="n">ChromosomeA_0020</span> <span class="n">_YP_003573411</span><span class="o">.</span><span class="mi">1</span><span class="n">_</span> <span class="o">|</span> <span class="n">hypothetical</span> <span class="n">protein</span>
+<span class="n">MKRIVLITLVSILTTFQAIAQVANGFYRVQNNASSRYITLRDNAVGTVDY</span>
+<span class="n">SSTNVDLSNIVTWSGFDKVKSNPASIIYVEQHDSKYDLKVQGTGIYAITG</span>
+<span class="n">GRTYLELRPKDSGYILAVTYNGMEGRLYDSEEDVDGEGYVKRSGNSAYQY</span>
+<span class="n">WSFIPVDTENNYIGLQPTVQVGDNYYGTLYASYPFKAASSGIKFYYVDAI</span>
+<span class="o">....</span>
+<span class="o">&gt;</span><span class="n">NC_001548_0015</span> <span class="n">_YP_003225080</span><span class="o">.</span><span class="mi">1</span><span class="n">_</span> <span class="o">|</span> <span class="nb">type</span> <span class="n">II</span> <span class="n">secretion</span> <span class="n">protein</span> <span class="n">EtpJ</span>  <span class="p">(</span><span class="n">translation</span><span class="p">)</span>
+<span class="n">MSQQRVKGFTLLEMLLALAVFAALSISAFQVLQSGIRAHELSQDKVRRLA</span>
+<span class="n">ELQRGGSQIERDLMQMIPRHSRGSEGLLLAAPHLLKSDDWGISFTRNSWL</span>
+<span class="n">NPAGMLPRPELQWVGYRLRQQKLERLSYFYVDHPSGIAPDVRVVLEGVHA</span>
+<span class="n">FRLRFFVNGTWQARWDSTSILPQAVEVTLVMDDFAELTRLFLVSKETAE</span>
+</pre></div>
+</div>
+<p>This input file contains 3 replicons: PlasmidA (which 2 first protein identifiers are 0001 and 0002), ChromosomeA (which 2 first protein identifiers are 0001 and 0020) and NC_001548 (which first protein identifier is 0015).</p>
+</div>
+<div class="section" id="topology-files">
+<span id="id1"></span><h1>Topology files<a class="headerlink" href="#topology-files" title="Permalink to this headline">¶</a></h1>
+<p>To be able to attribute a topology per replicon/genome when using the Gembase format, we propose the user to build a “topology file” in the form of a tabular file with two columns separated by a “:”. The 1st column is the replicon name, and the 2nd the corresponding topology. Comments can be written after a “#”.</p>
+<p>For example:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># comment line</span>
+<span class="n">PlasmidA</span> <span class="p">:</span> <span class="n">circular</span>
+<span class="n">ChromosomeA</span> <span class="p">:</span> <span class="n">linear</span>
+<span class="n">ChromosomeB</span> <span class="p">:</span> <span class="n">circular</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">A topology file can be specified on the command-line with the “<code class="docutils literal"><span class="pre">--topology-file</span></code>” parameter.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Gembase format</a></li>
+<li><a class="reference internal" href="#topology-files">Topology files</a></li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="input.html"
+                        title="previous chapter">Input and Options of MacSyFinder</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="outputs.html"
+                        title="next chapter">Output format</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/gembase_convention.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="outputs.html" title="Output format"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="input.html" title="Input and Options of MacSyFinder"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">MacSyFinder documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="input.html" >Input and Options of MacSyFinder</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2014, Sophie Abby, Bertrand Néron.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.3.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,465 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>System API &#8212; MacSyFinder 1.0.4 documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0.4',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="The Parser of Systems definitions" href="system_parser.html" />
+    <link rel="prev" title="Database API" href="database.html" /> 
+  </head>
+  <body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="system_parser.html" title="The Parser of Systems definitions"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="database.html" title="Database API"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">MacSyFinder documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="system-api">
+<span id="system"></span><h1>System API<a class="headerlink" href="#system-api" title="Permalink to this headline">¶</a></h1>
+<p>It represents a macromolecular system to detect. See <a class="reference internal" href="implementation.html#system-implementation"><span class="std std-ref">The System object</span></a> for an overview of its implementation.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">a complete description of macromolecular systems modelling is available in the section <a class="reference internal" href="system_definition.html#system-definition"><span class="std std-ref">Macromolecular systems definition</span></a></p>
+</div>
+<div class="section" id="systembank-api-reference">
+<h2>SystemBank API reference<a class="headerlink" href="#systembank-api-reference" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><span class="target" id="module-macsypy.system"></span><dl class="class">
+<dt id="macsypy.system.SystemBank">
+<em class="property">class </em><code class="descclassname">macsypy.system.</code><code class="descname">SystemBank</code><a class="reference internal" href="_modules/macsypy/system.html#SystemBank"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.system.SystemBank" title="Permalink to this definition">¶</a></dt>
+<dd><p>Build and store all Systems objects. Systems must not be instanciated directly.
+This system factory must be used. It ensures there is a unique instance
+of a system for a given system name.
+To get a system, use the method __getitem__ via the “[]”. If the System is already cached in the SystemBank,
+it is returned. Otherwise a new system is built, stored and then returned.</p>
+<dl class="method">
+<dt id="macsypy.system.SystemBank.__contains__">
+<code class="descname">__contains__</code><span class="sig-paren">(</span><em>system</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/macsypy/system.html#SystemBank.__contains__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.system.SystemBank.__contains__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Implement the membership test operator</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>system</strong> (<a class="reference internal" href="#macsypy.system.System" title="macsypy.system.System"><code class="xref py py-class docutils literal"><span class="pre">macsypy.system.System</span></code></a> object) – the system to test</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True if the system is in the System factory, False otherwise</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">boolean</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="macsypy.system.SystemBank.__getitem__">
+<code class="descname">__getitem__</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/macsypy/system.html#SystemBank.__getitem__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.system.SystemBank.__getitem__" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>name</strong> (<em>string</em>) – the name of the system</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the system corresponding to the name.
+If the system already exists, return it, otherwise build it and return it.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#macsypy.system.System" title="macsypy.system.System"><code class="xref py py-class docutils literal"><span class="pre">macsypy.system.System</span></code></a> object</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="macsypy.system.SystemBank.__iter__">
+<code class="descname">__iter__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/macsypy/system.html#SystemBank.__iter__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.system.SystemBank.__iter__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return an iterator object on the systems contained in the bank</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="macsypy.system.SystemBank.__len__">
+<code class="descname">__len__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/macsypy/system.html#SystemBank.__len__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.system.SystemBank.__len__" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">the number of systems stored in the bank</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">integer</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="macsypy.system.SystemBank.__weakref__">
+<code class="descname">__weakref__</code><a class="headerlink" href="#macsypy.system.SystemBank.__weakref__" title="Permalink to this definition">¶</a></dt>
+<dd><p>list of weak references to the object (if defined)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="macsypy.system.SystemBank.add_system">
+<code class="descname">add_system</code><span class="sig-paren">(</span><em>system</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/macsypy/system.html#SystemBank.add_system"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.system.SystemBank.add_system" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>system</strong> (<a class="reference internal" href="#macsypy.system.System" title="macsypy.system.System"><code class="xref py py-class docutils literal"><span class="pre">macsypy.system.System</span></code></a> object) – the system to add</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise:</th><td class="field-body">KeyError if a system with the same name is already registered.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div></blockquote>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>Don’t instanciate your own SystemBank use the system_bank at the top level of the module.</p>
+<div class="last highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">macsypy.system</span> <span class="k">import</span> <span class="n">system_bank</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="module-macsypy.system">
+<span id="system-api-reference"></span><h2>System API reference<a class="headerlink" href="#module-macsypy.system" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="macsypy.system.System">
+<em class="property">class </em><code class="descclassname">macsypy.system.</code><code class="descname">System</code><span class="sig-paren">(</span><em>cfg</em>, <em>name</em>, <em>inter_gene_max_space</em>, <em>min_mandatory_genes_required=None</em>, <em>min_genes_required=None</em>, <em>max_nb_genes=None</em>, <em>multi_loci=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/macsypy/system.html#System"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.system.System" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handle a secretion system.</p>
+<dl class="method">
+<dt id="macsypy.system.System.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>cfg</em>, <em>name</em>, <em>inter_gene_max_space</em>, <em>min_mandatory_genes_required=None</em>, <em>min_genes_required=None</em>, <em>max_nb_genes=None</em>, <em>multi_loci=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/macsypy/system.html#System.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.system.System.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>cfg</strong> (<a class="reference internal" href="config.html#macsypy.config.Config" title="macsypy.config.Config"><code class="xref py py-class docutils literal"><span class="pre">macsypy.config.Config</span></code></a> object) – the configuration object</li>
+<li><strong>name</strong> (<em>string</em>) – the name of the system</li>
+<li><strong>inter_gene_max_space</strong> (<em>integer</em>) – the maximum distance between two genes (<strong>co-localization</strong> parameter)</li>
+<li><strong>min_mandatory_genes_required</strong> (<em>integer</em>) – the quorum of mandatory genes to define this system</li>
+<li><strong>min_genes_required</strong> (<em>integer</em>) – the quorum of genes to define this system</li>
+<li><strong>max_nb_genes</strong> (<em>integer</em>) – </li>
+<li><strong>multi_loci</strong> (<em>boolean</em>) – </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="macsypy.system.System.__weakref__">
+<code class="descname">__weakref__</code><a class="headerlink" href="#macsypy.system.System.__weakref__" title="Permalink to this definition">¶</a></dt>
+<dd><p>list of weak references to the object (if defined)</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="macsypy.system.System.accessory_genes">
+<code class="descname">accessory_genes</code><a class="headerlink" href="#macsypy.system.System.accessory_genes" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">the list of genes that are allowed in this secretion system</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">list of <a class="reference internal" href="gene.html#macsypy.gene.Gene" title="macsypy.gene.Gene"><code class="xref py py-class docutils literal"><span class="pre">macsypy.gene.Gene</span></code></a> objects</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="macsypy.system.System.add_accessory_gene">
+<code class="descname">add_accessory_gene</code><span class="sig-paren">(</span><em>gene</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/macsypy/system.html#System.add_accessory_gene"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.system.System.add_accessory_gene" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a gene to the list of accessory genes</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>gene</strong> (<a class="reference internal" href="gene.html#macsypy.gene.Gene" title="macsypy.gene.Gene"><code class="xref py py-class docutils literal"><span class="pre">macsypy.gene.Gene</span></code></a> object) – gene that is allowed to be present in this system</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="macsypy.system.System.add_forbidden_gene">
+<code class="descname">add_forbidden_gene</code><span class="sig-paren">(</span><em>gene</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/macsypy/system.html#System.add_forbidden_gene"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.system.System.add_forbidden_gene" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a gene to the list of forbidden genes</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>gene</strong> (<code class="xref py py-class docutils literal"><span class="pre">macsypy.genen.Gene</span></code> object) – gene that must not be found in this system</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="macsypy.system.System.add_mandatory_gene">
+<code class="descname">add_mandatory_gene</code><span class="sig-paren">(</span><em>gene</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/macsypy/system.html#System.add_mandatory_gene"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.system.System.add_mandatory_gene" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a gene to the list of mandatory genes</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>gene</strong> (<a class="reference internal" href="gene.html#macsypy.gene.Gene" title="macsypy.gene.Gene"><code class="xref py py-class docutils literal"><span class="pre">macsypy.gene.Gene</span></code></a> object) – gene that is mandatory for this system</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="macsypy.system.System.forbidden_genes">
+<code class="descname">forbidden_genes</code><a class="headerlink" href="#macsypy.system.System.forbidden_genes" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">the list of genes that are forbidden in this secretion system</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">list of <a class="reference internal" href="gene.html#macsypy.gene.Gene" title="macsypy.gene.Gene"><code class="xref py py-class docutils literal"><span class="pre">macsypy.gene.Gene</span></code></a> objects</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="macsypy.system.System.get_gene">
+<code class="descname">get_gene</code><span class="sig-paren">(</span><em>gene_name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/macsypy/system.html#System.get_gene"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.system.System.get_gene" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>gene_name</strong> (<em>string</em>) – the name of the gene to get</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the gene corresponding to gene_name.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">a <a class="reference internal" href="gene.html#macsypy.gene.Gene" title="macsypy.gene.Gene"><code class="xref py py-class docutils literal"><span class="pre">macsypy.gene.Gene</span></code></a> object.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise:</th><td class="field-body">KeyError the system does not contain any gene with name gene_name.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="macsypy.system.System.get_gene_ref">
+<code class="descname">get_gene_ref</code><span class="sig-paren">(</span><em>gene</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/macsypy/system.html#System.get_gene_ref"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.system.System.get_gene_ref" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>gene</strong> (a <a class="reference internal" href="gene.html#macsypy.gene.Gene" title="macsypy.gene.Gene"><code class="xref py py-class docutils literal"><span class="pre">macsypy.gene.Gene</span></code></a> or macsypy.gene.Homolog` or macsypy.gene.Analog` object.) – the gene to get the gene reference.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the gene reference of the gene if exists (if the gene is an Homolog or an Analog), otherwise return None.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="gene.html#macsypy.gene.Gene" title="macsypy.gene.Gene"><code class="xref py py-class docutils literal"><span class="pre">macsypy.gene.Gene</span></code></a> object or None</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise:</th><td class="field-body">KeyError if gene is not in the system</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="macsypy.system.System.inter_gene_max_space">
+<code class="descname">inter_gene_max_space</code><a class="headerlink" href="#macsypy.system.System.inter_gene_max_space" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">set the maximum distance allowed between 2 genes for this system</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">integer</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="macsypy.system.System.mandatory_genes">
+<code class="descname">mandatory_genes</code><a class="headerlink" href="#macsypy.system.System.mandatory_genes" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">the list of genes that are mandatory in this secretion system</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">list of <a class="reference internal" href="gene.html#macsypy.gene.Gene" title="macsypy.gene.Gene"><code class="xref py py-class docutils literal"><span class="pre">macsypy.gene.Gene</span></code></a> objects</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="macsypy.system.System.max_nb_genes">
+<code class="descname">max_nb_genes</code><a class="headerlink" href="#macsypy.system.System.max_nb_genes" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">the maximum number of genes to assess the system presence.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">int (or None)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="macsypy.system.System.min_genes_required">
+<code class="descname">min_genes_required</code><a class="headerlink" href="#macsypy.system.System.min_genes_required" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">get the minimum number of genes to assess for the system presence.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">integer</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="macsypy.system.System.min_mandatory_genes_required">
+<code class="descname">min_mandatory_genes_required</code><a class="headerlink" href="#macsypy.system.System.min_mandatory_genes_required" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">get the quorum of mandatory genes required for this system</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">integer</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="macsypy.system.System.multi_loci">
+<code class="descname">multi_loci</code><a class="headerlink" href="#macsypy.system.System.multi_loci" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">True if the system is authorized to be inferred from multiple loci, False otherwise</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">boolean</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">System API</a><ul>
+<li><a class="reference internal" href="#systembank-api-reference">SystemBank API reference</a></li>
+<li><a class="reference internal" href="#module-macsypy.system">System API reference</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="database.html"
+                        title="previous chapter">Database API</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="system_parser.html"
+                        title="next chapter">The Parser of Systems definitions</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/system.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="system_parser.html" title="The Parser of Systems definitions"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="database.html" title="Database API"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">MacSyFinder documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2014, Sophie Abby, Bertrand Néron.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.3.
+    </div>
+  </body>
+</html>

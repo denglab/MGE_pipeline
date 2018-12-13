@@ -1,0 +1,427 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>The Parser of Systems definitions &#8212; MacSyFinder 1.0.4 documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0.4',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Gene API" href="gene.html" />
+    <link rel="prev" title="System API" href="system.html" /> 
+  </head>
+  <body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="gene.html" title="Gene API"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="system.html" title="System API"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">MacSyFinder documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="the-parser-of-systems-definitions">
+<span id="system-parser"></span><h1>The Parser of Systems definitions<a class="headerlink" href="#the-parser-of-systems-definitions" title="Permalink to this headline">¶</a></h1>
+<p>The system parser object “SystemParser” instanciates Systems and Genes objects from XML system definitions (see <a class="reference internal" href="system_definition.html#system-definition"><span class="std std-ref">Macromolecular systems definition</span></a>).
+The parsing consists in three phases.</p>
+<p>Phase 1.</p>
+<blockquote>
+<div><ul class="simple">
+<li>each Gene is parsed from the System it is defined</li>
+<li>From the list of System to detect, the list of Systems to parse is established</li>
+</ul>
+</div></blockquote>
+<p>Phase 2.</p>
+<blockquote>
+<div><ul class="simple">
+<li>For each system to parse<ul>
+<li>create the System</li>
+<li>add this System to the system_bank</li>
+<li>create the Genes defined in this System with their attributes but not their Homologs</li>
+<li>add these Genes in the gene_bank</li>
+</ul>
+</li>
+</ul>
+</div></blockquote>
+<p>Phase 3.</p>
+<blockquote>
+<div><ul>
+<li><p class="first">For each System to search</p>
+<ul>
+<li><p class="first">For each Gene defined in this System:</p>
+<blockquote>
+<div><ul class="simple">
+<li>create the Homologs by encapsulating Genes from the gene_bank</li>
+<li>add the Gene to the System</li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</li>
+</ul>
+</div></blockquote>
+<p>For instance:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>Syst_1
+&lt;system inter_gene_max_space=&quot;10&quot;&gt;
+    &lt;gene name=”A” mandatory=”1” loner=&quot;1&quot;&gt;
+        &lt;homologs&gt;
+            &lt;gene name=”B” sys_ref=”Syst_2”&gt;
+        &lt;/homologs&gt;
+    &lt;/gene&gt;
+&lt;system&gt;
+
+Syst_2
+&lt;system inter_gene_max_space=&quot;15&quot;&gt;
+    &lt;gene name=”B” mandatory=”1”&gt;
+        &lt;homologs&gt;
+            &lt;gene name=”B” sys_ref=”Syst_1”
+            &lt;gene name=”C” sys_ref=”Syst_3”&gt;
+        &lt;/homologs&gt;
+    &lt;/gene&gt;
+&lt;system&gt;
+
+Syst_3
+&lt;system inter_gene_max_space=&quot;20&quot;&gt;
+    &lt;gene name=”c” mandatory=”1” /&gt;
+&lt;system&gt;
+</pre></div>
+</div>
+<p>With the example above:</p>
+<ul class="simple">
+<li>the Syst_1 has a gene_A</li>
+<li>the gene_A has homolog gene_B</li>
+<li>the gene_B has a reference to Syst_2</li>
+<li>gene_B attributes from the Syst_2 are used to build the Gene</li>
+<li>the Syst_2 has attributes as defined in the corresponding XML file (inter_gene_max_space ,…)</li>
+</ul>
+<p>Contrariwise:</p>
+<ul class="simple">
+<li>the gene_B has no Homologs</li>
+<li>the Syst_2 has no Genes</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The only “full” Systems (<em>i.e.,</em> with all corresponding Genes created) are those to detect.</p>
+</div>
+<div class="section" id="module-macsypy.system_parser">
+<span id="systemparser-api-reference"></span><h2>SystemParser API reference<a class="headerlink" href="#module-macsypy.system_parser" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="macsypy.system_parser.SystemParser">
+<em class="property">class </em><code class="descclassname">macsypy.system_parser.</code><code class="descname">SystemParser</code><span class="sig-paren">(</span><em>cfg</em>, <em>system_bank</em>, <em>gene_bank</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/macsypy/system_parser.html#SystemParser"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.system_parser.SystemParser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Build a System instance from the corresponding System definition described in the XML file
+(named after the system’s name) found at the dedicated location (“-d” command-line option).</p>
+<dl class="method">
+<dt id="macsypy.system_parser.SystemParser.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>cfg</em>, <em>system_bank</em>, <em>gene_bank</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/macsypy/system_parser.html#SystemParser.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.system_parser.SystemParser.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Constructor</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>cfg</strong> (<a class="reference internal" href="config.html#macsypy.config.Config" title="macsypy.config.Config"><code class="xref py py-class docutils literal"><span class="pre">macsypy.config.Config</span></code></a> object) – the configuration object of this run</li>
+<li><strong>system_bank</strong> (<a class="reference internal" href="system.html#macsypy.system.SystemBank" title="macsypy.system.SystemBank"><code class="xref py py-class docutils literal"><span class="pre">macsypy.system.SystemBank</span></code></a> object) – the system factory</li>
+<li><strong>gene_bank</strong> (<a class="reference internal" href="gene.html#macsypy.gene.GeneBank" title="macsypy.gene.GeneBank"><code class="xref py py-class docutils literal"><span class="pre">macsypy.gene.GeneBank</span></code></a> object) – the gene factory</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="macsypy.system_parser.SystemParser.__weakref__">
+<code class="descname">__weakref__</code><a class="headerlink" href="#macsypy.system_parser.SystemParser.__weakref__" title="Permalink to this definition">¶</a></dt>
+<dd><p>list of weak references to the object (if defined)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="macsypy.system_parser.SystemParser._create_genes">
+<code class="descname">_create_genes</code><span class="sig-paren">(</span><em>system</em>, <em>system_node</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/macsypy/system_parser.html#SystemParser._create_genes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.system_parser.SystemParser._create_genes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create genes belonging to the systems. Be careful, the returned genes have not their homologs/analogs set yet.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>system</strong> (<a class="reference internal" href="system.html#macsypy.system.System" title="macsypy.system.System"><code class="xref py py-class docutils literal"><span class="pre">macsypy.system.System</span></code></a> object) – the System currently parsing</li>
+<li><strong>system_node</strong> (:class”<cite>Et.ElementTree</cite> object) – the element gene</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">a list of the genes belonging to the system.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">[<a class="reference internal" href="gene.html#macsypy.gene.Gene" title="macsypy.gene.Gene"><code class="xref py py-class docutils literal"><span class="pre">macsypy.gene.Gene</span></code></a>, …]</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="macsypy.system_parser.SystemParser._create_system">
+<code class="descname">_create_system</code><span class="sig-paren">(</span><em>system_name</em>, <em>system_node</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/macsypy/system_parser.html#SystemParser._create_system"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.system_parser.SystemParser._create_system" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>system_name</strong> (<em>string</em>) – the name of the system to create.          This name must match a XML file in the definition directory (“-d” option in the command-line)</li>
+<li><strong>system_node</strong> (:class”<cite>Et.ElementTree</cite> object.) – the node corresponding to the system.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">the system corresponding to the name.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="system.html#macsypy.system.System" title="macsypy.system.System"><code class="xref py py-class docutils literal"><span class="pre">macsypy.system.System</span></code></a> object.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="macsypy.system_parser.SystemParser._fill">
+<code class="descname">_fill</code><span class="sig-paren">(</span><em>system</em>, <em>system_node</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/macsypy/system_parser.html#SystemParser._fill"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.system_parser.SystemParser._fill" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fill the system with genes found in this system definition. Add homologs to the genes if necessary.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>system</strong> (<a class="reference internal" href="system.html#macsypy.system.System" title="macsypy.system.System"><code class="xref py py-class docutils literal"><span class="pre">macsypy.system.System</span></code></a> object) – the system to fill</li>
+<li><strong>system_node</strong> (:class”<cite>Et.ElementTree</cite> object) – the “node” in the XML hierarchy corresponding to the system</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="macsypy.system_parser.SystemParser._parse_analog">
+<code class="descname">_parse_analog</code><span class="sig-paren">(</span><em>node</em>, <em>gene_ref</em>, <em>curr_system</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/macsypy/system_parser.html#SystemParser._parse_analog"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.system_parser.SystemParser._parse_analog" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse a xml element gene and build the corresponding object</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>node</strong> (<code class="xref py py-class docutils literal"><span class="pre">xml.etree.ElementTree.Element</span></code> object.) – a “node” corresponding to the gene element in the XML hierarchy</li>
+<li><strong>gene_ref</strong> (class:<cite>macsypy.gene.Gene</cite> object.) – the gene which this gene is homolog to</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">the gene object corresponding to the node</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="gene.html#macsypy.gene.Analog" title="macsypy.gene.Analog"><code class="xref py py-class docutils literal"><span class="pre">macsypy.gene.Analog</span></code></a> object</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="macsypy.system_parser.SystemParser._parse_homolog">
+<code class="descname">_parse_homolog</code><span class="sig-paren">(</span><em>node</em>, <em>gene_ref</em>, <em>curr_system</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/macsypy/system_parser.html#SystemParser._parse_homolog"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.system_parser.SystemParser._parse_homolog" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse a xml element gene and build the corresponding object</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>node</strong> (<code class="xref py py-class docutils literal"><span class="pre">xml.etree.ElementTree.Element</span></code> object.) – a “node” corresponding to the gene element in the XML hierarchy</li>
+<li><strong>gene_ref</strong> (class:<cite>macsypy.gene.Gene</cite> object) – the gene which this gene is homolog to</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">the gene object corresponding to the node</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="gene.html#macsypy.gene.Homolog" title="macsypy.gene.Homolog"><code class="xref py py-class docutils literal"><span class="pre">macsypy.gene.Homolog</span></code></a> object</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="macsypy.system_parser.SystemParser.check_consistency">
+<code class="descname">check_consistency</code><span class="sig-paren">(</span><em>systems</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/macsypy/system_parser.html#SystemParser.check_consistency"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.system_parser.SystemParser.check_consistency" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check the consistency of the co-localization features between the different values given as an input: 
+between XML definitions, configuration file, and command-line options.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>systems</strong> (list of <cite>class:macsypy.system.System</cite> object) – the list of systems to check</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise:</th><td class="field-body"><a class="reference internal" href="macsypy_error.html#macsypy.macsypy_error.SystemInconsistencyError" title="macsypy.macsypy_error.SystemInconsistencyError"><code class="xref py py-class docutils literal"><span class="pre">macsypy.macsypy_error.SystemInconsistencyError</span></code></a> if one test fails</td>
+</tr>
+</tbody>
+</table>
+<p>(see <a class="reference external" href="https://projets.pasteur.fr/issues/1850">feature</a>)</p>
+<p>In the different possible situations, different requirements need to be fulfilled
+(“mandatory_genes” and “accessory_genes” consist of lists of genes defined as such in the system definition):</p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>If:</strong> min_mandatory_genes_required = None  ; min_genes_required = None</li>
+<li><strong>Then:</strong> min_mandatory_genes_required = min_genes_required = len(mandatory_genes)</li>
+</ul>
+<p><em>always True by Systems design</em></p>
+<ul class="simple">
+<li><strong>If:</strong> min_mandatory_genes_required = value  ; min_genes_required = None</li>
+<li><strong>Then:</strong> min_mandatory_genes_required &lt;= len(mandatory_genes)</li>
+<li>AND min_genes_required = min_mandatory_genes_required</li>
+</ul>
+<p><em>always True by design</em></p>
+<ul class="simple">
+<li><strong>If:</strong> min_mandatory_genes_required =  None ; min_genes_required = Value</li>
+<li><strong>Then:</strong> min_mandatory_genes_required = len(mandatory_genes)</li>
+<li>AND min_genes_required &gt;= min_mandatory_genes_required</li>
+<li>AND min_genes_required &lt;= len(mandatory_genes+accessory_genes)</li>
+</ul>
+<p><em>to be checked</em></p>
+<ul class="simple">
+<li><strong>If:</strong> min_mandatory_genes_required =  Value ; min_genes_required = Value</li>
+<li><strong>Then:</strong> min_genes_required &lt;= len(accessory_genes+mandatory_genes)</li>
+<li>AND min_genes_required &gt;= min_mandatory_genes_required</li>
+<li>AND min_mandatory_genes_required &lt;= len(mandatory_genes)</li>
+</ul>
+<p><em>to be checked</em></p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="method">
+<dt id="macsypy.system_parser.SystemParser.parse">
+<code class="descname">parse</code><span class="sig-paren">(</span><em>systems_2_detect</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/macsypy/system_parser.html#SystemParser.parse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.system_parser.SystemParser.parse" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Parse systems definition in XML format to build the corresponding system objects,</dt>
+<dd>and add them to the system factory after checking its consistency.</dd>
+</dl>
+<p>To get the system ask it to system_bank
+:param systems_2_detect: a list with the names of the systems to parse (eg ‘T2SS’)
+:type systems_2_detect: list of string</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="macsypy.system_parser.SystemParser.system_to_parse">
+<code class="descname">system_to_parse</code><span class="sig-paren">(</span><em>sys_2_parse</em>, <em>parsed_systems</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/macsypy/system_parser.html#SystemParser.system_to_parse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.system_parser.SystemParser.system_to_parse" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>sys_2_parse</strong> (<em>[</em><em>string</em><em>, </em><em>..</em><em>]</em>) – a dict of systems to parse</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the list of systems’ names to parse. Scan the whole chain of ‘system_ref’ in a recursive way.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">[string, ..]</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">The Parser of Systems definitions</a><ul>
+<li><a class="reference internal" href="#module-macsypy.system_parser">SystemParser API reference</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="system.html"
+                        title="previous chapter">System API</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="gene.html"
+                        title="next chapter">Gene API</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/system_parser.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="gene.html" title="Gene API"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="system.html" title="System API"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">MacSyFinder documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2014, Sophie Abby, Bertrand Néron.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.3.
+    </div>
+  </body>
+</html>

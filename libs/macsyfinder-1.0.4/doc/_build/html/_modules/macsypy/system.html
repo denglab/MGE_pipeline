@@ -1,0 +1,359 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>macsypy.system &#8212; MacSyFinder 1.0.4 documentation</title>
+    <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.0.4',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+  </head>
+  <body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">MacSyFinder documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for macsypy.system</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+
+<span class="c1">################################################################################</span>
+<span class="c1"># MacSyFinder - Detection of macromolecular systems in protein datasets        #</span>
+<span class="c1">#               using systems modelling and similarity search.                 #</span>
+<span class="c1"># Authors: Sophie Abby, Bertrand Néron                                         #</span>
+<span class="c1"># Copyright © 2014  Institut Pasteur (Paris) and CNRS.                         #</span>
+<span class="c1"># See the COPYRIGHT file for details                                           #</span>
+<span class="c1">#                                                                              #</span>
+<span class="c1"># MacsyFinder is distributed under the terms of the GNU General Public License #</span>
+<span class="c1"># (GPLv3). See the COPYING file for details.                                   #</span>
+<span class="c1">################################################################################</span>
+
+
+
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="n">_log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s1">&#39;macsyfinder.&#39;</span> <span class="o">+</span> <span class="vm">__name__</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">.macsypy_error</span> <span class="k">import</span> <span class="n">SystemInconsistencyError</span>
+
+<div class="viewcode-block" id="SystemBank"><a class="viewcode-back" href="../../system.html#macsypy.system.SystemBank">[docs]</a><span class="k">class</span> <span class="nc">SystemBank</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Build and store all Systems objects. Systems must not be instanciated directly.</span>
+<span class="sd">    This system factory must be used. It ensures there is a unique instance</span>
+<span class="sd">    of a system for a given system name.</span>
+<span class="sd">    To get a system, use the method __getitem__ via the &quot;[]&quot;. If the System is already cached in the SystemBank,</span>
+<span class="sd">    it is returned. Otherwise a new system is built, stored and then returned.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">_system_bank</span> <span class="o">=</span> <span class="p">{}</span>
+
+
+<div class="viewcode-block" id="SystemBank.__getitem__"><a class="viewcode-back" href="../../system.html#macsypy.system.SystemBank.__getitem__">[docs]</a>    <span class="k">def</span> <span class="nf">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param name: the name of the system</span>
+<span class="sd">        :type name: string</span>
+<span class="sd">        :return: the system corresponding to the name.</span>
+<span class="sd">         If the system already exists, return it, otherwise build it and return it.</span>
+<span class="sd">        :rtype: :class:`macsypy.system.System` object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_system_bank</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_system_bank</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="n">name</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="SystemBank.__contains__"><a class="viewcode-back" href="../../system.html#macsypy.system.SystemBank.__contains__">[docs]</a>    <span class="k">def</span> <span class="nf">__contains__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">system</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Implement the membership test operator</span>
+<span class="sd">        </span>
+<span class="sd">        :param system: the system to test</span>
+<span class="sd">        :type system: :class:`macsypy.system.System` object</span>
+<span class="sd">        :return: True if the system is in the System factory, False otherwise</span>
+<span class="sd">        :rtype: boolean</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">system</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_system_bank</span><span class="o">.</span><span class="n">values</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="SystemBank.__iter__"><a class="viewcode-back" href="../../system.html#macsypy.system.SystemBank.__iter__">[docs]</a>    <span class="k">def</span> <span class="nf">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return an iterator object on the systems contained in the bank</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_system_bank</span><span class="o">.</span><span class="n">itervalues</span><span class="p">()</span></div>
+    
+<div class="viewcode-block" id="SystemBank.__len__"><a class="viewcode-back" href="../../system.html#macsypy.system.SystemBank.__len__">[docs]</a>    <span class="k">def</span> <span class="nf">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :return: the number of systems stored in the bank</span>
+<span class="sd">        :rtype: integer</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_system_bank</span><span class="p">)</span></div>
+    
+    
+<div class="viewcode-block" id="SystemBank.add_system"><a class="viewcode-back" href="../../system.html#macsypy.system.SystemBank.add_system">[docs]</a>    <span class="k">def</span> <span class="nf">add_system</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">system</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param system: the system to add</span>
+<span class="sd">        :type system: :class:`macsypy.system.System` object</span>
+<span class="sd">        :raise: KeyError if a system with the same name is already registered.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">system</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_system_bank</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="s2">&quot;a system named </span><span class="si">{0}</span><span class="s2"> is already registered in the systems&#39; bank&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">system</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_system_bank</span><span class="p">[</span><span class="n">system</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">system</span></div></div>
+
+<span class="n">system_bank</span> <span class="o">=</span> <span class="n">SystemBank</span><span class="p">()</span>
+
+
+<div class="viewcode-block" id="System"><a class="viewcode-back" href="../../system.html#macsypy.system.System">[docs]</a><span class="k">class</span> <span class="nc">System</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Handle a secretion system.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="System.__init__"><a class="viewcode-back" href="../../system.html#macsypy.system.System.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cfg</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">inter_gene_max_space</span><span class="p">,</span> <span class="n">min_mandatory_genes_required</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">min_genes_required</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">max_nb_genes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">multi_loci</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param cfg: the configuration object</span>
+<span class="sd">        :type cfg: :class:`macsypy.config.Config` object</span>
+<span class="sd">        :param name: the name of the system</span>
+<span class="sd">        :type name: string</span>
+<span class="sd">        :param inter_gene_max_space: the maximum distance between two genes (**co-localization** parameter)</span>
+<span class="sd">        :type inter_gene_max_space: integer</span>
+<span class="sd">        :param min_mandatory_genes_required: the quorum of mandatory genes to define this system</span>
+<span class="sd">        :type min_mandatory_genes_required: integer</span>
+<span class="sd">        :param min_genes_required: the quorum of genes to define this system</span>
+<span class="sd">        :type min_genes_required: integer</span>
+<span class="sd">        :param max_nb_genes: </span>
+<span class="sd">        :type max_nb_genes: integer</span>
+<span class="sd">        :param multi_loci: </span>
+<span class="sd">        :type multi_loci: boolean</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cfg</span> <span class="o">=</span> <span class="n">cfg</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_inter_gene_max_space</span> <span class="o">=</span> <span class="n">inter_gene_max_space</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_min_mandatory_genes_required</span> <span class="o">=</span> <span class="n">min_mandatory_genes_required</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_min_genes_required</span> <span class="o">=</span> <span class="n">min_genes_required</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_min_mandatory_genes_required</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_min_genes_required</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_min_genes_required</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_min_mandatory_genes_required</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">SystemInconsistencyError</span><span class="p">(</span><span class="s2">&quot;min_genes_required must be greater or equal than min_mandatory_genes_required&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_max_nb_genes</span> <span class="o">=</span> <span class="n">max_nb_genes</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_multi_loci</span> <span class="o">=</span> <span class="n">multi_loci</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_mandatory_genes</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_accessory_genes</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_forbidden_genes</span> <span class="o">=</span> <span class="p">[]</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">inter_gene_max_space</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :return: set the maximum distance allowed between 2 genes for this system</span>
+<span class="sd">        :rtype: integer</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">cfg_inter_gene_max_space</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">inter_gene_max_space</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">cfg_inter_gene_max_space</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">cfg_inter_gene_max_space</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inter_gene_max_space</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">min_mandatory_genes_required</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :return: get the quorum of mandatory genes required for this system</span>
+<span class="sd">        :rtype: integer</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">cfg_min_mandatory_genes_required</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">min_mandatory_genes_required</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">cfg_min_mandatory_genes_required</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">cfg_min_mandatory_genes_required</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_min_mandatory_genes_required</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_mandatory_genes</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_min_mandatory_genes_required</span>
+
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">min_genes_required</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :return: get the minimum number of genes to assess for the system presence.</span>
+<span class="sd">        :rtype: integer</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">cfg_min_genes_requireds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">min_genes_required</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">cfg_min_genes_requireds</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">cfg_min_genes_requireds</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_min_genes_required</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_mandatory_genes</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_min_genes_required</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">max_nb_genes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :return: the maximum number of genes to assess the system presence.</span>
+<span class="sd">        :rtype: int (or None)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">cfg_max_nb_genes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">max_nb_genes</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">cfg_max_nb_genes</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">cfg_max_nb_genes</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max_nb_genes</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">multi_loci</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :return: True if the system is authorized to be inferred from multiple loci, False otherwise</span>
+<span class="sd">        :rtype: boolean</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">cfg_multi_loci</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">multi_loci</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">cfg_multi_loci</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">cfg_multi_loci</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_multi_loci</span>
+        
+<div class="viewcode-block" id="System.add_mandatory_gene"><a class="viewcode-back" href="../../system.html#macsypy.system.System.add_mandatory_gene">[docs]</a>    <span class="k">def</span> <span class="nf">add_mandatory_gene</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gene</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Add a gene to the list of mandatory genes</span>
+
+<span class="sd">        :param gene: gene that is mandatory for this system</span>
+<span class="sd">        :type gene: :class:`macsypy.gene.Gene` object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_mandatory_genes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">gene</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="System.add_accessory_gene"><a class="viewcode-back" href="../../system.html#macsypy.system.System.add_accessory_gene">[docs]</a>    <span class="k">def</span> <span class="nf">add_accessory_gene</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gene</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Add a gene to the list of accessory genes</span>
+
+<span class="sd">        :param gene: gene that is allowed to be present in this system</span>
+<span class="sd">        :type gene: :class:`macsypy.gene.Gene` object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_accessory_genes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">gene</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="System.add_forbidden_gene"><a class="viewcode-back" href="../../system.html#macsypy.system.System.add_forbidden_gene">[docs]</a>    <span class="k">def</span> <span class="nf">add_forbidden_gene</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gene</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Add a gene to the list of forbidden genes</span>
+
+<span class="sd">        :param gene: gene that must not be found in this system</span>
+<span class="sd">        :type gene: :class:`macsypy.genen.Gene` object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_forbidden_genes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">gene</span><span class="p">)</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">mandatory_genes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :return: the list of genes that are mandatory in this secretion system</span>
+<span class="sd">        :rtype: list of :class:`macsypy.gene.Gene` objects</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mandatory_genes</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">accessory_genes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :return: the list of genes that are allowed in this secretion system</span>
+<span class="sd">        :rtype: list of :class:`macsypy.gene.Gene` objects</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_accessory_genes</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">forbidden_genes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :return: the list of genes that are forbidden in this secretion system</span>
+<span class="sd">        :rtype: list of :class:`macsypy.gene.Gene` objects</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_forbidden_genes</span>
+
+
+<div class="viewcode-block" id="System.get_gene"><a class="viewcode-back" href="../../system.html#macsypy.system.System.get_gene">[docs]</a>    <span class="k">def</span> <span class="nf">get_gene</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gene_name</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param gene_name: the name of the gene to get</span>
+<span class="sd">        :type gene_name: string</span>
+<span class="sd">        :return: the gene corresponding to gene_name.</span>
+<span class="sd">        :rtype: a :class:`macsypy.gene.Gene` object.</span>
+<span class="sd">        :raise: KeyError the system does not contain any gene with name gene_name.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">all_genes</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mandatory_genes</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">accessory_genes</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">forbidden_genes</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">g_list</span> <span class="ow">in</span> <span class="n">all_genes</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">g</span> <span class="ow">in</span> <span class="n">g_list</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">g</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">gene_name</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">g</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">homolgs</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">get_homologs</span><span class="p">()</span>
+                    <span class="n">analogs</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">get_analogs</span><span class="p">()</span>
+                    <span class="k">for</span> <span class="n">ex</span> <span class="ow">in</span> <span class="n">homolgs</span> <span class="o">+</span> <span class="n">analogs</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">ex</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">gene_name</span><span class="p">:</span>
+                            <span class="k">return</span> <span class="n">ex</span>
+        <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="s2">&quot;System </span><span class="si">{0}</span><span class="s2"> does not contain gene </span><span class="si">{1}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">gene_name</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="System.get_gene_ref"><a class="viewcode-back" href="../../system.html#macsypy.system.System.get_gene_ref">[docs]</a>    <span class="k">def</span> <span class="nf">get_gene_ref</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gene</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param gene: the gene to get the gene reference.</span>
+<span class="sd">        :type gene: a :class:`macsypy.gene.Gene` or macsypy.gene.Homolog` or macsypy.gene.Analog` object.</span>
+<span class="sd">        :return: the gene reference of the gene if exists (if the gene is an Homolog or an Analog), otherwise return None.</span>
+<span class="sd">        :rtype: :class:`macsypy.gene.Gene` object or None</span>
+<span class="sd">        :raise: KeyError if gene is not in the system</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">g</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_gene</span><span class="p">(</span><span class="n">gene</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">g</span><span class="o">.</span><span class="n">gene_ref</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">MacSyFinder documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2014, Sophie Abby, Bertrand Néron.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.3.
+    </div>
+  </body>
+</html>

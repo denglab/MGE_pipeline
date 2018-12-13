@@ -1,0 +1,64 @@
+# hmmsearch :: search profile(s) against a sequence database
+# HMMER 3.1b1 (May 2013); http://hmmer.org/
+# Copyright (C) 2013 Howard Hughes Medical Institute.
+# Freely distributed under the GNU General Public License (GPLv3).
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# query HMM file:                  /usr/local/share/macsyfinder/profiles/cas5_TypeI.hmm
+# target sequence database:        /home/shaoting/project/mge_nestle/macsyfinder-1.0.4/data/sequence_data/datatest_gembase.fasta
+# output directed to file:         /home/shaoting/project/mge_nestle/macsyfinder-1.0.4/macsyfinder-20180119_15-19-31/hmmer_results/cas5_TypeI.search_hmm.out
+# sequence reporting threshold:    E-value <= 1
+# number of worker threads:        0
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+Query:       TIGR02593  [M=43]
+Accession:   TIGR02593
+Description: CRISPR_cas5: CRISPR-associated protein Cas5
+Scores for complete sequences (score includes all domains):
+   --- full sequence ---   --- best 1 domain ---    -#dom-
+    E-value  score  bias    E-value  score  bias    exp  N  Sequence           Description
+    ------- ------ -----    ------- ------ -----   ---- --  --------           -----------
+    3.4e-15   54.2   0.8    5.8e-15   53.5   0.8    1.4  1  ESCO001c01a_027800  C ATG TAA 2878396 2879070 Valid casD 675 
+      5e-13   47.3   0.0    8.8e-13   46.5   0.0    1.4  1  HAMA001p04a_000470  D ATG TGA 41311 42108 Valid pNG4050 798 _
+
+
+Domain annotation for each sequence (and alignments):
+>> ESCO001c01a_027800  C ATG TAA 2878396 2879070 Valid casD 675 _b2757_NP_417237.2_ b2757 1 2878396 2879070 | CRISP RNA 
+   #    score  bias  c-Evalue  i-Evalue hmmfrom  hmm to    alifrom  ali to    envfrom  env to     acc
+ ---   ------ ----- --------- --------- ------- -------    ------- -------    ------- -------    ----
+   1 !   53.5   0.8   1.6e-18   5.8e-15       1      43 []       4      46 ..       4      46 .. 0.98
+
+  Alignments for each domain:
+  == domain 1  score: 53.5 bits;  conditional E-value: 1.6e-18
+           TIGR02593  1 aLllrlrgplasFrkPetsgerltyplPppSallGllaaalGk 43
+                        +L+lrl gp++ ++ P++ g r+t ++P++S+llGll+a+lG+
+  ESCO001c01a_027800  4 YLILRLAGPMQAWGQPTFEGTRPTGRFPTRSGLLGLLGACLGI 46
+                        69****************************************7 PP
+
+>> HAMA001p04a_000470  D ATG TGA 41311 42108 Valid pNG4050 798 _YP_134129.1_ pNG4050 1 41311 42108 | hypothetical protei
+   #    score  bias  c-Evalue  i-Evalue hmmfrom  hmm to    alifrom  ali to    envfrom  env to     acc
+ ---   ------ ----- --------- --------- ------- -------    ------- -------    ------- -------    ----
+   1 !   46.5   0.0   2.4e-16   8.8e-13       1      43 []      21      63 ..      21      63 .. 0.97
+
+  Alignments for each domain:
+  == domain 1  score: 46.5 bits;  conditional E-value: 2.4e-16
+           TIGR02593  1 aLllrlrgplasFrkPetsgerltyplPppSallGllaaalGk 43
+                        +L l++rgp+ +Fr+ e  ++++ty+++p++++ Gl+aa+lG+
+  HAMA001p04a_000470 21 CLSLTVRGPWGHFRRVEGNVVKQTYRVMPRTTVAGLIAAVLGI 63
+                        6899**************************************7 PP
+
+
+
+Internal pipeline statistics summary:
+-------------------------------------
+Query model(s):                              1  (43 nodes)
+Target sequences:                         7219  (2337224 residues searched)
+Passed MSV filter:                       206  (0.0285358); expected 144.4 (0.02)
+Passed bias filter:                      166  (0.0229949); expected 144.4 (0.02)
+Passed Vit filter:                        16  (0.00221637); expected 7.2 (0.001)
+Passed Fwd filter:                         2  (0.000277047); expected 0.1 (1e-05)
+Initial search space (Z):               7219  [actual number of targets]
+Domain search space  (domZ):               2  [number of targets reported over threshold]
+# CPU time: 0.06u 0.00s 00:00:00.06 Elapsed: 00:00:00.06
+# Mc/sec: 1675.01
+//
+[ok]

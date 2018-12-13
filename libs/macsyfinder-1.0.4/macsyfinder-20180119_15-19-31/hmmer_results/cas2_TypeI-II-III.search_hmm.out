@@ -1,0 +1,64 @@
+# hmmsearch :: search profile(s) against a sequence database
+# HMMER 3.1b1 (May 2013); http://hmmer.org/
+# Copyright (C) 2013 Howard Hughes Medical Institute.
+# Freely distributed under the GNU General Public License (GPLv3).
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# query HMM file:                  /usr/local/share/macsyfinder/profiles/cas2_TypeI-II-III.hmm
+# target sequence database:        /home/shaoting/project/mge_nestle/macsyfinder-1.0.4/data/sequence_data/datatest_gembase.fasta
+# output directed to file:         /home/shaoting/project/mge_nestle/macsyfinder-1.0.4/macsyfinder-20180119_15-19-31/hmmer_results/cas2_TypeI-II-III.search_hmm.out
+# sequence reporting threshold:    E-value <= 1
+# number of worker threads:        0
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+Query:       TIGR01573  [M=96]
+Accession:   TIGR01573
+Description: cas2: CRISPR-associated endoribonuclease Cas2
+Scores for complete sequences (score includes all domains):
+   --- full sequence ---   --- best 1 domain ---    -#dom-
+    E-value  score  bias    E-value  score  bias    exp  N  Sequence           Description
+    ------- ------ -----    ------- ------ -----   ---- --  --------           -----------
+      4e-13   48.1   0.1    4.5e-13   47.9   0.1    1.0  1  HAMA001p04a_000510  D ATG TAG 46286 46549 Valid cas2 264 _pNG
+    5.2e-08   31.7   0.0    5.9e-08   31.5   0.0    1.1  1  LEPN003c01a_001580  D ATG TAA 188945 189244 Valid lpp0162 300
+
+
+Domain annotation for each sequence (and alignments):
+>> HAMA001p04a_000510  D ATG TAG 46286 46549 Valid cas2 264 _pNG4054_YP_134133.1_ pNG4054 1 46286 46549 | CRISPR-associa
+   #    score  bias  c-Evalue  i-Evalue hmmfrom  hmm to    alifrom  ali to    envfrom  env to     acc
+ ---   ------ ----- --------- --------- ------- -------    ------- -------    ------- -------    ----
+   1 !   47.9   0.1   1.2e-16   4.5e-13       2      87 ..       3      82 ..       2      87 .] 0.93
+
+  Alignments for each domain:
+  == domain 1  score: 47.9 bits;  conditional E-value: 1.2e-16
+           TIGR01573  2 lvlvvYDipedeerkrrrklrklLeklGlqrvQfSvferiveenqlakklierlkkilkdegdirilkltekqlakailiggeevt 87
+                        + ++vYD++ d    r  k+ k+L ++    vQ+Svfe++++e +l  +++e l+++l++e+++++++++  ++ +  ++g ++  
+  HAMA001p04a_000510  3 YAIIVYDVQAD----RTPKFLKYLRRYL-THVQNSVFEGELTEGTLV-EVKETLQSMLEEEESVMVYRMDSGSYVERSVYGDDPMD 82
+                        789********....777*********9.9*****************.**************************999999998876 PP
+
+>> LEPN003c01a_001580  D ATG TAA 188945 189244 Valid lpp0162 300 _YP_122509.1_ lpp0162 1 188945 189244 | hypothetical pr
+   #    score  bias  c-Evalue  i-Evalue hmmfrom  hmm to    alifrom  ali to    envfrom  env to     acc
+ ---   ------ ----- --------- --------- ------- -------    ------- -------    ------- -------    ----
+   1 !   31.5   0.0   1.6e-11   5.9e-08       3      76 ..       9      80 ..       7      98 .. 0.81
+
+  Alignments for each domain:
+  == domain 1  score: 31.5 bits;  conditional E-value: 1.6e-11
+           TIGR01573  3 vlvvYDipedeerkrrrklrklLeklGlqrvQfSvferiveenqlakklierlkkilkdegd..irilkltekqla 76
+                        ++v+YDi ++    +rr + ++L+  Gl  vQ Svf ++++e ++   l + lkk l +++   i+  kl +++  
+  LEPN003c01a_001580  9 YIVSYDIRDN---SIRRTIYERLKDIGLTPVQKSVFWGYLNEPEKR-YLTNFLKKELAKQDTafITPCKLAQEYEV 80
+                        79********...******************************999.9******9998888735555555554443 PP
+
+
+
+Internal pipeline statistics summary:
+-------------------------------------
+Query model(s):                              1  (96 nodes)
+Target sequences:                         7219  (2337224 residues searched)
+Passed MSV filter:                       150  (0.0207785); expected 144.4 (0.02)
+Passed bias filter:                      114  (0.0157917); expected 144.4 (0.02)
+Passed Vit filter:                         6  (0.00083114); expected 7.2 (0.001)
+Passed Fwd filter:                         2  (0.000277047); expected 0.1 (1e-05)
+Initial search space (Z):               7219  [actual number of targets]
+Domain search space  (domZ):               2  [number of targets reported over threshold]
+# CPU time: 0.06u 0.00s 00:00:00.06 Elapsed: 00:00:00.06
+# Mc/sec: 3739.56
+//
+[ok]

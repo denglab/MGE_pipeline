@@ -1,0 +1,59 @@
+# hmmsearch :: search profile(s) against a sequence database
+# HMMER 3.1b1 (May 2013); http://hmmer.org/
+# Copyright (C) 2013 Howard Hughes Medical Institute.
+# Freely distributed under the GNU General Public License (GPLv3).
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# query HMM file:                  /usr/local/share/macsyfinder/profiles/csaX_TypeIA.hmm
+# target sequence database:        /home/shaoting/project/mge_nestle/macsyfinder-1.0.4/data/sequence_data/datatest_gembase.fasta
+# output directed to file:         /home/shaoting/project/mge_nestle/macsyfinder-1.0.4/macsyfinder-20180119_15-19-31/hmmer_results/csaX_TypeIA.search_hmm.out
+# sequence reporting threshold:    E-value <= 1
+# number of worker threads:        0
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+Query:       TIGR03876  [M=281]
+Accession:   TIGR03876
+Description: cas_csaX: CRISPR type I-A/APERN-associated protein CsaX
+Scores for complete sequences (score includes all domains):
+   --- full sequence ---   --- best 1 domain ---    -#dom-
+    E-value  score  bias    E-value  score  bias    exp  N  Sequence           Description
+    ------- ------ -----    ------- ------ -----   ---- --  --------           -----------
+  ------ inclusion threshold ------
+       0.29    9.0   6.5        1.2    7.0   0.4    2.3  2  LEPN003c01a_017400  C ATG TAG 1970540 1972618 Valid flhA 2079
+
+
+Domain annotation for each sequence (and alignments):
+>> LEPN003c01a_017400  C ATG TAG 1970540 1972618 Valid flhA 2079 _lpp1749_YP_124067.1_ lpp1749 1 1970540 1972618 | flage
+   #    score  bias  c-Evalue  i-Evalue hmmfrom  hmm to    alifrom  ali to    envfrom  env to     acc
+ ---   ------ ----- --------- --------- ------- -------    ------- -------    ------- -------    ----
+   1 ?    7.0   0.4   0.00017       1.2     124     169 ..     100     145 ..      79     159 .. 0.89
+   2 ?    4.5   1.0   0.00092       6.6     119     180 ..     252     312 ..     245     317 .. 0.84
+
+  Alignments for each domain:
+  == domain 1  score: 7.0 bits;  conditional E-value: 0.00017
+           TIGR03876 124 vaGwvlsrlGkakvsegdrvGvnvftvtkdilysllqnvsglipGv 169
+                         +aG v+  +G+  ++   +vG+ vf + + i + ++ +  g ++ v
+  LEPN003c01a_017400 100 AAGQVIKSFGEVVIGGNYTVGIVVFIILVVINFVVVTKGAGRVSEV 145
+                         79*************999***************9999888887766 PP
+
+  == domain 2  score: 4.5 bits;  conditional E-value: 0.00092
+           TIGR03876 119 ylivavaGwvlsrlGkakvsegdrvGvnvftvtkdily.sllqnvsglipGvkPetaflllla 180
+                          l+ ++a  +++r+  a+   g+ v  +vf+  +++   + +  + g+ipG+ P+ af+ll a
+  LEPN003c01a_017400 252 LLLSTAAAIIVTRVSSAQNM-GQAVISQVFAKPRSLVIaAAIIGLIGIIPGM-PHIAFILLSA 312
+                         55667888999******987.999999******998762468889******7.9*****9865 PP
+
+
+
+Internal pipeline statistics summary:
+-------------------------------------
+Query model(s):                              1  (281 nodes)
+Target sequences:                         7219  (2337224 residues searched)
+Passed MSV filter:                       180  (0.0249342); expected 144.4 (0.02)
+Passed bias filter:                      135  (0.0187007); expected 144.4 (0.02)
+Passed Vit filter:                        10  (0.00138523); expected 7.2 (0.001)
+Passed Fwd filter:                         1  (0.000138523); expected 0.1 (1e-05)
+Initial search space (Z):               7219  [actual number of targets]
+Domain search space  (domZ):               1  [number of targets reported over threshold]
+# CPU time: 0.10u 0.00s 00:00:00.10 Elapsed: 00:00:00.10
+# Mc/sec: 6567.60
+//
+[ok]

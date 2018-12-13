@@ -1,0 +1,6 @@
+# gene: cas7c_TypeIC extract from /home/shaoting/project/mge_nestle/macsyfinder-1.0.4/macsyfinder-20180119_15-19-31/hmmer_results/cas7c_TypeIC.search_hmm.out hmm output
+# profile length= 284
+# i_evalue threshold= 0.001
+# coverage threshold= 0.500
+# hit_id replicon_name position_hit hit_sequence_length gene_name gene_system i_eval score profile_coverage sequence_coverage begin end
+HAMA001p04a_000460	HAMA001p04a	4187	357	cas7c_TypeIC	CAS-TypeIC	5.300e-28	96.800	0.715	0.591	11	221

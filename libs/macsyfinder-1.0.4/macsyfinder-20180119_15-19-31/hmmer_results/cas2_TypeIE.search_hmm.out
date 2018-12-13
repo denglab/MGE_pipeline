@@ -1,0 +1,72 @@
+# hmmsearch :: search profile(s) against a sequence database
+# HMMER 3.1b1 (May 2013); http://hmmer.org/
+# Copyright (C) 2013 Howard Hughes Medical Institute.
+# Freely distributed under the GNU General Public License (GPLv3).
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# query HMM file:                  /usr/local/share/macsyfinder/profiles/cas2_TypeIE.hmm
+# target sequence database:        /home/shaoting/project/mge_nestle/macsyfinder-1.0.4/data/sequence_data/datatest_gembase.fasta
+# output directed to file:         /home/shaoting/project/mge_nestle/macsyfinder-1.0.4/macsyfinder-20180119_15-19-31/hmmer_results/cas2_TypeIE.search_hmm.out
+# sequence reporting threshold:    E-value <= 1
+# number of worker threads:        0
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+Query:       TIGR01873  [M=87]
+Accession:   TIGR01873
+Description: cas_CT1978: CRISPR-associated endoribonuclease Cas2, subtype I-E/ECOLI
+Scores for complete sequences (score includes all domains):
+   --- full sequence ---   --- best 1 domain ---    -#dom-
+    E-value  score  bias    E-value  score  bias    exp  N  Sequence           Description
+    ------- ------ -----    ------- ------ -----   ---- --  --------           -----------
+    4.7e-43  143.9   0.4    5.3e-43  143.8   0.4    1.0  1  ESCO001c01a_027770  C ATG TGA 2876591 2876875 Valid ygbF 285 
+  ------ inclusion threshold ------
+      0.011   14.5   0.3      0.089   11.6   0.0    2.4  2  ESCO001c01a_030490  C ATG TAA 3175303 3175932 Valid nudF 630 
+
+
+Domain annotation for each sequence (and alignments):
+>> ESCO001c01a_027770  C ATG TGA 2876591 2876875 Valid ygbF 285 _b2754_NP_417234.2_ b2754 1 2876591 2876875 | putative s
+   #    score  bias  c-Evalue  i-Evalue hmmfrom  hmm to    alifrom  ali to    envfrom  env to     acc
+ ---   ------ ----- --------- --------- ------- -------    ------- -------    ------- -------    ----
+   1 !  143.8   0.4   1.5e-46   5.3e-43       1      87 []       3      88 ..       3      88 .. 0.99
+
+  Alignments for each domain:
+  == domain 1  score: 143.8 bits;  conditional E-value: 1.5e-46
+           TIGR01873  1 mlvvvtenvpprlRGrlalwllElragvyvgrvsakvreriweelaqlhlekgsvvitwasntesGfelatlGenrkeiveidGllL 87
+                        mlvvvtenvpprlRGrla+wllE+ragvyvg+vsak+re+iwe++a+l +e+g+vv++wa+nte+Gfe++t+G nr+++v++dGl+L
+  ESCO001c01a_027770  3 MLVVVTENVPPRLRGRLAIWLLEVRAGVYVGDVSAKIREMIWEQIAGL-AEEGNVVMAWATNTETGFEFQTFGLNRRTPVDLDGLRL 88
+                        9***********************************************.************************************98 PP
+
+>> ESCO001c01a_030490  C ATG TAA 3175303 3175932 Valid nudF 630 _b3034_NP_417506.1_ b3034 1 3175303 3175932 | ADP-ribose
+   #    score  bias  c-Evalue  i-Evalue hmmfrom  hmm to    alifrom  ali to    envfrom  env to     acc
+ ---   ------ ----- --------- --------- ------- -------    ------- -------    ------- -------    ----
+   1 ?   11.6   0.0   2.5e-05     0.089      10      44 ..      22      56 ..      15      64 .. 0.90
+   2 ?    0.5   0.1     0.074   2.7e+02      20      38 ..      90     110 ..      72     170 .. 0.68
+
+  Alignments for each domain:
+  == domain 1  score: 11.6 bits;  conditional E-value: 2.5e-05
+           TIGR01873 10 pprlRGrlalwllElragvyvgrvsakvreriwee 44
+                        ++ +RG+++l l   r   + g++s++vr+ i+e 
+  ESCO001c01a_030490 22 ETLYRGFFSLDLYRFRHRLFNGQMSHEVRREIFER 56
+                        4679****************************997 PP
+
+  == domain 2  score: 0.5 bits;  conditional E-value: 0.074
+           TIGR01873  20 wllElragvyvg..rvsakvr 38 
+                         wllE+ ag+  +  +v++  r
+  ESCO001c01a_030490  90 WLLEMVAGMIEEgeSVEDVAR 110
+                         667766666544322333223 PP
+
+
+
+Internal pipeline statistics summary:
+-------------------------------------
+Query model(s):                              1  (87 nodes)
+Target sequences:                         7219  (2337224 residues searched)
+Passed MSV filter:                       201  (0.0278432); expected 144.4 (0.02)
+Passed bias filter:                      176  (0.0243801); expected 144.4 (0.02)
+Passed Vit filter:                        19  (0.00263194); expected 7.2 (0.001)
+Passed Fwd filter:                         2  (0.000277047); expected 0.1 (1e-05)
+Initial search space (Z):               7219  [actual number of targets]
+Domain search space  (domZ):               2  [number of targets reported over threshold]
+# CPU time: 0.07u 0.00s 00:00:00.07 Elapsed: 00:00:00.07
+# Mc/sec: 2904.84
+//
+[ok]

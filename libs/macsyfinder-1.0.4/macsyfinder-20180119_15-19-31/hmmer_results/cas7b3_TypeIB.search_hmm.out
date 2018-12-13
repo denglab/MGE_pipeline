@@ -1,0 +1,61 @@
+# hmmsearch :: search profile(s) against a sequence database
+# HMMER 3.1b1 (May 2013); http://hmmer.org/
+# Copyright (C) 2013 Howard Hughes Medical Institute.
+# Freely distributed under the GNU General Public License (GPLv3).
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# query HMM file:                  /usr/local/share/macsyfinder/profiles/cas7b3_TypeIB.hmm
+# target sequence database:        /home/shaoting/project/mge_nestle/macsyfinder-1.0.4/data/sequence_data/datatest_gembase.fasta
+# output directed to file:         /home/shaoting/project/mge_nestle/macsyfinder-1.0.4/macsyfinder-20180119_15-19-31/hmmer_results/cas7b3_TypeIB.search_hmm.out
+# sequence reporting threshold:    E-value <= 1
+# number of worker threads:        0
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+Query:       TIGR01595  [M=268]
+Accession:   TIGR01595
+Description: cas_CT1132: CRISPR-associated protein, CT1132 family
+Scores for complete sequences (score includes all domains):
+   --- full sequence ---   --- best 1 domain ---    -#dom-
+    E-value  score  bias    E-value  score  bias    exp  N  Sequence           Description
+    ------- ------ -----    ------- ------ -----   ---- --  --------           -----------
+    1.1e-36  125.4   0.2    1.3e-36  125.2   0.2    1.1  1  HAMA001p04a_000460  D ATG TGA 40235 41308 Valid cas3 1074 _pN
+
+
+Domain annotation for each sequence (and alignments):
+>> HAMA001p04a_000460  D ATG TGA 40235 41308 Valid cas3 1074 _pNG4049_YP_134128.1_ pNG4049 1 40235 41308 | CRISPR-associ
+   #    score  bias  c-Evalue  i-Evalue hmmfrom  hmm to    alifrom  ali to    envfrom  env to     acc
+ ---   ------ ----- --------- --------- ------- -------    ------- -------    ------- -------    ----
+   1 !  125.2   0.2   1.8e-40   1.3e-36       2     217 ..       9     243 ..       8     306 .. 0.81
+
+  Alignments for each domain:
+  == domain 1  score: 125.2 bits;  conditional E-value: 1.8e-40
+           TIGR01595   2 enrseflvvfdvkeaNpNGDpln.eNkPRiDeetgrllvsDVrlKRkvRdylqelgkeilvktkkiledkvdsaekvledvvkkakvKdae 91 
+                         ++rse+++++d  +aNpNG pl   N+PRiD +t + +v+DVrlKR +Rd+l + g+ +++++  + e++    + +led+ k ++    +
+  HAMA001p04a_000460   9 QHRSEIVFLYDAVDANPNGNPLSsANRPRIDPQTQQAIVTDVRLKRYLRDQLDDDGHGVYIRNV-QEEGEQYTRADLLEDRLKSVDYDSYD 98 
+                         69*******************9636*************************************98.66677777778889*99999988888 PP
+
+           TIGR01595  92 k...........kieeklcakyiDvRlFGaVitkskk.......esdvrGPvqvsfakSlepvvilel..qitraaageeakaekqrdqrt 162
+                         +           ++  + + k  DvR FGa ++   +         + +GPvq+s +k ++ v+  e   + t+ +a++e+k      q  
+  HAMA001p04a_000460  99 LdddeeaeqfreDVFGEYLRKSADVRYFGATMSVDTDdvyakhlPDHFTGPVQFSPGKTMHAVNENEEydSLTSVIATQEGKE-----QGG 184
+                         88899999655555556677778*********9887766665566789***************987643389**********5.....444 PP
+
+           TIGR01595 163 l.gekyvvpYalyklygvinanlAkktGlseeDleklleallnllend.rsaakne..G 217
+                         +   ++ + Y+l++++g +++  A  t l++eD+e+l    +  ++n+ +s++k     
+  HAMA001p04a_000460 185 FdLDDHRIQYGLIRFHGLVDEHGAADTRLTQEDVERLDTLCWRAIKNQtISRSKVGqeP 243
+                         4147899************************************9999636888854332 PP
+
+
+
+Internal pipeline statistics summary:
+-------------------------------------
+Query model(s):                              1  (268 nodes)
+Target sequences:                         7219  (2337224 residues searched)
+Passed MSV filter:                       188  (0.0260424); expected 144.4 (0.02)
+Passed bias filter:                      130  (0.018008); expected 144.4 (0.02)
+Passed Vit filter:                         9  (0.00124671); expected 7.2 (0.001)
+Passed Fwd filter:                         1  (0.000138523); expected 0.1 (1e-05)
+Initial search space (Z):               7219  [actual number of targets]
+Domain search space  (domZ):               1  [number of targets reported over threshold]
+# CPU time: 0.09u 0.00s 00:00:00.09 Elapsed: 00:00:00.10
+# Mc/sec: 6263.76
+//
+[ok]

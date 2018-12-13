@@ -1,0 +1,57 @@
+# hmmsearch :: search profile(s) against a sequence database
+# HMMER 3.1b1 (May 2013); http://hmmer.org/
+# Copyright (C) 2013 Howard Hughes Medical Institute.
+# Freely distributed under the GNU General Public License (GPLv3).
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# query HMM file:                  /usr/local/share/macsyfinder/profiles/csb2_TypeIU.hmm
+# target sequence database:        /home/shaoting/project/mge_nestle/macsyfinder-1.0.4/data/sequence_data/datatest_gembase.fasta
+# output directed to file:         /home/shaoting/project/mge_nestle/macsyfinder-1.0.4/macsyfinder-20180119_15-19-31/hmmer_results/csb2_TypeIU.search_hmm.out
+# sequence reporting threshold:    E-value <= 1
+# number of worker threads:        0
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+Query:       TIGR02165  [M=492]
+Accession:   TIGR02165
+Description: cas_GSU0054: CRISPR-associated protein GSU0054/csb2, Dpsyc system
+Scores for complete sequences (score includes all domains):
+   --- full sequence ---   --- best 1 domain ---    -#dom-
+    E-value  score  bias    E-value  score  bias    exp  N  Sequence           Description
+    ------- ------ -----    ------- ------ -----   ---- --  --------           -----------
+  ------ inclusion threshold ------
+      0.074   10.8   0.1       0.11   10.2   0.1    1.1  1  LEPN003c01a_003450  D ATG TAG 405129 407048 Valid lpp0356 192
+
+
+Domain annotation for each sequence (and alignments):
+>> LEPN003c01a_003450  D ATG TAG 405129 407048 Valid lpp0356 1920 _YP_122696.1_ lpp0356 1 405129 407048 | hypothetical p
+   #    score  bias  c-Evalue  i-Evalue hmmfrom  hmm to    alifrom  ali to    envfrom  env to     acc
+ ---   ------ ----- --------- --------- ------- -------    ------- -------    ------- -------    ----
+   1 ?   10.2   0.1   1.5e-05      0.11     143     252 ..     503     620 ..     497     633 .. 0.78
+
+  Alignments for each domain:
+  == domain 1  score: 10.2 bits;  conditional E-value: 1.5e-05
+           TIGR02165 143 tslvvlrvelleqlpesllarenwvpeadgeavrlrvPapGrldeLkeayea.............sqaklksdlfaassapplealreiay 220
+                         +slv+++ +  e +p+ +   ++ +++     +   +P +G l  L +ay++             + ++l+++l + ++ +  e++r+++ 
+  LEPN003c01a_003450 503 ESLVQCKSA-FENAPNGTE--RHEALRNFV--TAASTPRQGLLNFLPAAYGEtrsaiaffehikkQDSSLFDALKPMREDKGPEVARQSNS 588
+                         577777777.333333322..222222333..3589****************************88888999999999999999******* PP
+
+           TIGR02165 221 sppeaaktevdrpwslleilpsrlrvsdtsle 252
+                         s++++a+++v+r+ +++ + +  +++++ ++ 
+  LEPN003c01a_003450 589 SVETEATKPVARAREIMLHYKLAMQAERRGEL 620
+                         ********************888888877664 PP
+
+
+
+Internal pipeline statistics summary:
+-------------------------------------
+Query model(s):                              1  (492 nodes)
+Target sequences:                         7219  (2337224 residues searched)
+Passed MSV filter:                       230  (0.0318604); expected 144.4 (0.02)
+Passed bias filter:                      168  (0.0232719); expected 144.4 (0.02)
+Passed Vit filter:                         8  (0.00110819); expected 7.2 (0.001)
+Passed Fwd filter:                         1  (0.000138523); expected 0.1 (1e-05)
+Initial search space (Z):               7219  [actual number of targets]
+Domain search space  (domZ):               1  [number of targets reported over threshold]
+# CPU time: 0.13u 0.00s 00:00:00.13 Elapsed: 00:00:00.12
+# Mc/sec: 9582.62
+//
+[ok]

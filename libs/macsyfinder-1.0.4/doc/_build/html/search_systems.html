@@ -1,0 +1,1214 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>search_systems API reference &#8212; MacSyFinder 1.0.4 documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0.4',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="MacSyFinder errors" href="macsypy_error.html" />
+    <link rel="prev" title="search_genes API reference" href="search_genes.html" /> 
+  </head>
+  <body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="macsypy_error.html" title="MacSyFinder errors"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="search_genes.html" title="search_genes API reference"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">MacSyFinder documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-macsypy.search_systems">
+<span id="search-systems-api-reference"></span><span id="search-systems"></span><h1>search_systems API reference<a class="headerlink" href="#module-macsypy.search_systems" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="macsypy.search_systems.Cluster">
+<em class="property">class </em><code class="descclassname">macsypy.search_systems.</code><code class="descname">Cluster</code><span class="sig-paren">(</span><em>systems_to_detect</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/macsypy/search_systems.html#Cluster"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.search_systems.Cluster" title="Permalink to this definition">¶</a></dt>
+<dd><p>Stores a set of contiguous hits. The Cluster object can have different states regarding 
+its content in different genes’ systems:</p>
+<blockquote>
+<div><ul class="simple">
+<li>ineligible: not a cluster to analyze</li>
+<li>clear: a single system is represented in the cluster</li>
+<li>ambiguous: several systems are represented in the cluster =&gt; might need a disambiguation</li>
+</ul>
+</div></blockquote>
+<dl class="method">
+<dt id="macsypy.search_systems.Cluster.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>systems_to_detect</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/macsypy/search_systems.html#Cluster.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.search_systems.Cluster.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>systems_to_detect</strong> (a list of <a class="reference internal" href="system.html#macsypy.system.System" title="macsypy.system.System"><code class="xref py py-class docutils literal"><span class="pre">macsypy.system.System</span></code></a>) – the list of systems to be detected in this run</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="macsypy.search_systems.Cluster.__len__">
+<code class="descname">__len__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/macsypy/search_systems.html#Cluster.__len__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.search_systems.Cluster.__len__" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">the length of the Cluster, <em>i.e.</em>, the number of hits stored in it</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">integer</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="macsypy.search_systems.Cluster.__str__">
+<code class="descname">__str__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/macsypy/search_systems.html#Cluster.__str__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.search_systems.Cluster.__str__" title="Permalink to this definition">¶</a></dt>
+<dd><p>print of the Cluster’s hits stored in terms of components, and corresponding sequence identifier and positions</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="macsypy.search_systems.Cluster.__weakref__">
+<code class="descname">__weakref__</code><a class="headerlink" href="#macsypy.search_systems.Cluster.__weakref__" title="Permalink to this definition">¶</a></dt>
+<dd><p>list of weak references to the object (if defined)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="macsypy.search_systems.Cluster.add">
+<code class="descname">add</code><span class="sig-paren">(</span><em>hit</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/macsypy/search_systems.html#Cluster.add"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.search_systems.Cluster.add" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a Hit to a Cluster.
+Hits are always added at the end of the cluster (appended to the list of hits).
+Thus, ‘begin’ and ‘end’ positions of the Cluster are always the position of the 1st and of the last hit respectively.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>hit</strong> (a <a class="reference internal" href="HMMReport.html#macsypy.report.Hit" title="macsypy.report.Hit"><code class="xref py py-class docutils literal"><span class="pre">macsypy.report.Hit</span></code></a>) – the Hit to add</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise:</th><td class="field-body">a <a class="reference internal" href="macsypy_error.html#macsypy.macsypy_error.SystemDetectionError" title="macsypy.macsypy_error.SystemDetectionError"><code class="xref py py-class docutils literal"><span class="pre">macsypy.macsypy_error.SystemDetectionError</span></code></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="macsypy.search_systems.Cluster.compatible_systems">
+<code class="descname">compatible_systems</code><a class="headerlink" href="#macsypy.search_systems.Cluster.compatible_systems" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">the list of the names of compatible systems represented by the cluster</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">string</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="macsypy.search_systems.Cluster.putative_system">
+<code class="descname">putative_system</code><a class="headerlink" href="#macsypy.search_systems.Cluster.putative_system" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">the name of the putative system represented by the cluster</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">string</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="macsypy.search_systems.Cluster.save">
+<code class="descname">save</code><span class="sig-paren">(</span><em>force=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/macsypy/search_systems.html#Cluster.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.search_systems.Cluster.save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check the status of the cluster regarding systems which have hits in it. 
+Update systems represented, and assign a putative system (self._putative_system),
+which is the system with most hits in the cluster.
+The systems represented are stored in a dictionary in the self.systems variable. 
+The execution of this function can be forced, even if it has already run
+for the cluster with the option force=True.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="macsypy.search_systems.Cluster.state">
+<code class="descname">state</code><a class="headerlink" href="#macsypy.search_systems.Cluster.state" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">the state of the Cluster of hits</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">string</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="macsypy.search_systems.ClustersHandler">
+<em class="property">class </em><code class="descclassname">macsypy.search_systems.</code><code class="descname">ClustersHandler</code><a class="reference internal" href="_modules/macsypy/search_systems.html#ClustersHandler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.search_systems.ClustersHandler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Deals with sets of clusters found in a dataset. Conceived to store only clusters from a same replicon.</p>
+<dl class="method">
+<dt id="macsypy.search_systems.ClustersHandler.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/macsypy/search_systems.html#ClustersHandler.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.search_systems.ClustersHandler.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>cfg</strong> (<a class="reference internal" href="config.html#macsypy.config.Config" title="macsypy.config.Config"><code class="xref py py-class docutils literal"><span class="pre">macsypy.config.Config</span></code></a>) – The configuration object built from default and user parameters.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="macsypy.search_systems.ClustersHandler.__weakref__">
+<code class="descname">__weakref__</code><a class="headerlink" href="#macsypy.search_systems.ClustersHandler.__weakref__" title="Permalink to this definition">¶</a></dt>
+<dd><p>list of weak references to the object (if defined)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="macsypy.search_systems.ClustersHandler.circularize">
+<code class="descname">circularize</code><span class="sig-paren">(</span><em>rep_info</em>, <em>end_hits</em>, <em>systems_to_detect</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/macsypy/search_systems.html#ClustersHandler.circularize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.search_systems.ClustersHandler.circularize" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function takes into account the circularity of the replicon by merging clusters when appropriate
+(typically at replicon’s ends).
+It has to be called only if the replicon_topology is set to “circular”.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>rep_info</strong> (a namedTuple “RepliconInfo” <a class="reference internal" href="database.html#macsypy.database.RepliconInfo" title="macsypy.database.RepliconInfo"><code class="xref py py-class docutils literal"><span class="pre">macsypy.database.RepliconInfo</span></code></a>) – an entry extracted from the <a class="reference internal" href="database.html#macsypy.database.RepliconDB" title="macsypy.database.RepliconDB"><code class="xref py py-class docutils literal"><span class="pre">macsypy.database.RepliconDB</span></code></a></li>
+<li><strong>end_hits</strong> – a set of hits at ends of the replicon that were not introduced in clusters,</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>and that might be part of a system overlapping the two “ends” of the replicon
+:type end_hits: a list of <a class="reference internal" href="HMMReport.html#macsypy.report.Hit" title="macsypy.report.Hit"><code class="xref py py-class docutils literal"><span class="pre">macsypy.report.Hit</span></code></a>
+:param systems_to_detect: the set of systems to detect in this run
+:type systems_to_detect: a list of :class:<a href="#id1"><span class="problematic" id="id2">`</span></a>macsypy.system.System</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="macsypy.search_systems.SystemNameGenerator">
+<em class="property">class </em><code class="descclassname">macsypy.search_systems.</code><code class="descname">SystemNameGenerator</code><a class="reference internal" href="_modules/macsypy/search_systems.html#SystemNameGenerator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.search_systems.SystemNameGenerator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates and stores the names of detected systems. Ensures the uniqueness of the names.</p>
+<dl class="attribute">
+<dt id="macsypy.search_systems.SystemNameGenerator.__weakref__">
+<code class="descname">__weakref__</code><a class="headerlink" href="#macsypy.search_systems.SystemNameGenerator.__weakref__" title="Permalink to this definition">¶</a></dt>
+<dd><p>list of weak references to the object (if defined)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="macsypy.search_systems.SystemNameGenerator._computeBasename">
+<code class="descname">_computeBasename</code><span class="sig-paren">(</span><em>replicon</em>, <em>system</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/macsypy/search_systems.html#SystemNameGenerator._computeBasename"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.search_systems.SystemNameGenerator._computeBasename" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the base name to be used for unique name generation</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>replicon</strong> (<em>string</em>) – the replicon name</li>
+<li><strong>system</strong> (<em>string</em>) – the system name</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">the base name</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">string</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="macsypy.search_systems.SystemNameGenerator.getSystemName">
+<code class="descname">getSystemName</code><span class="sig-paren">(</span><em>replicon</em>, <em>system</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/macsypy/search_systems.html#SystemNameGenerator.getSystemName"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.search_systems.SystemNameGenerator.getSystemName" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates a unique system name based on the replicon’s name and the system’s name.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>replicon</strong> (<em>string</em>) – the replicon name</li>
+<li><strong>system</strong> (<em>string</em>) – the system name</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">a unique system name</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">string</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="macsypy.search_systems.SystemOccurence">
+<em class="property">class </em><code class="descclassname">macsypy.search_systems.</code><code class="descname">SystemOccurence</code><span class="sig-paren">(</span><em>system</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/macsypy/search_systems.html#SystemOccurence"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.search_systems.SystemOccurence" title="Permalink to this definition">¶</a></dt>
+<dd><p>This class is instantiated for a specific system that has been asked for detection. It can be filled step by step with hits. 
+A decision can then be made according to the parameters defined <em>e.g.</em> quorum of genes.</p>
+<dl class="docutils">
+<dt>The SystemOccurence object has a “state” parameter, with the possible following values: </dt>
+<dd><ul class="first last simple">
+<li>“empty” if the SystemOccurence has not yet been filled with genes of the decision rule of the system</li>
+<li>“no_decision” if the filling process has started but the decision rule has not yet been applied to this occurence</li>
+<li>“single_locus”</li>
+<li>“multi_loci”</li>
+<li>“uncomplete”</li>
+</ul>
+</dd>
+</dl>
+<dl class="method">
+<dt id="macsypy.search_systems.SystemOccurence.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>system</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/macsypy/search_systems.html#SystemOccurence.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.search_systems.SystemOccurence.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>system</strong> (<a class="reference internal" href="system.html#macsypy.system.System" title="macsypy.system.System"><code class="xref py py-class docutils literal"><span class="pre">macsypy.system.System</span></code></a>) – the system to “fill” with hits.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="macsypy.search_systems.SystemOccurence.__str__">
+<code class="descname">__str__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/macsypy/search_systems.html#SystemOccurence.__str__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.search_systems.SystemOccurence.__str__" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Information of the component content of the SystemOccurence.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">string</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="macsypy.search_systems.SystemOccurence.__weakref__">
+<code class="descname">__weakref__</code><a class="headerlink" href="#macsypy.search_systems.SystemOccurence.__weakref__" title="Permalink to this definition">¶</a></dt>
+<dd><p>list of weak references to the object (if defined)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="macsypy.search_systems.SystemOccurence.compute_missing_genes_list">
+<code class="descname">compute_missing_genes_list</code><span class="sig-paren">(</span><em>gene_dict</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/macsypy/search_systems.html#SystemOccurence.compute_missing_genes_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.search_systems.SystemOccurence.compute_missing_genes_list" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>gene_dict</strong> (<em>dict</em>) – a dictionary with gene’s names as keys and number of occurrences as values</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the list of genes with no occurence in the gene counter.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">list</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="macsypy.search_systems.SystemOccurence.compute_system_length">
+<code class="descname">compute_system_length</code><span class="sig-paren">(</span><em>rep_info</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/macsypy/search_systems.html#SystemOccurence.compute_system_length"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.search_systems.SystemOccurence.compute_system_length" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the length of the system, all loci gathered, in terms of protein number
+(even those not matching any system gene)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>rep_info</strong> (a namedTuple “RepliconInfo” <a class="reference internal" href="database.html#macsypy.database.RepliconInfo" title="macsypy.database.RepliconInfo"><code class="xref py py-class docutils literal"><span class="pre">macsypy.database.RepliconInfo</span></code></a>) – an entry extracted from the <a class="reference internal" href="database.html#macsypy.database.RepliconDB" title="macsypy.database.RepliconDB"><code class="xref py py-class docutils literal"><span class="pre">macsypy.database.RepliconDB</span></code></a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">integer</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="macsypy.search_systems.SystemOccurence.count_genes">
+<code class="descname">count_genes</code><span class="sig-paren">(</span><em>gene_dict</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/macsypy/search_systems.html#SystemOccurence.count_genes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.search_systems.SystemOccurence.count_genes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Counts the number of genes with at least one occurrence in a dictionary with a counter of genes.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>gene_dict</strong> (<em>dict</em>) – a dictionary with gene’s names as keys and number of occurrences as values</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">integer</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="macsypy.search_systems.SystemOccurence.count_genes_tot">
+<code class="descname">count_genes_tot</code><span class="sig-paren">(</span><em>gene_dict</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/macsypy/search_systems.html#SystemOccurence.count_genes_tot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.search_systems.SystemOccurence.count_genes_tot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Counts the number of matches in a dictionary with a counter of genes, independently of the nb of genes matched.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>gene_dict</strong> (<em>dict</em>) – a dictionary with gene’s names as keys and number of occurrences as values</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">integer</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="macsypy.search_systems.SystemOccurence.count_missing_genes">
+<code class="descname">count_missing_genes</code><span class="sig-paren">(</span><em>gene_dict</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/macsypy/search_systems.html#SystemOccurence.count_missing_genes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.search_systems.SystemOccurence.count_missing_genes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Counts the number of genes with no occurrence in the gene counter.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>gene_dict</strong> (<em>dict</em>) – a dictionary with gene’s names as keys and number of occurrences as values</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">integer</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="macsypy.search_systems.SystemOccurence.decision_rule">
+<code class="descname">decision_rule</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/macsypy/search_systems.html#SystemOccurence.decision_rule"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.search_systems.SystemOccurence.decision_rule" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>This function applies the decision rules for system assessment in terms of quorum:</dt>
+<dd><ul class="first last simple">
+<li>the absence of forbidden genes is checked</li>
+<li>the minimal number of mandatory genes is checked (“min_mandatory_genes_required”)</li>
+<li>the minimal number of genes in the system is checked (“min_genes_required”)</li>
+</ul>
+</dd>
+</dl>
+<p>When a decision is made, the status (self.status) of the 
+<a class="reference internal" href="#macsypy.search_systems.SystemOccurence" title="macsypy.search_systems.SystemOccurence"><code class="xref py py-class docutils literal"><span class="pre">macsypy.search_systems.SystemOccurence</span></code></a> is set either to:</p>
+<blockquote>
+<div><ul class="simple">
+<li>“single_locus” when a complete system in the form of a single cluster was found</li>
+<li>“multi_loci” when a complete system in the form of several clusters was found</li>
+<li>“uncomplete” when no system was assessed (quorum not reached)</li>
+<li>“empty” when no gene for this system was found</li>
+<li>“exclude” when no system was assessed (at least one forbidden gene was found)</li>
+</ul>
+</div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">a printable message of the output decision with this SystemOccurrence</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">string</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="macsypy.search_systems.SystemOccurence.fill_with_cluster">
+<code class="descname">fill_with_cluster</code><span class="sig-paren">(</span><em>cluster</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/macsypy/search_systems.html#SystemOccurence.fill_with_cluster"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.search_systems.SystemOccurence.fill_with_cluster" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds hits from a cluster to a system occurence, and check which are their status according to the system definition.
+Set the system occurence state to “no_decision” after calling of this function.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>cluster</strong> (<a class="reference internal" href="#macsypy.search_systems.Cluster" title="macsypy.search_systems.Cluster"><code class="xref py py-class docutils literal"><span class="pre">macsypy.search_systems.Cluster</span></code></a>) – the set of contiguous genes to treat for <a class="reference internal" href="#macsypy.search_systems.SystemOccurence" title="macsypy.search_systems.SystemOccurence"><code class="xref py py-class docutils literal"><span class="pre">macsypy.search_systems.SystemOccurence</span></code></a> inclusion.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="macsypy.search_systems.SystemOccurence.fill_with_hits">
+<code class="descname">fill_with_hits</code><span class="sig-paren">(</span><em>hits</em>, <em>include_forbidden</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/macsypy/search_systems.html#SystemOccurence.fill_with_hits"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.search_systems.SystemOccurence.fill_with_hits" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds hits to a system occurence, and check what are their status according to the system definition.
+Set the system occurence state to “no_decision” after calling of this function.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Forbidden genes will only be included if they do belong to the current system
+(and not to another specified with “system_ref” in the current system’s definition).</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>hits</strong> – a list of Hits to treat for <a class="reference internal" href="#macsypy.search_systems.SystemOccurence" title="macsypy.search_systems.SystemOccurence"><code class="xref py py-class docutils literal"><span class="pre">macsypy.search_systems.SystemOccurence</span></code></a> inclusion.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="macsypy.search_systems.SystemOccurence.fill_with_multi_systems_genes">
+<code class="descname">fill_with_multi_systems_genes</code><span class="sig-paren">(</span><em>multi_systems_hits</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/macsypy/search_systems.html#SystemOccurence.fill_with_multi_systems_genes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.search_systems.SystemOccurence.fill_with_multi_systems_genes" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function fills the SystemOccurrence with genes putatively coming from other systems (feature “multi_system”).
+Those genes are used only if the occurrence of the corresponding gene was not yet filled with a gene from a cluster of the system.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>multi_systems_hits</strong> – a list of hits of genes that are “multi_system” which correspond to mandatory or accessory genes from the current system for which to fill a SystemOccurrence</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="macsypy.search_systems.SystemOccurence.get_gene_counter_output">
+<code class="descname">get_gene_counter_output</code><span class="sig-paren">(</span><em>forbid_exclude=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/macsypy/search_systems.html#SystemOccurence.get_gene_counter_output"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.search_systems.SystemOccurence.get_gene_counter_output" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>forbid_exclude</strong> (<em>boolean</em>) – exclude the forbidden components if set to True. False by default.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A dictionary ready for printing in system summary,          with genes (mandatory, accessory and forbidden if specified) occurences in the system occurrence.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="macsypy.search_systems.SystemOccurence.get_gene_ref">
+<code class="descname">get_gene_ref</code><span class="sig-paren">(</span><em>gene</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/macsypy/search_systems.html#SystemOccurence.get_gene_ref"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.search_systems.SystemOccurence.get_gene_ref" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>gene</strong> (<a class="reference internal" href="gene.html#macsypy.gene.Gene" title="macsypy.gene.Gene"><code class="xref py py-class docutils literal"><span class="pre">macsypy.gene.Gene</span></code></a>, or <a class="reference internal" href="gene.html#macsypy.gene.Homolog" title="macsypy.gene.Homolog"><code class="xref py py-class docutils literal"><span class="pre">macsypy.gene.Homolog</span></code></a> or <a class="reference internal" href="gene.html#macsypy.gene.Analog" title="macsypy.gene.Analog"><code class="xref py py-class docutils literal"><span class="pre">macsypy.gene.Analog</span></code></a> object) – the gene to get it’s gene reference</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">object <a class="reference internal" href="gene.html#macsypy.gene.Gene" title="macsypy.gene.Gene"><code class="xref py py-class docutils literal"><span class="pre">macsypy.gene.Gene</span></code></a> or None</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="gene.html#macsypy.gene.Gene" title="macsypy.gene.Gene"><code class="xref py py-class docutils literal"><span class="pre">macsypy.gene.Gene</span></code></a> object or None</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise:</th><td class="field-body">KeyError if the system does not contain any gene gene.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="macsypy.search_systems.SystemOccurence.get_summary">
+<code class="descname">get_summary</code><span class="sig-paren">(</span><em>replicon_name</em>, <em>rep_info</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/macsypy/search_systems.html#SystemOccurence.get_summary"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.search_systems.SystemOccurence.get_summary" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gives a summary of the system occurrence in terms of gene content and localization.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>replicon_name</strong> (<em>string</em>) – the name of the replicon</li>
+<li><strong>rep_info</strong> (a namedTuple “RepliconInfo” <a class="reference internal" href="database.html#macsypy.database.RepliconInfo" title="macsypy.database.RepliconInfo"><code class="xref py py-class docutils literal"><span class="pre">macsypy.database.RepliconInfo</span></code></a>) – an entry extracted from the <a class="reference internal" href="database.html#macsypy.database.RepliconDB" title="macsypy.database.RepliconDB"><code class="xref py py-class docutils literal"><span class="pre">macsypy.database.RepliconDB</span></code></a></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">a tabulated summary of the <a class="reference internal" href="#macsypy.search_systems.SystemOccurence" title="macsypy.search_systems.SystemOccurence"><code class="xref py py-class docutils literal"><span class="pre">macsypy.search_systems.SystemOccurence</span></code></a></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">string</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="macsypy.search_systems.SystemOccurence.get_summary_header">
+<code class="descname">get_summary_header</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/macsypy/search_systems.html#SystemOccurence.get_summary_header"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.search_systems.SystemOccurence.get_summary_header" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a string with the description of the summary returned by self.get_summary()</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">string</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="macsypy.search_systems.SystemOccurence.get_summary_unordered">
+<code class="descname">get_summary_unordered</code><span class="sig-paren">(</span><em>replicon_name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/macsypy/search_systems.html#SystemOccurence.get_summary_unordered"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.search_systems.SystemOccurence.get_summary_unordered" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gives a summary of the system occurrence in terms of gene content only (specific of “unordered” datasets).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>replicon_name</strong> (<em>string</em>) – the name of the replicon</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">a tabulated summary of the <a class="reference internal" href="#macsypy.search_systems.SystemOccurence" title="macsypy.search_systems.SystemOccurence"><code class="xref py py-class docutils literal"><span class="pre">macsypy.search_systems.SystemOccurence</span></code></a></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">string</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="macsypy.search_systems.SystemOccurence.get_system_name_unordered">
+<code class="descname">get_system_name_unordered</code><span class="sig-paren">(</span><em>suffix='_putative'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/macsypy/search_systems.html#SystemOccurence.get_system_name_unordered"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.search_systems.SystemOccurence.get_system_name_unordered" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Attributes a name to the system occurrence for an “unordered” dataset =&gt; generating a generic name based</dt>
+<dd>on the system name and the suffix given.</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>suffix</strong> (<em>string</em>) – the suffix to be used for generating the systemOccurrence’s name</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">a name for a system in an “unordered” dataset to the <a class="reference internal" href="#macsypy.search_systems.SystemOccurence" title="macsypy.search_systems.SystemOccurence"><code class="xref py py-class docutils literal"><span class="pre">macsypy.search_systems.SystemOccurence</span></code></a></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">string</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="macsypy.search_systems.SystemOccurence.get_system_unique_name">
+<code class="descname">get_system_unique_name</code><span class="sig-paren">(</span><em>replicon_name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/macsypy/search_systems.html#SystemOccurence.get_system_unique_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.search_systems.SystemOccurence.get_system_unique_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Attributes unique name to the system occurrence with the class <a class="reference internal" href="#macsypy.search_systems.SystemNameGenerator" title="macsypy.search_systems.SystemNameGenerator"><code class="xref py py-class docutils literal"><span class="pre">macsypy.search_systems.SystemNameGenerator</span></code></a>.
+Generates the name if not already set.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>replicon_name</strong> (<em>string</em>) – the name of the replicon</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the unique name of the <a class="reference internal" href="#macsypy.search_systems.SystemOccurence" title="macsypy.search_systems.SystemOccurence"><code class="xref py py-class docutils literal"><span class="pre">macsypy.search_systems.SystemOccurence</span></code></a></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">string</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="macsypy.search_systems.SystemOccurence.is_complete">
+<code class="descname">is_complete</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/macsypy/search_systems.html#SystemOccurence.is_complete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.search_systems.SystemOccurence.is_complete" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test for SystemOccurrence completeness.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">True if the state of the SystemOccurrence is “single_locus” or “multi_loci”, False otherwise.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">boolean</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="macsypy.search_systems.SystemOccurence.nb_syst_genes">
+<code class="descname">nb_syst_genes</code><a class="headerlink" href="#macsypy.search_systems.SystemOccurence.nb_syst_genes" title="Permalink to this definition">¶</a></dt>
+<dd><p>This value is set after a decision was made on the system in
+<code class="xref py py-func docutils literal"><span class="pre">macsypy.search_systems.SystemOccurence:decision_rule()</span></code></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">the number of mandatory and accessory genes with at least one occurence</td>
+</tr>
+</tbody>
+</table>
+<p>(number of different accessory genes)
+:rtype: integer</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="macsypy.search_systems.SystemOccurence.state">
+<code class="descname">state</code><a class="headerlink" href="#macsypy.search_systems.SystemOccurence.state" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">the state of the systemOccurrence.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">string</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="macsypy.search_systems.analyze_clusters_replicon">
+<code class="descclassname">macsypy.search_systems.</code><code class="descname">analyze_clusters_replicon</code><span class="sig-paren">(</span><em>clusters</em>, <em>systems</em>, <em>multi_systems_genes</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/macsypy/search_systems.html#analyze_clusters_replicon"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.search_systems.analyze_clusters_replicon" title="Permalink to this definition">¶</a></dt>
+<dd><p>Analyzes sets of contiguous hits (clusters) stored in a ClustersHandler for system detection:</p>
+<ul class="simple">
+<li>split clusters if needed</li>
+<li>delete them if they are not relevant</li>
+<li>add eventual genes from other systems “multi_system” genes</li>
+<li>check the QUORUM for each system to detect, <em>i.e.</em> mandatory + accessory - forbidden</li>
+</ul>
+<p>Only for “ordered” datasets representing a whole replicon.
+Reports systems occurence.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>clusters</strong> (<a class="reference internal" href="#macsypy.search_systems.ClustersHandler" title="macsypy.search_systems.ClustersHandler"><code class="xref py py-class docutils literal"><span class="pre">macsypy.search_systems.ClustersHandler</span></code></a>) – the set of clusters to analyze</li>
+<li><strong>systems</strong> (a list of <a class="reference internal" href="system.html#macsypy.system.System" title="macsypy.system.System"><code class="xref py py-class docutils literal"><span class="pre">macsypy.system.System</span></code></a>) – the set of systems to detect</li>
+<li><strong>multi_systems_genes</strong> – a dictionary with genes that could belong to multiple systems (keys are system names)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">a set of systems occurence filled with hits found in clusters</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">a list of <a class="reference internal" href="#macsypy.search_systems.SystemOccurence" title="macsypy.search_systems.SystemOccurence"><code class="xref py py-class docutils literal"><span class="pre">macsypy.search_systems.SystemOccurence</span></code></a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="macsypy.search_systems.build_clusters">
+<code class="descclassname">macsypy.search_systems.</code><code class="descname">build_clusters</code><span class="sig-paren">(</span><em>hits</em>, <em>systems_to_detect</em>, <em>rep_info</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/macsypy/search_systems.html#build_clusters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.search_systems.build_clusters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets sets of contiguous hits according to the minimal inter_gene_max_space between two genes. Only for “ordered” datasets.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>hits</strong> (a list of <a class="reference internal" href="HMMReport.html#macsypy.report.Hit" title="macsypy.report.Hit"><code class="xref py py-class docutils literal"><span class="pre">macsypy.report.Hit</span></code></a>) – a list of Hmmer hits to analyze</li>
+<li><strong>systems_to_detect</strong> (a list of <a class="reference internal" href="system.html#macsypy.system.System" title="macsypy.system.System"><code class="xref py py-class docutils literal"><span class="pre">macsypy.system.System</span></code></a>) – the list of systems to detect</li>
+<li><strong>cfg</strong> (<a class="reference internal" href="config.html#macsypy.config.Config" title="macsypy.config.Config"><code class="xref py py-class docutils literal"><span class="pre">macsypy.config.Config</span></code></a>) – the configuration object built from default and user parameters.</li>
+<li><strong>rep_info</strong> (a namedTuple “RepliconInfo” <a class="reference internal" href="database.html#macsypy.database.RepliconInfo" title="macsypy.database.RepliconInfo"><code class="xref py py-class docutils literal"><span class="pre">macsypy.database.RepliconInfo</span></code></a>) – an entry extracted from the <a class="reference internal" href="database.html#macsypy.database.RepliconDB" title="macsypy.database.RepliconDB"><code class="xref py py-class docutils literal"><span class="pre">macsypy.database.RepliconDB</span></code></a></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">a set of clusters and a dictionary with “multi_system” genes stored in a system-wise way for further utilization.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#macsypy.search_systems.ClustersHandler" title="macsypy.search_systems.ClustersHandler"><code class="xref py py-class docutils literal"><span class="pre">macsypy.search_systems.ClustersHandler</span></code></a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="macsypy.search_systems.disambiguate_cluster">
+<code class="descclassname">macsypy.search_systems.</code><code class="descname">disambiguate_cluster</code><span class="sig-paren">(</span><em>cluster</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/macsypy/search_systems.html#disambiguate_cluster"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.search_systems.disambiguate_cluster" title="Permalink to this definition">¶</a></dt>
+<dd><p>This disambiguation step is used on clusters with hits for multiple systems
+(when cluster.state is set to “ambiguous”). It returns a “cleansed” list of clusters,
+ready to use for system occurence detection (and that are “clear” cases). It:</p>
+<ul class="simple">
+<li>splits the cluster in two if it seems that two systems are nearby</li>
+<li>removes single hits that are not forbidden for the “main” system and
+that are at one end of the current cluster in this case,
+check that they are not “loners”, cause “loners” can be stored.</li>
+</ul>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>cluster</strong> (<a class="reference internal" href="#macsypy.search_systems.Cluster" title="macsypy.search_systems.Cluster"><code class="xref py py-class docutils literal"><span class="pre">macsypy.search_systems.Cluster</span></code></a>) – the cluster to “disambiguate”</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="macsypy.search_systems.get_best_hits">
+<code class="descclassname">macsypy.search_systems.</code><code class="descname">get_best_hits</code><span class="sig-paren">(</span><em>hits</em>, <em>tosort=False</em>, <em>criterion='score'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/macsypy/search_systems.html#get_best_hits"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.search_systems.get_best_hits" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns from a putatively redundant list of hits, a list of best matching hits.
+Analyzes quorum and co-localization if required for system detection. 
+By default, hits are already sorted by position, and the hit with the best score is kept, then the best i-evalue. Possible criteria are:</p>
+<ul class="simple">
+<li>maximal score (criterion=”score”)</li>
+<li>minimal i-evalue (criterion=”i_eval”)</li>
+<li>maximal percentage of the profile covered by the alignment with the query sequence (criterion=”profile_coverage”)</li>
+</ul>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>tosort</strong> (<em>boolean</em>) – tells if the hits have to be sorted</li>
+<li><strong>criterion</strong> (<em>string</em>) – the criterion to base the sorting on</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">the list of best matching hits</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">list of <a class="reference internal" href="HMMReport.html#macsypy.report.Hit" title="macsypy.report.Hit"><code class="xref py py-class docutils literal"><span class="pre">macsypy.report.Hit</span></code></a></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise:</th><td class="field-body"><p class="first last">a <a class="reference internal" href="macsypy_error.html#macsypy.macsypy_error.MacsypyError" title="macsypy.macsypy_error.MacsypyError"><code class="xref py py-class docutils literal"><span class="pre">macsypy.macsypy_error.MacsypyError</span></code></a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="macsypy.search_systems.get_compatible_systems">
+<code class="descclassname">macsypy.search_systems.</code><code class="descname">get_compatible_systems</code><span class="sig-paren">(</span><em>systems_list1</em>, <em>systems_list2</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/macsypy/search_systems.html#get_compatible_systems"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.search_systems.get_compatible_systems" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the intersection of the two input systems lists.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>systems_list2</strong> (<em>systems_list1</em><em>,</em>) – two lists of systems</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">a list of systems, or an empty list if no common system</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">a list of <a class="reference internal" href="system.html#macsypy.system.System" title="macsypy.system.System"><code class="xref py py-class docutils literal"><span class="pre">macsypy.system.System</span></code></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="macsypy.search_systems.search_systems">
+<code class="descclassname">macsypy.search_systems.</code><code class="descname">search_systems</code><span class="sig-paren">(</span><em>hits</em>, <em>systems</em>, <em>cfg</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/macsypy/search_systems.html#search_systems"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.search_systems.search_systems" title="Permalink to this definition">¶</a></dt>
+<dd><p>Runs search of systems from a set of hits. Criteria for system assessment will depend on the kind of input dataset provided:</p>
+<blockquote>
+<div><ul class="simple">
+<li>analyze <strong>quorum and co-localization</strong> for “ordered_replicon” and “gembase” datasets.</li>
+<li>analyze <strong>quorum only</strong> (and in a limited way) for “unordered_replicon” and “unordered” datasets.</li>
+</ul>
+</div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>hits</strong> (list of <a class="reference internal" href="HMMReport.html#macsypy.report.Hit" title="macsypy.report.Hit"><code class="xref py py-class docutils literal"><span class="pre">macsypy.report.Hit</span></code></a>) – the list of hits for input systems components</li>
+<li><strong>systems</strong> (list of <a class="reference internal" href="system.html#macsypy.system.System" title="macsypy.system.System"><code class="xref py py-class docutils literal"><span class="pre">macsypy.system.System</span></code></a>) – the list of systems asked for detection</li>
+<li><strong>cfg</strong> (<a class="reference internal" href="config.html#macsypy.config.Config" title="macsypy.config.Config"><code class="xref py py-class docutils literal"><span class="pre">macsypy.config.Config</span></code></a>) – the configuration object</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="macsypy.search_systems.systemDetectionReportOrdered">
+<em class="property">class </em><code class="descclassname">macsypy.search_systems.</code><code class="descname">systemDetectionReportOrdered</code><span class="sig-paren">(</span><em>replicon_name</em>, <em>systems_occurrences_list</em>, <em>cfg</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/macsypy/search_systems.html#systemDetectionReportOrdered"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.search_systems.systemDetectionReportOrdered" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Stores the detected systems to report for each replicon: </dt>
+<dd><ul class="first last simple">
+<li>by system name,</li>
+<li>by state of the systems (single vs multi loci)</li>
+</ul>
+</dd>
+</dl>
+<dl class="method">
+<dt id="macsypy.search_systems.systemDetectionReportOrdered.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>replicon_name</em>, <em>systems_occurrences_list</em>, <em>cfg</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/macsypy/search_systems.html#systemDetectionReportOrdered.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.search_systems.systemDetectionReportOrdered.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>replicon_name</strong> (<em>string</em>) – the name of the replicon</li>
+<li><strong>systems_occurrences_list</strong> (list of <a class="reference internal" href="#macsypy.search_systems.SystemOccurence" title="macsypy.search_systems.SystemOccurence"><code class="xref py py-class docutils literal"><span class="pre">macsypy.search_systems.SystemOccurence</span></code></a>) – the list of system’s occurrences to consider</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="macsypy.search_systems.systemDetectionReportOrdered._match2json">
+<code class="descname">_match2json</code><span class="sig-paren">(</span><em>valid_hit</em>, <em>so</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/macsypy/search_systems.html#systemDetectionReportOrdered._match2json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.search_systems.systemDetectionReportOrdered._match2json" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>valid_hit</strong> (class:<cite>macsypy.search_system.ValidHit</cite> object.) – the valid hit to transform in to json.</li>
+<li><strong>so</strong> (class:<cite>macsypy.search_system.SystemOccurence.</cite>) – the system occurence where the valid hit come from.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="macsypy.search_systems.systemDetectionReportOrdered.counter_output">
+<code class="descname">counter_output</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/macsypy/search_systems.html#systemDetectionReportOrdered.counter_output"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.search_systems.systemDetectionReportOrdered.counter_output" title="Permalink to this definition">¶</a></dt>
+<dd><p>Builds a counter of systems per replicon, with different “states” separated (single-locus vs multi-loci systems)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">the counter of systems</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">Counter</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="macsypy.search_systems.systemDetectionReportOrdered.json_output">
+<code class="descname">json_output</code><span class="sig-paren">(</span><em>json_path</em>, <em>json_data</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/macsypy/search_systems.html#systemDetectionReportOrdered.json_output"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.search_systems.systemDetectionReportOrdered.json_output" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="macsypy.search_systems.systemDetectionReportOrdered.report_output">
+<code class="descname">report_output</code><span class="sig-paren">(</span><em>reportfilename</em>, <em>print_header=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/macsypy/search_systems.html#systemDetectionReportOrdered.report_output"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.search_systems.systemDetectionReportOrdered.report_output" title="Permalink to this definition">¶</a></dt>
+<dd><p>Writes a report of sequences forming the detected systems, with information in their status in the system, 
+their localization on replicons, and statistics on the Hits.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>reportfilename</strong> (<em>string</em>) – the output file name</li>
+<li><strong>print_header</strong> (<em>boolean</em>) – True if the header has to be written. False otherwise</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="macsypy.search_systems.systemDetectionReportOrdered.summary_output">
+<code class="descname">summary_output</code><span class="sig-paren">(</span><em>reportfilename</em>, <em>rep_info</em>, <em>print_header=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/macsypy/search_systems.html#systemDetectionReportOrdered.summary_output"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.search_systems.systemDetectionReportOrdered.summary_output" title="Permalink to this definition">¶</a></dt>
+<dd><p>Writes a report with the summary of systems detected in replicons. For each system, a summary is done including:</p>
+<blockquote>
+<div><ul class="simple">
+<li>the number of mandatory/accessory genes in the reference system (as defined in XML files)</li>
+<li>the number of mandatory/accessory genes detected</li>
+<li>the number and list of missing genes</li>
+<li>the number of loci encoding the system</li>
+</ul>
+</div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>rep_info</strong> (a namedTuple “RepliconInfo” <a class="reference internal" href="database.html#macsypy.database.RepliconInfo" title="macsypy.database.RepliconInfo"><code class="xref py py-class docutils literal"><span class="pre">macsypy.database.RepliconInfo</span></code></a>) – an entry extracted from the <a class="reference internal" href="database.html#macsypy.database.RepliconDB" title="macsypy.database.RepliconDB"><code class="xref py py-class docutils literal"><span class="pre">macsypy.database.RepliconDB</span></code></a></li>
+<li><strong>print_header</strong> (<em>boolean</em>) – True if the header has to be written. False otherwise</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="macsypy.search_systems.systemDetectionReportOrdered.system_2_json">
+<code class="descname">system_2_json</code><span class="sig-paren">(</span><em>rep_db</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/macsypy/search_systems.html#systemDetectionReportOrdered.system_2_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.search_systems.systemDetectionReportOrdered.system_2_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates the report in json format</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>path</strong> (<em>string</em>) – the path to a file where to write the report in json format</li>
+<li><strong>rep_db</strong> (a class:<cite>macsypy.database.RepliconDB</cite> object) – the replicon database</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="macsypy.search_systems.systemDetectionReportOrdered.tabulated_output">
+<code class="descname">tabulated_output</code><span class="sig-paren">(</span><em>system_occurrence_states</em>, <em>system_names</em>, <em>reportfilename</em>, <em>print_header=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/macsypy/search_systems.html#systemDetectionReportOrdered.tabulated_output"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.search_systems.systemDetectionReportOrdered.tabulated_output" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write a tabulated output with number of detected systems for each replicon.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>system_occurrence_states</strong> (<em>list of string</em>) – the different forms of detected systems to consider</li>
+<li><strong>reportfilename</strong> (<em>string</em>) – the output file name</li>
+<li><strong>print_header</strong> (<em>boolean</em>) – True if the header has to be written. False otherwise</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">string</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="macsypy.search_systems.systemDetectionReportOrdered.tabulated_output_header">
+<code class="descname">tabulated_output_header</code><span class="sig-paren">(</span><em>system_occurrence_states</em>, <em>system_names</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/macsypy/search_systems.html#systemDetectionReportOrdered.tabulated_output_header"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.search_systems.systemDetectionReportOrdered.tabulated_output_header" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a string containing the header of the tabulated output</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>system_occurrence_states</strong> (<em>list of string</em>) – the different forms of detected systems to consider</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">string</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="macsypy.search_systems.systemDetectionReportUnordered">
+<em class="property">class </em><code class="descclassname">macsypy.search_systems.</code><code class="descname">systemDetectionReportUnordered</code><span class="sig-paren">(</span><em>systems_occurrences_list</em>, <em>cfg</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/macsypy/search_systems.html#systemDetectionReportUnordered"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.search_systems.systemDetectionReportUnordered" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Stores a report for putative detected systems gathering all hits from a search in an unordered dataset: </dt>
+<dd><ul class="first last simple">
+<li>by system.</li>
+</ul>
+</dd>
+</dl>
+<p>Mandatory and accessory genes only are reported in the “json” and “report” output,
+but all hits matching a system component are reported in the “summary”.</p>
+<dl class="method">
+<dt id="macsypy.search_systems.systemDetectionReportUnordered.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>systems_occurrences_list</em>, <em>cfg</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/macsypy/search_systems.html#systemDetectionReportUnordered.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.search_systems.systemDetectionReportUnordered.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>systems_occurrences_list</strong> (list of <a class="reference internal" href="#macsypy.search_systems.SystemOccurence" title="macsypy.search_systems.SystemOccurence"><code class="xref py py-class docutils literal"><span class="pre">macsypy.search_systems.SystemOccurence</span></code></a>) – the list of system’s occurrences to consider</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="macsypy.search_systems.systemDetectionReportUnordered.json_output">
+<code class="descname">json_output</code><span class="sig-paren">(</span><em>json_path</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/macsypy/search_systems.html#systemDetectionReportUnordered.json_output"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.search_systems.systemDetectionReportUnordered.json_output" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates the report in json format</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>path</strong> (<em>string</em>) – the path to a file where to write the report in json format</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="macsypy.search_systems.systemDetectionReportUnordered.report_output">
+<code class="descname">report_output</code><span class="sig-paren">(</span><em>reportfilename</em>, <em>print_header=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/macsypy/search_systems.html#systemDetectionReportUnordered.report_output"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.search_systems.systemDetectionReportUnordered.report_output" title="Permalink to this definition">¶</a></dt>
+<dd><p>Writes a report of sequences forming the detected systems, with information in their status in the system, 
+their localization on replicons, and statistics on the Hits.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>reportfilename</strong> (<em>string</em>) – the output file name</li>
+<li><strong>print_header</strong> (<em>boolean</em>) – True if the header has to be written. False otherwise</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="macsypy.search_systems.systemDetectionReportUnordered.summary_output">
+<code class="descname">summary_output</code><span class="sig-paren">(</span><em>reportfilename</em>, <em>print_header=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/macsypy/search_systems.html#systemDetectionReportUnordered.summary_output"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.search_systems.systemDetectionReportUnordered.summary_output" title="Permalink to this definition">¶</a></dt>
+<dd><p>Writes a report with the summary for putative systems in an unordered dataset. For each system, a summary is done including:</p>
+<blockquote>
+<div><ul class="simple">
+<li>the number of mandatory/accessory genes in the reference system (as defined in XML files)</li>
+<li>the number of mandatory/accessory genes detected</li>
+</ul>
+</div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>reportfilename</strong> (<em>string</em>) – the output file name</li>
+<li><strong>print_header</strong> (<em>boolean</em>) – True if the header has to be written. False otherwise</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="macsypy.search_systems.validSystemHit">
+<em class="property">class </em><code class="descclassname">macsypy.search_systems.</code><code class="descname">validSystemHit</code><span class="sig-paren">(</span><em>hit</em>, <em>detected_system</em>, <em>gene_status</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/macsypy/search_systems.html#validSystemHit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.search_systems.validSystemHit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Encapsulates a <a class="reference internal" href="HMMReport.html#macsypy.report.Hit" title="macsypy.report.Hit"><code class="xref py py-class docutils literal"><span class="pre">macsypy.report.Hit</span></code></a>
+This class stores a Hit that has been attributed to a detected system. Thus, it also stores:</p>
+<ul class="simple">
+<li>the system,</li>
+<li>the status of the gene in this system,</li>
+</ul>
+<p>It also aims at storing information for results extraction:</p>
+<ul class="simple">
+<li>system extraction (e.g. genomic positions)</li>
+<li>sequence extraction</li>
+</ul>
+<dl class="method">
+<dt id="macsypy.search_systems.validSystemHit.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>hit</em>, <em>detected_system</em>, <em>gene_status</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/macsypy/search_systems.html#validSystemHit.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.search_systems.validSystemHit.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>hit</strong> (<a class="reference internal" href="HMMReport.html#macsypy.report.Hit" title="macsypy.report.Hit"><code class="xref py py-class docutils literal"><span class="pre">macsypy.report.Hit</span></code></a>) – a hit to base the validSystemHit on</li>
+<li><strong>detected_system</strong> (<em>string</em>) – the name of the predicted System</li>
+<li><strong>gene_status</strong> (<em>string</em>) – the “role” of the gene in the predicted system</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="macsypy.search_systems.validSystemHit.__weakref__">
+<code class="descname">__weakref__</code><a class="headerlink" href="#macsypy.search_systems.validSystemHit.__weakref__" title="Permalink to this definition">¶</a></dt>
+<dd><p>list of weak references to the object (if defined)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="macsypy.search_systems.validSystemHit.output_system_header">
+<code class="descname">output_system_header</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/macsypy/search_systems.html#validSystemHit.output_system_header"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#macsypy.search_systems.validSystemHit.output_system_header" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">the header for the output file</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">string</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="search_genes.html"
+                        title="previous chapter">search_genes API reference</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="macsypy_error.html"
+                        title="next chapter">MacSyFinder errors</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/search_systems.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="macsypy_error.html" title="MacSyFinder errors"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="search_genes.html" title="search_genes API reference"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">MacSyFinder documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2014, Sophie Abby, Bertrand Néron.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.3.
+    </div>
+  </body>
+</html>
