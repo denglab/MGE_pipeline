@@ -72,10 +72,9 @@ SRR4176676_23	CONJscan	ice	10901	43497	.	.	.	cluster_id "ice_2"; length "32597"
 SRR4176676_42	Integron finder	integron	1930	6319	.	.	.	cluster_id "integron_1"; length "4390"
 ```
 # Reference:
-```
 1. Seemann, T. (2014). Prokka: rapid prokaryotic genome annotation. Bioinformatics, 30(14), 2068-2069.
 2. Arndt, D., Grant, J. R., Marcu, A., Sajed, T., Pon, A., Liang, Y., & Wishart, D. S. (2016). PHASTER: a better, faster version of the PHAST phage search tool. Nucleic acids research, 44(W1), W16-W21.
 3. Xie, Z., & Tang, H. (2017). ISEScan: automated identification of insertion sequence elements in prokaryotic genomes. Bioinformatics, 33(21), 3340-3347.
 4. Cury, J., Jové, T., Touchon, M., Néron, B., & Rocha, E. P. (2016). Identification and analysis of integrons and cassette arrays in bacterial genomes. Nucleic acids research, 44(10), 4539-4550.
 5. Abby, S. S., Cury, J., Guglielmini, J., Néron, B., Touchon, M., & Rocha, E. P. (2016). Identification of protein secretion systems in bacterial genomes. Scientific reports, 6, 23080.
-```
+
