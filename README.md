@@ -61,7 +61,7 @@ A matrix that summarizes the number of different MGEs in each pair of tested gen
 | SRR5932646 | 2 | 1 | 0 |
 
 #### 4. MGE_gff and MGE_sequences fasta files
-Each gff file will list all the detected MGE sequences in each genome according the gff format. The MGE_sequence fasta file put all the detected sequences of each type of MGE together.
+Each gff file will list all the detected MGE sequences in each genome according to the gff format. The MGE_sequence fasta file put all the detected sequences of each MGE type together.
 ```
 SRR4176676_19	Phaster	prophage	37543	87358	.	.	.	cluster_id "prophage_1"; length "49816"
 SRR4176676_27	Phaster	prophage	14657	49480	.	.	.	cluster_id "prophage_2"; length "34824"
