@@ -1,7 +1,7 @@
-Introduction
+#Introduction
 This is a pipeline for the detection of mobile genetic elements (MGEs) from complete genomes or genome assemblies. The types of detected MGEs include prophage, insertion sequence (IS), integron and integrative and conjugative elements (ICEs). This pipeline integrates four tools for the detection of each MGE type into a single workflow. Prophages are detected using PHASTER's URLAPI, insertion sequences are detected using ISEScan, integrons are detected using Integron Finder and ICEs are detected using conjscan.
 
-Dependencies
+#Dependencies
 Python 2.7 and Python 3.4
 Python modules: biopython, pandas, numpy
 NCBI BLAST v2.7.1+
@@ -12,14 +12,14 @@ Integron_Finder v2.0
 PHASTER's URLAPI
 Vsearch v2.8.1
 
-Instructions:
+#Instructions:
 1. Make sure python2.7, python3.4 and the required modules are installed.
 2. Install Prokka. 
 3. Install ISEScan.
 4. Install vsearch.
 5. Run the MGE pipeline using the following command.
 
-Usage
+#Usage
 usage: mges_pipeline.py -i <assembily_path> -o <output_path> -t <threads> -c <minimum_coverage> -p <minimum_identity>
 
 optional arguments:
@@ -30,7 +30,7 @@ optional arguments:
   -c C <int>: minimum coverage of each hit for MGE verification using BLASTn, default 90.
   -p P <int>: minimum identical percentage of each hit for MGE verification using BLASTn, default 90.
 
-Output files
+#Output files
 1. mge_matrix.csv
 A binary matrix that summarizes the presence and absence of MGEs in each of the detected genomes.
 Sample	prophage_1	prophage_2	prophage_3	insertion_1	insertion_2	insertion_3
@@ -62,7 +62,7 @@ SRR4176676_24	Blast	insertion	54451	55511	.	.	.	cluster_id "insertion_16"; lengt
 SRR4176676_23	CONJscan	ice	10901	43497	.	.	.	cluster_id "ice_2"; length "32597"
 SRR4176676_42	Integron finder	integron	1930	6319	.	.	.	cluster_id "integron_1"; length "4390"
 
-Reference:
+#Reference:
 Seemann, T. (2014). Prokka: rapid prokaryotic genome annotation. Bioinformatics, 30(14), 2068-2069.
 Arndt, D., Grant, J. R., Marcu, A., Sajed, T., Pon, A., Liang, Y., & Wishart, D. S. (2016). PHASTER: a better, faster version of the PHAST phage search tool. Nucleic acids research, 44(W1), W16-W21.
 Xie, Z., & Tang, H. (2017). ISEScan: automated identification of insertion sequence elements in prokaryotic genomes. Bioinformatics, 33(21), 3340-3347.
