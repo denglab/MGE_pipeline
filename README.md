@@ -17,8 +17,7 @@ This is a pipeline for the detection of mobile genetic elements (MGEs) from comp
 The Executable scritps of NCBI BLAST, macsyfinder and Integron Finder are included in this repository, but the following programs and their required dependencies should be installed prior to the execution of the MGE pipeline.
 1. Make sure python2.7, python3.4 and the required modules are installed.
 2. Install Prokka. 
-3. Install ISEScan.
-    Make sure an executable "isescan.py" is added to your PATH.
+3. Install ISEScan. Make sure an executable "isescan.py" is added to your PATH.
 4. Install vsearch.
 5. Run the MGE pipeline using the following command.
 
