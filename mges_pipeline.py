@@ -4,7 +4,7 @@
 import argparse,os,sys
 
 def main():
-  parser = argparse.ArgumentParser(usage='run_mges.py -i <assembily_path> -o <output_path> -t <threads> -c <minimum_coverage> -p <minimum_ident>')
+  parser = argparse.ArgumentParser(usage='mges_pipeline.py -i <assembily_path> -o <output_path> -t <threads> -c <minimum_coverage> -p <minimum_ident>')
   parser.add_argument("-i",help="<string>: input assemblies")
   parser.add_argument("-o",help="<string>: output directory")
   parser.add_argument("-t",help="<string>: threads")
