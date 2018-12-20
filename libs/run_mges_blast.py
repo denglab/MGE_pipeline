@@ -31,11 +31,11 @@ os.chdir(outpath)
 if os.stat('insertion_representatives.fasta').st_size > 0:
     os.system(blast_dir+'/blastn -query insertion_representatives.fasta -db '+dbpath+'/ISfinder_insertion_042018.fna -evalue 1e-5 -outfmt '+blast_fmt+' -max_hsps 1 -num_alignments 1 -qcov_hsp_perc '+qcov+' -perc_identity '+ident+' -num_threads '+thread+' -out insertion_representatives_ISfinder.blastout >> run_mges_blast.log 2>&1')
 if os.stat('integron_representatives.fasta').st_size > 0:
-    os.system(blast_dir+'/blastn -query integron_representatives.fasta -db '+dbpath+'/INTEGRALL_integron_052018 -evalue 0.0001 -outfmt '+blast_fmt+' -max_hsps 1 -num_alignments 1 -qcov_hsp_perc '+qcov+' -perc_identity '+ident+' -num_threads '+thread+' -out integron_representatives_INTEGRALL.blastout >> run_mges_blast.log 2>&1')
+    os.system(blast_dir+'/blastn -query integron_representatives.fasta -db '+dbpath+'/INTEGRALL_integron_052018.fna -evalue 1e-5 -outfmt '+blast_fmt+' -max_hsps 1 -num_alignments 1 -qcov_hsp_perc '+qcov+' -perc_identity '+ident+' -num_threads '+thread+' -out integron_representatives_INTEGRALL.blastout >> run_mges_blast.log 2>&1')
 if os.stat('ice_representatives.fasta').st_size > 0:
-    os.system(blast_dir+'/blastn -query ice_representatives.fasta -db '+dbpath+'/ICEberg_ices_052018.fna -evalue 0.0001 -outfmt '+blast_fmt+' -max_hsps 1 -num_alignments 1 -qcov_hsp_perc '+qcov+' -perc_identity '+ident+' -num_threads '+thread+' -out ice_representatives_ICEberg.blastout >> run_mges_blast.log 2>&1')
+    os.system(blast_dir+'/blastn -query ice_representatives.fasta -db '+dbpath+'/ICEberg_ices_052018.fna -evalue 1e-5 -outfmt '+blast_fmt+' -max_hsps 1 -num_alignments 1 -qcov_hsp_perc '+qcov+' -perc_identity '+ident+' -num_threads '+thread+' -out ice_representatives_ICEberg.blastout >> run_mges_blast.log 2>&1')
 if os.stat('prophage_representatives.fasta').st_size > 0:
-    os.system(blast_dir+'/blastn -query prophage_representatives.fasta -db '+dbpath+'/PHAST_prophage_DNA_fragment_032018.fna -evalue 0.0001 -outfmt '+blast_fmt+' -max_hsps 1 -num_alignments 1 -qcov_hsp_perc '+qcov+' -perc_identity '+ident+' -num_threads '+thread+' -out prophage_representatives_PHAST.blastout >> run_mges_blast.log 2>&1')
+    os.system(blast_dir+'/blastn -query prophage_representatives.fasta -db '+dbpath+'/PHAST_prophage_DNA_fragment_032018.fna -evalue 1e-5 -outfmt '+blast_fmt+' -max_hsps 1 -num_alignments 1 -qcov_hsp_perc '+qcov+' -perc_identity '+ident+' -num_threads '+thread+' -out prophage_representatives_PHAST.blastout >> run_mges_blast.log 2>&1')
 
 handle_mge = open('mge_blast.txt','w')
 handle_mge.write('mge_id\tmge_name\talignment_identity\talignment_length\tquery_start\tquery_end\ttarget_start\ttarget_end\tquery_coverage\tquery_length\tsource\tmge_type\tmge_db\tsamples\n')
